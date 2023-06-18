@@ -1,0 +1,31 @@
+
+# brew environment
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Add python3.10 stuff to path
+path+=/opt/homebrew/opt/python@3.10/Frameworks/Python.framework/Versions/3.10/bin
+
+# ruby environments
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+# iTerm2 zsh integration
+[ -f "${HOME}/.config/iterm2/.iterm2_shell_integration.zsh" ] && source "${HOME}/.config/iterm2/.iterm2_shell_integration.zsh"
+
+# completion directory
+fpath=($HOME/.config/zsh $fpath)
+
+# git 
+zstyle ':completion:*:*:git:*' script $HOME/.config/zsh/git-completion.bash
+
+# brew zsh-completions
+fpath=("$(brew --prefix)/share/zsh-completions" $fpath)
+
+# load completion filepath
+autoload -Uz compinit
+compinit
+
+alias pg_start="launchctl load ~/Library/LaunchAgents"
+alias pg_stop="launchctl unload ~/Library/LaunchAgents"
+
+# 2023-06-18 jbgreer moving starship to .zlogin
+#eval "$(starship init zsh)"
