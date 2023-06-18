@@ -1,3 +1,19 @@
+# 2023-06-18 jbgreer prepend /usr/local/bin if present
+[ -d '/usr/local/bin' ] && path=('/usr/local/bin' $path)
+
+# 2023-06-18 jbgreer prepend $HOME/.local/bin
+[ -d "$HOME/.local/bin" ] && path=("$HOME/.local/bin" $path)
+
+# 2023-06-18 jbgreer prepend $HOME/bin
+[ -d "$HOME/bin" ] && path=("$HOME/bin" $path)
+
+# Rust
+[ -f $"HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# Deduplicate path entries
+typeset -U PATH path
+export PATH
+
 # XDG paths for config files, etc
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
