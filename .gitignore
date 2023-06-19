@@ -1,3 +1,4 @@
 zsh/.config/zsh/.*
 zsh/.config/zsh/.zcompdump
 zsh/.config/zsh/.zsh_history
+emacs/.config/emacs/eln-cache
