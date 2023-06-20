@@ -1,4 +1,11 @@
 zsh/.config/zsh/.*
 zsh/.config/zsh/.zcompdump
 zsh/.config/zsh/.zsh_history
+emacs/.config/emacs/auto-save-list
+emacs/.config/emacs/'#*
+emacs/.config/emacs/#*
+emacs/.config/emacs/*~
+emacs/.config/emacs/config.el
+emacs/.config/emacs/.tutor
 emacs/.config/emacs/eln-cache
+emacs/.config/emacs/elpaca
