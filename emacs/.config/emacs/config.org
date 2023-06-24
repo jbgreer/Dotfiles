@@ -30,6 +30,7 @@
 - [[#sudo-edit][SUDO EDIT]]
 - [[#git][GIT]]
 - [[#which-key][WHICH-KEY]]
+- [[#clojure][CLOJURE]]
 
 * IMPORTANT PROGRAMS TO LOAD FIRST
 ** Elpaca Package Manager
@@ -430,4 +431,14 @@ This is just an example of how to create a simple function in Emacs.  Use this f
 	  which-key-max-description-length 25
 	  which-key-allow-imprecise-window-fit t
 	  which-key-separator " → " ))
+#+end_src
+
+* CLOJURE
+Installing clojure-mode, CIDER and other packages for use with Clojure
+
+#+begin_src emacs-lisp
+  (use-package paredit)
+  (use-package clojure-mode)
+  (use-package cider)
+  (use-package company)
 #+end_src
