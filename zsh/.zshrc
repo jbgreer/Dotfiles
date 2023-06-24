@@ -29,9 +29,9 @@ path=($HOME/bin $path)
 export EDITOR="nvim"
 
 # OS specific sourcing
-case $KERNEL_NAME in
-  'darwin')
-    [ -f $ZDOTDIR/.config/.zshrc.macosx ] && . $ZDOTDIR/.config/.zshrc.macosx]
+case $OSTYPE in
+  'darwin22.0')
+    [ -f $HOME/.zshrc.macosx ] && source $HOME/.zshrc.macosx
     ;;
 esac
 
