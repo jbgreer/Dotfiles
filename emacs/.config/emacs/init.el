@@ -1,4 +1,4 @@
-;; 2023-07-03 jbgreer init.el
+; 2023-07-03 jbgreer init.el
 
 
 
@@ -189,6 +189,9 @@
   (ivy-rich-ivy-path-style 'abbrev
 			   ivy-virtual-abbreviate 'full
 			   ivy-rich-switch-buffer-align-virtual-buffer t))
+(use-package swiper
+  :after ivy
+  :bind ("C-s" . swiper))
 ;; ivy, counsel, swiper global keybindings
 ;;(global-set-key (kbd "C-s") 'swiper-isearch)
 ;;(global-set-key (kbd "M-x") 'counsel-M-x)
