@@ -1,6 +1,4 @@
-; 2023-07-03 jbgreer init.el
-
-
+;; 2023-07-03 jbgreer init.el
 
 (setq debug-on-error t)
 (setq user-emacs-directory "~/.config/emacs/")
@@ -74,7 +72,7 @@
       :weight 'medium)
 (set-face-attribute 'variable-pitch nil
       :font "Ubuntu"
-      :height 120
+      :height 110
       :weight 'medium)
 (set-face-attribute 'fixed-pitch nil
       :font "JetBrains Mono"
@@ -91,9 +89,6 @@
 ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
 ;; are not right unless I also add this method of setting the default font.
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono-11"))
-
-;; Uncomment the following line if line spacing needs adjusting.
-(setq-default line-spacing 0.12)
 
 ;; Key bindings and mouse whell for zooming in/out
 (global-set-key (kbd "C-=") 'text-scale-increase)
@@ -120,6 +115,9 @@
 (global-display-line-numbers-mode 1)
 (global-visual-line-mode t)
 
+;; change all yes/no questions to y/n
+(fset 'yes-or-no-p 'y-or-n-p)
+
 
 
 ;; Install which-key, a minor mode that displays available keybindings
@@ -127,18 +125,20 @@
   :init
   (which-key-mode 1)
   :config
-  (setq which-key-side-window-location 'bottom
-	which-key-sort-order #'which-key-key-order-alpha
-	which-key-sort-uppercase-first nil
-	which-key-add-column-padding 1
-	which-key-max-display-columns nil
-	which-key-min-display-lines 6
-	which-key-side-window-slot -10
-	which-key-side-window-max-height 0.25
-	which-key-idle-delay 0.8
-	which-key-max-description-length 25
-	which-key-allow-imprecise-window-fit t
-	which-key-separator " → " ))
+  (setq which-key-popup-type 'minibuffer
+	which-key-side-window-location 'bottom
+	which-key-side-window-max-height 0.25))
+;;	which-key-sort-order #'which-key-key-order-alpha
+;;	which-key-sort-uppercase-first nil
+;;	which-key-add-column-padding 1
+;;	which-key-max-display-columns nil
+;;	which-key-min-display-lines 6
+;;	which-key-side-window-slot -10
+;;	which-key-side-window-max-height 0.25
+;;	which-key-idle-delay 0.8
+;;	which-key-max-description-length 25
+;;	which-key-allow-imprecise-window-fit t
+;;	which-key-separator " → " ))
 
 
 
