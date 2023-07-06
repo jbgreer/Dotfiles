@@ -57,7 +57,15 @@
 
 
 ;; Set UI Theme
-(load-theme 'zenburn t)
+(use-package doom-themes
+	    :ensure t
+	    :config
+	    (setq doom-themes-enable-bold t
+		  doom-themes-enable-italic t)
+	    (load-theme 'doom-dracula t)
+	    (doom-themes-visual-bell-config)
+;;	    (doom-themes-org-config)
+	    )
 ;; Icons for dired, etc.  Install the latest fonts with M-x all-the-icons-install-fonts
 (use-package all-the-icons
   :ensure t
@@ -215,11 +223,14 @@
 
 
 
+
+
+
 ;; Parentheses matching and colorization for lisps
 (use-package paredit)
 ;;(add-hook 'prog-mode-hook #'enable-paredit-mode)
 (use-package rainbow-delimiters)
-;;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 
 
@@ -229,9 +240,9 @@
 (add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
 (add-hook 'cider-mode-hook #'enable-paredit-mode)
 (add-hook 'clojure-repl-mode-hook #'enable-paredit-mode)
-(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'cider-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'clojure-repl-mode-hook 'rainbow-delimiters-mode)
+;;(add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'cider-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'clojure-repl-mode-hook #'rainbow-delimiters-mode)
 
 
 
@@ -240,12 +251,13 @@
 (add-to-list 'auto-mode-alist
 	     '("\\.sls\\'" . scheme-mode)
 	     '("\\.sc\\'" . scheme-mode))
+;;(add-hook 'scheme-mode #'rainbow-delimiters-mode)
 
 
 
 ;; racket development
 (use-package racket-mode)
-
+;;(add-hook 'racket-mode #'rainbow-delimiters-mode)
 
 
 ;; company - complete anything
