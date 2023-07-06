@@ -127,18 +127,18 @@
   :config
   (setq which-key-popup-type 'minibuffer
 	which-key-side-window-location 'bottom
-	which-key-side-window-max-height 0.25))
-;;	which-key-sort-order #'which-key-key-order-alpha
-;;	which-key-sort-uppercase-first nil
-;;	which-key-add-column-padding 1
-;;	which-key-max-display-columns nil
-;;	which-key-min-display-lines 6
-;;	which-key-side-window-slot -10
-;;	which-key-side-window-max-height 0.25
-;;	which-key-idle-delay 0.8
-;;	which-key-max-description-length 25
-;;	which-key-allow-imprecise-window-fit t
-;;	which-key-separator " → " ))
+	which-key-side-window-max-height 0.25
+	which-key-sort-order #'which-key-key-order-alpha
+	which-key-sort-uppercase-first nil
+	which-key-add-column-padding 1
+	which-key-max-display-columns nil
+	which-key-min-display-lines 6
+	which-key-side-window-slot -10
+	which-key-side-window-max-height 0.25
+	which-key-idle-delay 0.8
+	which-key-max-description-length 25
+	which-key-allow-imprecise-window-fit t
+	which-key-separator " → " ))
 
 
 
@@ -209,10 +209,6 @@
 
 
 
-
-
-
-
 ;; magit, a git porcelion inside emacs
 (use-package magit)
 ;;  :ensure t)
@@ -239,7 +235,18 @@
 
 
 
+;; chez scheme development
+(use-package geiser-chez)
+(add-to-list 'auto-mode-alist
+	     '("\\.sls\\'" . scheme-mode)
+	     '("\\.sc\\'" . scheme-mode))
+
+
+
+;; racket development
+(use-package racket-mode)
+
+
+
 ;; company - complete anything
 ;;(use-package company)
-
-
