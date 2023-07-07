@@ -56,9 +56,96 @@
 
 
 
+;; evil - vi emulation
+(use-package evil
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  (setq evil-vsplit-window-right t)
+  (setq evil-split-window-below t)
+  (evil-mode))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (setq evil-collection-mode-list '(dashboard dired ibuffer))
+  (evil-collection-init))
+(use-package evil-tutor)
+
+(use-package general
+  :config
+  (general-evil-setup)
+
+  ;; set up 'SPC' as the global leader key
+  (general-create-definer jg/leader-keys
+			  :states '(normal insert visual emacs)
+			  :keymaps 'override
+			  :prefix "SPC" ;; set leader
+			  :global-prefix "M-SPC") ;; access leader in insert mode
+
+  (jg/leader-keys
+    "." '(find-file :wk "Find file")
+    "f c" '((lambda () (interactive) (find-file (concat user-emacs-directory "init.el"))) :wk "Edit emacs config")
+    "f r" '(counsel-recentf :wk "Find recent files")
+    "TAB TAB" '(comment-line :wk "Comment lines"))
+
+  (jg/leader-keys
+   "b" '(:ignore t :wk "buffer")
+   "b b" '(switch-to-buffer :wk "Switch buffer")
+   "b i" '(ibuffer :wk "Ibuffer")
+   "b k" '(kill-this-buffer :wk "Kill this buffer")
+   "b n" '(next-buffer :wk "Next buffer")
+   "b p" '(previous-buffer :wk "Previous buffer")
+   "b r" '(revert-buffer :wk "Reload buffer"))
+
+  (jg/leader-keys
+   "e" '(:ignore t :wk "Eshell/Evaluate")    
+   "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+   "e d" '(eval-defun :wk "Evaluate defun containing or after point")
+   "e e" '(eval-expression :wk "Evaluate and elisp expression")
+   "e h" '(counsel-esh-history :which-key "Eshell history")
+   "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+   "e r" '(eval-region :wk "Evaluate elisp in region")
+   "e s" '(eshell :which-key "Eshell"))
+  
+  (jg/leader-keys
+   "h" '(:ignore t :wk "Help")
+   "h f" '(describe-function :wk "Describe function")
+   "h z" '(describe-variable :wk "Describe variable")
+   "h r r" '((lambda () (interactive) (load-file (concat user-emacs-directory "init.el")) :wk "Reload emacs config")))
+   ;; "h r r" '(reload-init-file :wk "Reload emacs config"))
+  
+  (jg/leader-keys
+   "t" '(:ignore t :wk "Toggle")
+   "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
+   "t t" '(visual-line-mode :wk "Toggle truncated lines")
+   "t v" '(vterm-toggle :wk "Toggle vterm"))
+
+  (jg/leader-keys
+    "w" '(:ignore t :wk "Windows")
+    ;; Window splits
+    "w c" '(evil-window-delete :wk "Close window")
+    "w n" '(evil-window-new :wk "New window")
+    "w s" '(evil-window-split :wk "Horizontal split window")
+    "w v" '(evil-window-vsplit :wk "Vertical split window")
+    ;; Window motions
+    "w h" '(evil-window-left :wk "Window left")
+    "w j" '(evil-window-down :wk "Window down")
+    "w k" '(evil-window-up :wk "Window up")
+    "w l" '(evil-window-right :wk "Window right")
+    "w w" '(evil-window-next :wk "Goto next window")
+    ;; Move Windows
+    "w H" '(buf-move-left :wk "Buffer move left")
+    "w J" '(buf-move-down :wk "Buffer move down")
+    "w K" '(buf-move-up :wk "Buffer move up")
+    "w L" '(buf-move-right :wk "Buffer move right"))
+)
+
+
+
 ;; Set UI Theme
 (use-package doom-themes
-	    :ensure t
+;;	    :ensure t
 	    :config
 	    (setq doom-themes-enable-bold t
 		  doom-themes-enable-italic t)
@@ -68,7 +155,7 @@
 	    )
 ;; Icons for dired, etc.  Install the latest fonts with M-x all-the-icons-install-fonts
 (use-package all-the-icons
-  :ensure t
+;;  :ensure t
     :if (display-graphic-p))
 (use-package all-the-icons-dired
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
@@ -147,6 +234,10 @@
 	which-key-max-description-length 25
 	which-key-allow-imprecise-window-fit t
 	which-key-separator " → " ))
+
+
+
+; 
 
 
 
