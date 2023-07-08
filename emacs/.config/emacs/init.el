@@ -163,15 +163,15 @@
 ;; Set the Font Face
 (set-face-attribute 'default nil
       :font "JetBrains Mono"
-      :height 110
+      :height 140
       :weight 'medium)
 (set-face-attribute 'variable-pitch nil
       :font "Ubuntu"
-      :height 110
+      :height 140
       :weight 'medium)
 (set-face-attribute 'fixed-pitch nil
       :font "JetBrains Mono"
-      :height 110
+      :height 140
       :weight 'medium)
 ;; Makes commented text and keywords italics. Font must have italic face available.
 ;; This is working in emacsclient but not emacs.
@@ -183,7 +183,7 @@
 ;; Set default font on all graphical frames created after restarting Emacs.
 ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
 ;; are not right unless I also add this method of setting the default font.
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-11"))
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
 
 ;; Key bindings and mouse whell for zooming in/out
 (global-set-key (kbd "C-=") 'text-scale-increase)
