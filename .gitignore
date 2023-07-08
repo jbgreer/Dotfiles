@@ -1,3 +1,4 @@
+.DS_Store
 zsh/.config/zsh/.*
 zsh/.config/zsh/.zcompdump
 zsh/.config/zsh/.zsh_history
@@ -9,4 +10,5 @@ emacs/.config/emacs/auto-save-list
 emacs/.config/emacs/config.el
 emacs/.config/emacs/eln-cache
 emacs/.config/emacs/elpaca
+emacs/.config/emacs/eshell
 emacs/.config/emacs/transient
