@@ -52,5 +52,8 @@ compinit
 alias vim="nvim"
 alias vi="nvim"
 
+# turn off bell
+# unsetopt BEEP
+
 # 2023-06-18 jbgreer moved to .zlogin
 eval "$(starship init zsh)"

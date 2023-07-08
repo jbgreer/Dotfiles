@@ -321,7 +321,7 @@
 (use-package paredit)
 ;;(add-hook 'prog-mode-hook #'enable-paredit-mode)
 (use-package rainbow-delimiters)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 
 
