@@ -1,7 +1,11 @@
 ;; 2023-07-03 jbgreer init.el
 
+;; always process early-init.el first
+(when (version< emacs-version "27")
+  (load (concat user-emacs-directory "early-init.el")))
+
 (setq debug-on-error t)
-(setq user-emacs-directory "~/.config/emacs/")
+;;(setq user-emacs-directory "~/.config/emacs/")
 
 
 
