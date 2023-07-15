@@ -92,7 +92,7 @@
 
   ;; find
   (jg/leader-keys
-    "." '(find-file :wk "Find file")
+    "f f" '(find-file :wk "Find file")
     "f c" '((lambda () (interactive) (find-file (concat user-emacs-directory "init.el"))) :wk "Edit emacs config")
     "f r" '(counsel-recentf :wk "Find recent files")
     "TAB TAB" '(comment-line :wk "Comment lines"))
