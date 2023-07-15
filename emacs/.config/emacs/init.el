@@ -9,7 +9,7 @@
 
 
 
-;; elpaca: The Elisp Package Manager  https://github.com/progfolio/elpaca
+;; ELPACA: The Elisp Package Manager  https://github.com/progfolio/elpaca
 (defvar elpaca-installer-version 0.5)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -49,7 +49,7 @@
 
 
 
-;; Install use-package for succint package inclusion
+;; ELPACA-USE-PACKAGE : use-package for succint package inclusion
 (elpaca elpaca-use-package
   ;; Enable :elpaca use-package keyword.
   (elpaca-use-package-mode)
@@ -60,7 +60,7 @@
 
 
 
-;; evil - vi emulation
+;; EVIL, EVIL-COLLECTION, EVIL-TUTOR- vi emulation
 (use-package evil
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
@@ -76,6 +76,9 @@
   (evil-collection-init))
 (use-package evil-tutor)
 
+
+
+;; GENERFAL - keybindings
 (use-package general
   :config
   (general-evil-setup)
@@ -87,12 +90,14 @@
 			  :prefix "SPC" ;; set leader
 			  :global-prefix "M-SPC") ;; access leader in insert mode
 
+  ;; find
   (jg/leader-keys
     "." '(find-file :wk "Find file")
     "f c" '((lambda () (interactive) (find-file (concat user-emacs-directory "init.el"))) :wk "Edit emacs config")
     "f r" '(counsel-recentf :wk "Find recent files")
     "TAB TAB" '(comment-line :wk "Comment lines"))
 
+  ;; buffer
   (jg/leader-keys
    "b" '(:ignore t :wk "buffer")
    "b b" '(switch-to-buffer :wk "Switch buffer")
@@ -102,6 +107,7 @@
    "b p" '(previous-buffer :wk "Previous buffer")
    "b r" '(revert-buffer :wk "Reload buffer"))
 
+  ;; evaluate
   (jg/leader-keys
    "e" '(:ignore t :wk "Eshell/Evaluate")    
    "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
@@ -112,6 +118,7 @@
    "e r" '(eval-region :wk "Evaluate elisp in region")
    "e s" '(eshell :which-key "Eshell"))
   
+  ;; help
   (jg/leader-keys
    "h" '(:ignore t :wk "Help")
    "h f" '(describe-function :wk "Describe function")
@@ -119,12 +126,14 @@
    "h r r" '((lambda () (interactive) (load-file (concat user-emacs-directory "init.el")) :wk "Reload emacs config")))
    ;; "h r r" '(reload-init-file :wk "Reload emacs config"))
   
+  ;; toggle
   (jg/leader-keys
    "t" '(:ignore t :wk "Toggle")
    "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
    "t t" '(visual-line-mode :wk "Toggle truncated lines")
    "t v" '(vterm-toggle :wk "Toggle vterm"))
 
+  ;; windows
   (jg/leader-keys
     "w" '(:ignore t :wk "Windows")
     ;; Window splits
@@ -147,17 +156,19 @@
 
 
 
-;; Set UI Theme
+;; UI STUFF
+
+;; DOOM-THEMES : UI Theme
 (use-package doom-themes
 ;;	    :ensure t
 	    :config
 	    (setq doom-themes-enable-bold t
 		  doom-themes-enable-italic t)
 	    (load-theme 'doom-dracula t)
-	    (doom-themes-visual-bell-config)
-;;	    (doom-themes-org-config)
-	    )
-;; Icons for dired, etc.  Install the latest fonts with M-x all-the-icons-install-fonts
+	    (doom-themes-visual-bell-config))
+;;	    (doom-themes-org-config))
+
+;; ALL-THE-ICONS, ALL-THE-ICONS-DIRED : Icons for dired, etc.  Install the latest fonts with M-x all-the-icons-install-fonts
 (use-package all-the-icons
 ;;  :ensure t
     :if (display-graphic-p))
@@ -219,7 +230,7 @@
 
 
 
-;; Install which-key, a minor mode that displays available keybindings
+;; WHICH-KEY : a minor mode that displays available keybindings
 (use-package which-key
   :init
   (which-key-mode 1)
@@ -241,11 +252,7 @@
 
 
 
-; 
-
-
-
-;; projectile - a project interaction library
+;; PROJECTILE : a project interaction library
 (use-package projectile
   :defer 1
   :commands
@@ -262,7 +269,7 @@
 
 
 
-;; ivy, counsel, swiper
+;; COUNSEL, IVY, ALL-THE-ICONS-IVY-RICH, IVY-RICH, SWIPER
 ;; Ivy, a generic completion mechanism for Emacs.
 ;; Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 ;; Ivy-rich allows us to add descriptions alongside the commands in M-x.
@@ -312,16 +319,14 @@
 
 
 
-;; magit, a git porcelion inside emacs
+;; MAGIG : a git porcelion inside emacs
 (use-package magit)
 ;;  :ensure t)
 
 
 
 
-
-
-;; Parentheses matching and colorization for lisps
+;; PAREDIT : Parentheses matching and colorization for lisps
 (use-package paredit)
 ;;(add-hook 'prog-mode-hook #'enable-paredit-mode)
 (use-package rainbow-delimiters)
@@ -329,7 +334,7 @@
 
 
 
-;; clojure development
+;; CLOJURE-MODE, CIDER : clojure development
 (use-package clojure-mode)
 (use-package cider)
 (add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
@@ -341,7 +346,7 @@
 
 
 
-;; chez scheme development
+;; GEISER-CHEZZ : chez scheme development
 (use-package geiser-chez)
 (add-to-list 'auto-mode-alist
 	     '("\\.sls\\'" . scheme-mode)
@@ -350,10 +355,11 @@
 
 
 
-;; racket development
+;; RACKET-MODE : racket development
 (use-package racket-mode)
 ;;(add-hook 'racket-mode #'rainbow-delimiters-mode)
 
 
 ;; company - complete anything
 ;;(use-package company)
+

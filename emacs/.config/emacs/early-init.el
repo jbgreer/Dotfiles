@@ -1,4 +1,6 @@
-;; 2023-07-03 jbgreer turn off package.el
+;; early-init.el jbgreer
+
+;; turn off package.el; required by elpaca
 (setq package-enable-at-startup nil)
 
 ;; default gc cons threshold
@@ -9,7 +11,7 @@
 (setq gc-cons-threshold  most-positive-fixnum
       gc-cons-percentage 0.6)
 
-;; Prevent the glimpse of un-styled Emacs by disabling these UI elements early.
+;; Prevent early unstalyed emacs
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
@@ -23,7 +25,6 @@
             (setq gc-cons-threshold default-gc-cons-threshold
                   gc-cons-percentage 0.1
                   file-name-handler-alist default-file-name-handler-alist)
-
+	    
             ;; delete no longer necessary startup variable
             (makunbound 'default-file-name-handler-alist)))
-
