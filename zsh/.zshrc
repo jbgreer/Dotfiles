@@ -53,7 +53,13 @@ alias vim="nvim"
 alias vi="nvim"
 
 # turn off bell
-# unsetopt BEEP
+unsetopt BEEP
 
-# 2023-06-18 jbgreer moved to .zlogin
-eval "$(starship init zsh)"
+# prompt
+#eval "$(starship init zsh)"
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vsc_info:git:*' formats '%b '
+setopt PROMPT_SUBST
+PROMPT='%F{green}%m%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+
