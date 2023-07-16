@@ -74,6 +74,7 @@
   :config
   (setq evil-collection-mode-list '(dashboard dired ibuffer))
   (evil-collection-init))
+
 (use-package evil-tutor)
 
 
@@ -126,6 +127,21 @@
    "h r r" '((lambda () (interactive) (load-file (concat user-emacs-directory "init.el")) :wk "Reload emacs config")))
    ;; "h r r" '(reload-init-file :wk "Reload emacs config"))
   
+  ;; org-mode
+  (jg/leader-keys
+    "o" '(:ignore t :wk "Org")
+    "o a" '(org-agenda :wk "Org Agenda")
+    "o e" '(org-export-dispatch :wk "Org Export Dispatch")
+    "o i" '(org-toggle-item :wk "Org Item Toggle")
+    "o t" '(org-todo :wk "Org Todo")
+    "o B" '(org-babel-tangle :wk "Org Babel Tangle")
+    "o T" '(org-todo-list :wk "Org Todo List")
+    "o d" '(org-time-stamp :wk "Org Date/timestamp"))
+
+  ;; projectile
+  (jg/leader-keys
+    "p" '(projectile-command-map :wk "Projectile"))
+
   ;; toggle
   (jg/leader-keys
    "t" '(:ignore t :wk "Toggle")
