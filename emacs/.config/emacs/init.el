@@ -235,7 +235,7 @@
 
 ;; Set Frame width/heighth
 (setq default-frame-alist
-  '((top . 25) (left . 275) (width . 140) (height . 70)))
+  '((top . 25) (left . 275) (width . 140) (height . 60)))
 
 ;; Disable Menubar, Toolbars Tooltips, and Scrollbars, and set fringe
 (menu-bar-mode -1)
