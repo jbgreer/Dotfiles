@@ -79,7 +79,7 @@
 
 
 
-;; GENERFAL - keybindings
+;; GENERAL - keybindings
 (use-package general
   :config
   (general-evil-setup)
@@ -90,6 +90,13 @@
 			  :keymaps 'override
 			  :prefix "SPC" ;; set leader
 			  :global-prefix "M-SPC") ;; access leader in insert mode
+
+ 
+  
+;; org-mode 
+(setq org-log-done 'time)
+
+
 
   ;; find
   (jg/leader-keys
