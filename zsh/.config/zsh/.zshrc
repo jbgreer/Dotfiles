@@ -1,3 +1,4 @@
+#  set -x
 
 # get rid of WSL cruft
 export PATH='/usr/sbin:/usr/bin:/sbin:/bin'
@@ -25,7 +26,7 @@ export EDITOR="nvim"
 # OS specific sourcing
 case $OSTYPE in
   'darwin22.0')
-    [ -f $HOME/.zshrc.macosx ] && source $HOME/.zshrc.macosx
+    [ -f $ZDOTDIR/.zshrc.macosx ] && source $ZDOTDIR/.zshrc.macosx
     ;;
 esac
 
@@ -36,7 +37,7 @@ fpath=($ZDOTDIR/zsh $fpath)
 zstyle ':completion:*:*:git:*' script $ZDOTDIR/git-completion.bash
 
 # fuzzy finder
-[ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
+#[ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
 
 # load completion filepath
 autoload -Uz compinit
@@ -52,9 +53,9 @@ unsetopt BEEP
 
 # prompt
 #eval "$(starship init zsh)"
-autoload -Uz vcs_info
-precmd() { vcs_info }
-zstyle ':vsc_info:git:*' formats '%b '
+#autoload -Uz vcs_info
+#precmd() { vcs_info }
+#zstyle ':vsc_info:git:*' formats '%b '
 setopt PROMPT_SUBST
 PROMPT='%F{green}%m%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
 
