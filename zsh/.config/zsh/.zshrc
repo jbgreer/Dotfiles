@@ -1,3 +1,7 @@
+
+# get rid of WSL cruft
+export PATH='/usr/sbin:/usr/bin:/sbin:/bin'
+
 # 2023-06-18 jbgreer prepend /usr/local/bin if present
 [ -d '/usr/local/bin' ] && path=('/usr/local/bin' $path)
 
@@ -14,18 +18,8 @@
 typeset -U PATH path
 export PATH
 
-# XDG paths for config files, etc
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-
-# configurations for zsh
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
-
-# Add local path
-path=($HOME/bin $path)
-#
 # Default editor
+bindkey -v
 export EDITOR="nvim"
 
 # OS specific sourcing
@@ -36,19 +30,20 @@ case $OSTYPE in
 esac
 
 # completion directory
-fpath=($HOME/.config/zsh $fpath)
+fpath=($ZDOTDIR/zsh $fpath)
 
 # git 
-zstyle ':completion:*:*:git:*' script $HOME/.config/zsh/git-completion.bash
+zstyle ':completion:*:*:git:*' script $ZDOTDIR/git-completion.bash
 
 # fuzzy finder
-[ -f $HOME/.config/fzf/fzf.zsh ] && source $HOME/.config/fzf/fzf.zsh
+[ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
 
 # load completion filepath
 autoload -Uz compinit
 compinit
 
 # alias
+alias e="emacsclient -r"
 alias vim="nvim"
 alias vi="nvim"
 

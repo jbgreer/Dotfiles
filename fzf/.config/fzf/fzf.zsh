@@ -4,10 +4,18 @@ if [[ ! "$PATH" == */opt/homebrew/opt/fzf/bin* ]]; then
   PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
 fi
 
-# Auto-completion
+# Auto-completion and keybindings
 # ---------------
-[[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
+# MacOS
+if [[ $- == *i* ]]; then
+  [ -f "/opt/homebrew/opt/fzf/shell/completion.zsh" ] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
+  [ -f "/opt/homebrew/opt/fzf/shell/key-bindings.zsh" ] && source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+fi
 
-# Key bindings
-# ------------
-source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+# Ubuntu
+if [[ $- == *i* ]]; then
+  [ -f "/usr/share/doc/fzf/examples/completion.zsh" ] && source "/usr/share/doc/fzf/examples/completion.zsh" 2> /dev/null
+  2> /dev/null
+  [ -f "/opt/homebrew/opt/fzf/shell/key-bindings.zsh" ] && source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+fi
+

@@ -27,5 +27,3 @@ compinit
 alias pg_start="launchctl load ~/Library/LaunchAgents"
 alias pg_stop="launchctl unload ~/Library/LaunchAgents"
 
-# 2023-06-18 jbgreer moving starship to .zlogin
-#eval "$(starship init zsh)"
