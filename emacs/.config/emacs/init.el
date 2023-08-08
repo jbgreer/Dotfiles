@@ -187,7 +187,12 @@
 	    :config
 	    (setq doom-themes-enable-bold t
 		  doom-themes-enable-italic t)
-	    (load-theme 'doom-dracula t)
+	    (if (daemonp)
+		(add-hook 'after-make-frame-functions
+			  (lambda (frame)
+			    (select-frame frame)
+			    (load-theme 'doom-dracula t)))
+		(load-theme 'doom-dracula t))
 	    (doom-themes-visual-bell-config))
 ;;	    (doom-themes-org-config))
 

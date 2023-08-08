@@ -28,6 +28,9 @@ case $OSTYPE in
   'darwin22.0')
     [ -f $ZDOTDIR/.zshrc.macosx ] && source $ZDOTDIR/.zshrc.macosx
     ;;
+  'linux-gnu')
+    [ -f $ZDOTDIR/.zshrc.wsl ] && source $ZDOTDIR/.zshrc.wsl
+    ;;
 esac
 
 # completion directory
@@ -44,13 +47,20 @@ autoload -Uz compinit
 compinit
 
 # alias
-alias e="emacsclient -r"
+alias e="emacsclient -c -a emacs"
 alias vim="nvim"
 alias vi="nvim"
 
 # turn off bell
 unsetopt BEEP
 
+# ssh-agent
+if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
+  eval $(ssh-agent -s) > /dev/null
+  if [ "$(ssh-add -l)" = "The agent has no identities." ] ; then
+    ssh-add ~/id_ed25519 > /dev/null 2>&1
+  fi
+fi
 # prompt
 #eval "$(starship init zsh)"
 #autoload -Uz vcs_info

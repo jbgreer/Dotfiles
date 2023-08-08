@@ -1,0 +1,5 @@
+# emacs daemon
+if [ $(ps ax | grep "[e]macs" | wc -l) -eq 0 ] ; then
+  nohup /usr/local/bin/emacs --daemon > /dev/null 2>&1
+fi
+
