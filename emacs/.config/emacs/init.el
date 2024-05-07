@@ -10,7 +10,7 @@
 
 
 ;; ELPACA: The Elisp Package Manager  https://github.com/progfolio/elpaca
-(defvar elpaca-installer-version 0.5)
+(defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -348,7 +348,9 @@
 
 
 ;; MAGIG : a git porcelion inside emacs
-(use-package magit)
+(use-package transient )
+(use-package magit
+             :after transient)
 ;;  :ensure t)
 
 
