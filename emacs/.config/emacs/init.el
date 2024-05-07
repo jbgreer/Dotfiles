@@ -182,19 +182,22 @@
 ;; UI STUFF
 
 ;; DOOM-THEMES : UI Theme
-(use-package doom-themes
+;;(use-package doom-themes
 ;;	    :ensure t
-	    :config
-	    (setq doom-themes-enable-bold t
-		  doom-themes-enable-italic t)
-	    (if (daemonp)
-		(add-hook 'after-make-frame-functions
-			  (lambda (frame)
-			    (select-frame frame)
-			    (load-theme 'doom-dracula t)))
-		(load-theme 'doom-dracula t))
-	    (doom-themes-visual-bell-config))
-;;	    (doom-themes-org-config))
+	    ;;:config
+	    ;;(setq doom-themes-enable-bold t
+		  ;;doom-themes-enable-italic t)
+	    ;;(if (daemonp)
+		;;(add-hook 'after-make-frame-functions
+			  ;;(lambda (frame)
+			    ;;(select-frame frame)
+			    ;;(load-theme 'doom-dracula t)))
+		;;(load-theme 'doom-dracula t))
+		;;(load-theme 'catppuccin t))
+	    ;;(doom-themes-visual-bell-config))
+;;;;	    (doom-themes-org-config))
+;;(use-package 'catppuccin-theme)
+(load-theme 'catppuccin :no-confirm)
 
 ;; ALL-THE-ICONS, ALL-THE-ICONS-DIRED : Icons for dired, etc.  Install the latest fonts with M-x all-the-icons-install-fonts
 (use-package all-the-icons
@@ -393,3 +396,16 @@
 ;; company - complete anything
 ;;(use-package company)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
