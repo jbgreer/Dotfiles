@@ -1,0 +1,59 @@
+@define-color accent #bbbbbb;
+@define-color txt    #cccccc;
+@define-color in     #839496;
+@define-color bg     #181e27;
+@define-color bg2    #002b36;
+@define-color bg3    #073642;
+@define-color bc     #74adc0;
+
+* {
+  font-family: "Fira Code Nerd Font Mono";
+  font-size: 18px;
+  background-color: @bg;
+}
+
+window { 
+  width: 35%;
+  transparency: "real";
+  orientation: vertical;
+  border-color: @bc;
+}
+
+#inner-box {
+  margin: 5px;
+  border: none;
+  background-color: @bg2;
+}
+
+#outer-box {
+  margin: 5px;
+  border: none;
+  background-color: @bg2;
+}
+
+#scroll {
+  margin: 0px;
+  border: none;
+}
+
+#input {
+  margin: 5px;
+  border: none;
+  color: @in;
+  background-color: @bg3;
+}
+
+#text {
+  margin: 5px;
+  border: none;
+  color: @in;
+}
+
+#element:selected {
+  background-color: @bc;
+}
+
+#element:selected #text {
+  color: #FFFFFF;
+}
+
