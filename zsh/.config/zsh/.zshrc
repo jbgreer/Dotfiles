@@ -1,71 +1,47 @@
-#  set -x
+# 
+HISTFILE=$ZDOTDIR/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
 
-# get rid of WSL cruft
-export PATH='/usr/sbin:/usr/bin:/sbin:/bin'
-
-# 2023-06-18 jbgreer prepend /usr/local/bin if present
-[ -d '/usr/local/bin' ] && path=('/usr/local/bin' $path)
-
-# 2023-06-18 jbgreer prepend $HOME/.local/bin
-[ -d "$HOME/.local/bin" ] && path=("$HOME/.local/bin" $path)
-
-# 2023-06-18 jbgreer prepend $HOME/bin
-[ -d "$HOME/bin" ] && path=("$HOME/bin" $path)
-
-# Rust
-[ -f $"HOME/.cargo/env" ] && . "$HOME/.cargo/env"
-
-# Deduplicate path entries
-typeset -U PATH path
+# augment path with local directories
+typeset -U path PATH
+path=(~/bin $path)
+path=(~/.local/bin $path)
 export PATH
 
-# Default editor
+# prefer vi command-line editing and set editor
 bindkey -v
 export EDITOR="nvim"
 
-# OS specific sourcing
-case $OSTYPE in
-  'darwin22.0')
-    [ -f $ZDOTDIR/.zshrc.macosx ] && source $ZDOTDIR/.zshrc.macosx
-    ;;
-  'linux-gnu')
-    [ -f $ZDOTDIR/.zshrc.wsl ] && source $ZDOTDIR/.zshrc.wsl
-    ;;
-esac
+zstyle ':completion:*' completer _complete _ignored
+zstyle :compinstall filename '/home/jbgreer/.zshrc'
 
-# completion directory
-fpath=($ZDOTDIR/zsh $fpath)
-
-# git 
-zstyle ':completion:*:*:git:*' script $ZDOTDIR/git-completion.bash
-
-# fuzzy finder
-#[ -f $XDG_CONFIG_HOME/fzf/fzf.zsh ] && source $XDG_CONFIG_HOME/fzf/fzf.zsh
-
-# load completion filepath
+# completions and prompt support
+fpath=($ZDOTDIR $fpath)
 autoload -Uz compinit
 compinit
 
-# alias
-alias e="emacsclient -c -a emacs"
-alias vim="nvim"
+# aliases
 alias vi="nvim"
 
 # turn off bell
 unsetopt BEEP
 
 # ssh-agent
-if [ $(ps ax | grep "[s]sh-agent" | wc -l) -eq 0 ] ; then
-  eval $(ssh-agent -s) > /dev/null
-  if [ "$(ssh-add -l)" = "The agent has no identities." ] ; then
-    ssh-add ~/id_ed25519 > /dev/null 2>&1
-  fi
-fi
-# prompt
-#eval "$(starship init zsh)"
-#autoload -Uz vcs_info
-#precmd() { vcs_info }
-#zstyle ':vsc_info:git:*' formats '%b '
-setopt PROMPT_SUBST
-PROMPT='%F{green}%m%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+
+# mise-en-place
+eval "$(/usr/bin/mise activate zsh)"
+
+# fzf
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+--color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+
+# starship, but only in graphical mode
+[ -n "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && eval "$(starship init zsh)"
+
+# Hyprland, but only on tty1
+[ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && [ $(tty) = "/dev/tty1" ] && exec Hyprland
 
