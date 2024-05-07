@@ -11,3 +11,4 @@ emacs/.config/emacs/eln-cache
 emacs/.config/emacs/elpaca
 emacs/.config/emacs/eshell
 emacs/.config/emacs/transient
+tmux/.config/tmux/plugins
