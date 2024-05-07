@@ -1,6 +1,7 @@
 .DS_Store
 zsh/.config/zsh/.zcompdump
 zsh/.config/zsh/.zsh_history
+zsh/.config/zsh/.histfile
 emacs/.config/emacs/.tutor
 emacs/.config/emacs/'#*
 emacs/.config/emacs/#*
