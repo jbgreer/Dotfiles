@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Firefox
+Comment=Web Browser
+Path=/usr/bin/firefox
+Exec=firefox
+Terminal=false
