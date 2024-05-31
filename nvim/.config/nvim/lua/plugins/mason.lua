@@ -35,7 +35,7 @@ return {
 
 			lspconfig.elixirls.setup({
 				capabilities = capabilities,
-				cmd = { "/Users/jbgreer/bin/language_server.sh" },
+				cmd = { vim.fn.stdpath('data') .. "/mason/bin/" .. "elixir-ls" },
 			})
 
 			-- keybindings for lsp
