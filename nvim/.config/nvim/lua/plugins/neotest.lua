@@ -14,6 +14,6 @@ return {
           require("neotest-elixir")
         }
       })
-    end,
-  },
+    end
+  }
 }

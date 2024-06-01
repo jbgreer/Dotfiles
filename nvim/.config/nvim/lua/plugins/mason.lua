@@ -4,7 +4,7 @@ return {
 		lazy = false,
 		config = function()
 			require("mason").setup()
-		end,
+		end
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
@@ -12,14 +12,13 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"clangd",
 					"elixirls",
 					"lua_ls",
 					"pyright",
 					"rust_analyzer",
-				},
+				}
 			})
-		end,
+		end
 	},
 	{
 		"neovim/nvim-lspconfig",
@@ -45,6 +44,6 @@ return {
 			vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
 			vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
 			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
-		end,
-	},
+		end
+	}
 }

@@ -23,6 +23,7 @@ compinit
 
 # aliases
 alias vi="nvim"
+alias vim="nvim"
 
 # turn off bell
 unsetopt BEEP

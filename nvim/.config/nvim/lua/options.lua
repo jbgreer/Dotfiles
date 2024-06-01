@@ -26,7 +26,7 @@ vim.opt.incsearch = true
 vim.opt.number = true
 vim.opt.numberwidth = 4
 vim.opt.relativenumber = true
-vim.opt.signcolumn = "number"
+vim.opt.signcolumn = 'number'
 
 -- turn off language integrations
 vim.g.loaded_python3_provider = 0
@@ -34,3 +34,11 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 
+-- no mouse
+vim.opt.mouse = ''
+
+-- clipboard
+vim.opt.clipboard = 'unnamedplus'
+
+-- update time
+vim.opt.updatetime = 100

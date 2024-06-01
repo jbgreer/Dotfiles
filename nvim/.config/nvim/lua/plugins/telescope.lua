@@ -9,7 +9,7 @@ return {
       vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
       vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
       vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
-    end,
+    end
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
@@ -17,7 +17,7 @@ return {
     "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     config = function()
       require("telescope").load_extension("fzf")
-    end,
+    end
   },
   {
     "nvim-telescope/telescope-ui-select.nvim",
@@ -30,6 +30,6 @@ return {
         },
       })
       require("telescope").load_extension("ui-select")
-    end,
-  },
+    end
+  }
 }
