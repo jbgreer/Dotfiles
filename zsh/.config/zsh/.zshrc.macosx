@@ -23,9 +23,6 @@ fpath=("$(brew --prefix)/share/zsh-completions" $fpath)
 # gpg-suite 
 [ -d /usr/local/MacGPG2/bin ] && path+=/usr/local/MacGPG2/bin
 
-# SML NJ
-[ -d /usr/local/smlnj ] && path+=/usr/local/smlnj/bin
-
 # load completion filepath
 autoload -Uz compinit
 compinit
@@ -34,4 +31,12 @@ alias pg_start="launchctl load ~/Library/LaunchAgents"
 alias pg_stop="launchctl unload ~/Library/LaunchAgents"
 
 
-source  $(brew --prefix asdf)/libexec/asdf.sh
+# source  $(brew --prefix asdf)/libexec/asdf.sh
+#
+#
+
+# nix-darwin
+path+=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
