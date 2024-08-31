@@ -19,10 +19,10 @@
 
   home.file = {
     ".zshenv".source      = ../../../zsh/.zshenv;
-    #".config/zsh" = {
-    #   source  = ~/Dotfiles/zsh/.config/zsh;
-    #   recursive = true;
-    #};
+    ".config/zsh" = {
+       source             = ../../../zsh/.config/zsh;
+       recursive = true;
+    };
   };
 
   home.sessionPath = [
@@ -31,13 +31,6 @@
   ];
 
   programs.home-manager.enable = true;
-  programs.zsh = {
-    enable = true;
-    initExtra = ''
-      # Nix initExtra
-      export PATH=/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH
-      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-    '';
-  };
+  programs.zsh.enable = = true;
+
 }
