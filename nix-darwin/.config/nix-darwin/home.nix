@@ -35,19 +35,13 @@
     enable = true;
     defaultKeymap = "viins";
     dotDir = ".config/zsh";
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     shellAliases = {
       l = "ls -al";
     };
   };
 
-  xdg = { 
-    enable = true; 
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
-  }; 
+  xdg.enable = true; 
 
 }
