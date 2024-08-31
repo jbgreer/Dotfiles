@@ -46,7 +46,7 @@
     enable = true; 
     userDirs = {
       enable = true;
-      createDirectoried = true;
+      createDirectories = true;
     };
   }; 
 
