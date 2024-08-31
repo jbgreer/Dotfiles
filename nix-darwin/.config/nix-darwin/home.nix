@@ -3,9 +3,9 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "jbgreer";
-  home.homeDirectory = "/Users/jbgreer";
+  home.username = "jbgreer"; home.homeDirectory = "/Users/jbgreer";
   home.stateVersion = "24.05";  # WARNING DO NOT CHANGE
+
 
   # user account packages
   home.packages = [
@@ -31,6 +31,23 @@
   ];
 
   programs.home-manager.enable = true;
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    defaultKeymap = "viins";
+    dotDir = ".config/zsh";
+    enableAutosuggestions = true;
+    enableCompletion = true;
+    shellAliases = {
+      l = "ls -al";
+    };
+  };
+
+  xdg = { 
+    enable = true; 
+    userDirs = {
+      enable = true;
+      createDirectoried = true;
+    };
+  }; 
 
 }
