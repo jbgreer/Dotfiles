@@ -1,7 +1,7 @@
 #  set -x
 
 # get rid of WSL cruft
-export PATH='/usr/sbin:/usr/bin:/sbin:/bin'
+#  NIX ISSUE?> export PATH='/usr/sbin:/usr/bin:/sbin:/bin'
 
 # 2023-06-18 jbgreer prepend /usr/local/bin if present
 [ -d '/usr/local/bin' ] && path=('/usr/local/bin' $path)
@@ -28,6 +28,9 @@ case $OSTYPE in
   'darwin22.0')
     [ -f $ZDOTDIR/.zshrc.macosx ] && source $ZDOTDIR/.zshrc.macosx
     ;;
+  'darwin23.0')
+    [ -f $ZDOTDIR/.zshrc.macosx ] && source $ZDOTDIR/.zshrc.macosx
+    ;;
 esac
 
 # completion directory
@@ -45,6 +48,7 @@ compinit
 
 # alias
 alias e="emacsclient -r"
+alias ll="ls -l"
 alias vim="nvim"
 alias vi="nvim"
 
@@ -57,5 +61,5 @@ unsetopt BEEP
 #precmd() { vcs_info }
 #zstyle ':vsc_info:git:*' formats '%b '
 setopt PROMPT_SUBST
-PROMPT='%F{green}%m%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ '
+PROMPT='%F{green}%m%f %F{#0096ff}%~%f %F{red}${vcs_info_msg_0_}%f$ '
 

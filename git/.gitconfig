@@ -1,5 +1,10 @@
 [user]
 	name = Jim Greer
 	email = jbgreer@gmail.com
+	signingkey = 607574694C77731C
 [init]
 	defaultBranch = main
+[gpg]
+	program = /usr/local/MacGPG2/bin/gpg2
+[commit]
+	gpgsign = true

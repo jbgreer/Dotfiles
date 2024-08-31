@@ -5,3 +5,4 @@ export XDG_STATE_HOME=~/.local/state
 export XDG_RUNTIME_DIR=~/.xdg
 
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+#. "$HOME/.cargo/env"
