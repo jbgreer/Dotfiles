@@ -41,7 +41,10 @@
       # Platform should be either "x86_64-darwin" or "aarch64-darwin"
       nixpkgs.hostPlatform = "aarch64-darwin";
 
-      users.users.jbgreer.home = "/Users/jbgreer";
+      users.users.jbgreer = {
+        name = "jbgreer";
+        home = "/Users/jbgreer";
+      };
       home-manager.backupFileExtension = "backup";
       nix.configureBuildUsers = true;
       nix.useDaemon = true;
@@ -52,9 +55,9 @@
         dock.mru-spaces = false;
         finder.AppleShowAllExtensions = true;
         finder.FXPreferredViewStyle = "clmv";
-        loginwindows.LoginwindowText = "Ishiguro";
+        loginwindow.LoginwindowText = "Ishiguro";
         screencapture.location = "~/Pictures/screenshots/";
-        screensaver.askForPasswordDeplay = 10;
+        screensaver.askForPasswordDelay = 10;
       };
 
       # homebrew
@@ -63,11 +66,12 @@
         "1password-cli"
         "alfred"
         "google-chrome"
-        "iterm"
+        "iterm2"
         "rectangle"
         "spotify"
       ];
       homebrew.brews = [
+        "exercism"
       ];
     };
   in
@@ -78,10 +82,10 @@
 
       modules = [ 
         configuration
-        home.manager-darwinModules.home-manager {
-          home-manager-useGlobalPkgs = true;
-          home-manager.userUserPackages = true;
-          home-manager.users.jbgreer = import ./home/nix
+        home-manager.darwinModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.jbgreer = import ./home.nix;
         }
       ];
     };

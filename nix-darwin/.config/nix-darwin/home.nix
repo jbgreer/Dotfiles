@@ -1,6 +1,6 @@
 # home.nix
 
-{ config, pkgs, ... }:if
+{ config, pkgs, ... }:
 
 {
   home.username = "jbgreer";
@@ -18,8 +18,11 @@
   ];
 
   home.file = {
-    ".zshenv".source = ~/Dotfiles/zsh/.zshenv;
-    ".config/zsh".source = ~/Dotfiles/zsh/.config/zsh;
+    ".zshenv".source      = ../../../zsh/.zshenv;
+    #".config/zsh" = {
+    #   source  = ~/Dotfiles/zsh/.config/zsh;
+    #   recursive = true;
+    #};
   };
 
   home.sessionPath = [
