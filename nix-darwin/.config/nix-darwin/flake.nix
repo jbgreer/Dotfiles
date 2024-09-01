@@ -41,7 +41,7 @@
       # Platform should be either "x86_64-darwin" or "aarch64-darwin"
       nixpkgs.hostPlatform = "aarch64-darwin";
 
-      users.users.jbgreer = {
+      users.users."jbgreer" = {
         name = "jbgreer";
         home = "/Users/jbgreer";
       };
@@ -85,7 +85,7 @@
         home-manager.darwinModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.jbgreer = import ./home.nix;
+          home-manager.users."jbgreer" = import ./home.nix;
         }
       ];
     };
