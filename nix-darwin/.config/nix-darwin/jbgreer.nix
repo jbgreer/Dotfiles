@@ -1,4 +1,4 @@
-# home.nix
+# jbgreer.nix
 
 { config, pkgs, ... }:
 
@@ -36,7 +36,7 @@
        source                       = ../../../nvim/.config/nvim;
        recursive = true;
     };
-    #".config/starship.toml".source  = ../../../starship/.config/starship.toml;
+    #".config/starship.toml".source = ../../../starship/.config/starship.toml;
     ".tmux.conf".source             = ../../../tmux/.tmux.conf;
     ".zshenv".source                = ../../../zsh/.zshenv;
     ".config/zsh" = {

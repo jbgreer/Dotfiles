@@ -85,7 +85,7 @@
         home-manager.darwinModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users."jbgreer" = import ./home.nix;
+          home-manager.users."jbgreer" = import ./jbgreer.nix;
         }
       ];
     };
