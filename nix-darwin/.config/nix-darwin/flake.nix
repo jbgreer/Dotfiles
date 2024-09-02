@@ -14,8 +14,8 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
   let
     configuration = { pkgs, ... }: {
-      # List packages installed in system profile. To search by name, run:
-      # $ nix-env -qaP | grep wget
+
+      # List of system packages. To search by name, run: $ nix-env -qaP | grep wget
       environment.systemPackages =
         [ 
           pkgs.git    # distributed version control system
@@ -23,31 +23,39 @@
           pkgs.wget   # tool for retrieving files via FTP, HTTP, HTTPS
         ];
 
-      # Auto upgrade nix package and the daemon service.
-      services.nix-daemon.enable = true;
+      # homebrew
+      homebrew.enable = true;
+      homebrew.casks = [
+        "1password-cli"
+        "alfred"
+        "google-chrome"
+        "iterm2"
+        "rectangle"
+        "spotify"
+      ];
+      #homebrew.brews = [
+      #  "exercism"
+      #];
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
 
-      # Create /etc/zshrc that loads the nix-darwin environment.
-      programs.zsh.enable = true;  # default shell on catalina
-
-      # Set Git commit hash for darwin-version.
-      system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      # $ darwin-rebuild changelog  # WARNING DO NOT CHANGE
-      system.stateVersion = 4;
+      nix.configureBuildUsers = true;
+      nix.useDaemon = true;
 
       # Platform should be either "x86_64-darwin" or "aarch64-darwin"
       nixpkgs.hostPlatform = "aarch64-darwin";
+      # needed for Google Chrome
+      nixpkgs.config.allowUnfree = true;
 
-      users.users."jbgreer" = {
-        name = "jbgreer";
-        home = "/Users/jbgreer";
-      };
-      home-manager.backupFileExtension = "backup";
-      nix.configureBuildUsers = true;
-      nix.useDaemon = true;
+      # Create /etc/zshrc that loads the nix-darwin environment.
+      programs.zsh.enable = true;  # default shell on catalina
+
+      # Auto upgrade nix package and the daemon service.
+      services.nix-daemon.enable = true;
+
+      # Set Git commit hash for darwin-version.
+      system.configurationRevision = self.rev or self.dirtyRev or null;
 
       # MacOS / Darwin settings
       system.defaults = {
@@ -60,19 +68,15 @@
         screensaver.askForPasswordDelay = 10;
       };
 
-      # homebrew
-      homebrew.enable = true;
-      homebrew.casks = [
-        "1password-cli"
-        "alfred"
-        "google-chrome"
-        "iterm2"
-        "rectangle"
-        "spotify"
-      ];
-      homebrew.brews = [
-        "exercism"
-      ];
+      # $ darwin-rebuild changelog  # WARNING DO NOT CHANGE
+      system.stateVersion = 4;
+
+      users.users."jbgreer" = {
+        name = "jbgreer";
+        home = "/Users/jbgreer";
+      };
+
+
     };
   in
   {
@@ -83,6 +87,7 @@
       modules = [ 
         configuration
         home-manager.darwinModules.home-manager {
+	  home-manager.backupFileExtension = "backup";
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users."jbgreer" = import ./jbgreer.nix;
