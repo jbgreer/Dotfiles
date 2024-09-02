@@ -18,10 +18,14 @@
       # List of system packages. To search by name, run: $ nix-env -qaP | grep wget
       environment.systemPackages =
         [ 
-          pkgs.git    # distributed version control system
-          pkgs.vim    # the most popular clone of the vi editor
-          pkgs.wget   # tool for retrieving files via FTP, HTTP, HTTPS
+          pkgs.git              # distributed version control system
+          pkgs.nixfmt-rfc-style # official nix formatter
+          pkgs.vim              # the most popular clone of the vi editor
+          pkgs.wget             # tool for retrieving files via FTP, HTTP, HTTPS
         ];
+
+      # BROKEN
+      # formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
 
       # homebrew
       homebrew.enable = true;
