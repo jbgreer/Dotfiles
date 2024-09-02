@@ -66,7 +66,10 @@
   programs.lazygit.enable = true;
   programs.readline.enable = true;
   programs.ripgrep.enable = true;
-  programs.tmux.enable = true;
+  programs.tmux = {
+    enable = true;
+    #enableFzf = true;
+  };
   programs.zellij.enable = true;
   programs.zsh = {
     enable = true;
