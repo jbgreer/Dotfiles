@@ -117,7 +117,7 @@
       # $ darwin-rebuild changelog  # WARNING DO NOT CHANGE
       system.stateVersion = 4;
 
-      users.users."jbgreer" = {
+      users.users.jbgreer = {
         name = "jbgreer";
         home = "/Users/jbgreer";
       };
@@ -133,10 +133,10 @@
       modules = [ 
         configuration
         home-manager.darwinModules.home-manager {
-	  home-manager.backupFileExtension = "backup";
+          home-manager.backupFileExtension = "backup";
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users."jbgreer" = import ./jbgreer.nix;
+          home-manager.users.jbgreer = import ./jbgreer.nix;
         }
       ];
     };
