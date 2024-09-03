@@ -19,13 +19,9 @@
       environment.systemPackages =
         [ 
           pkgs.git              # distributed version control system
-          pkgs.nixfmt-rfc-style # official nix formatter
           pkgs.vim              # the most popular clone of the vi editor
           pkgs.wget             # tool for retrieving files via FTP, HTTP, HTTPS
         ];
-
-      # BROKEN
-      # formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
 
       fonts = {
         packages = with pkgs; [
@@ -40,8 +36,6 @@
       homebrew.casks = [
         # "1password" separately installed
         "1password-cli"
-        "font-fira-code-nerd-font"
-        "font-fira-mono-nerd-font"
         "google-chrome"
         "iterm2"
         "spotify"
@@ -112,7 +106,7 @@
         loginwindow.LoginwindowText = "Ishiguro";
         menuExtraClock = {
           Show24Hour = true;
-          ShowDate = 1;               # 0 = when space alows, 1 = always, 2 = never
+          ShowDate = 1;           # 0 = when space alows, 1 = always, 2 = never
           ShowDayOfMonth = true;
           ShowDayOfWeek = true;
           ShowSeconds = true;
@@ -134,8 +128,6 @@
         name = "jbgreer";
         home = "/Users/jbgreer";
       };
-
-
     };
   in
   {

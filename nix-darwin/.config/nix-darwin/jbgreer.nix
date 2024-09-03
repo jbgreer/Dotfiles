@@ -4,19 +4,29 @@
 
 {
   home = {
-
-    activation.link-apps = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-      new_nix_apps="${config.home.homeDirectory}/Applications/Nix"
-      rm -rf "$new_nix_apps"
-      mkdir -p "$new_nix_apps"
-      find -H -L "$newGenPath/home-files/Applications" -maxdepth 1 -name "*.app" -type d -print | while read -r app; do
-        real_app=$(readlink -f "$app")
-        app_name=$(basename "$app")
-        target_app="$new_nix_apps/$app_name"
-        echo "Alias '$real_app' to '$target_app'"
-        ${pkgs.mkalias}/bin/mkalias "$real_app" "$target_app"
-      done
-    '';
+    activation = {
+      copyApplications = let
+        apps = pkgs.buildEnv {
+          name = "home-manager-applications";
+          paths = config.home.packages;
+          pathsToLink = "/Applications";
+        };
+      in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        baseDir="$HOME/Applications/Home Manager Apps"
+        if [ -d "$baseDir" ]; then
+          rm -rf "$baseDir"
+          rm -rf "$baseDir.backup"
+        fi
+        mkdir -p "$baseDir"
+        for appFile in ${apps}/Applications/*; do
+          target="$baseDir/$(basename "$appFile")"
+          echo "cp '$appFile' to '$baseDir'"
+          echo "chmod '$appFile' to '$target'"
+          $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
+          $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
+        done
+      '';
+    };
 
     username = "jbgreer";
     homeDirectory = "/Users/jbgreer";
@@ -31,13 +41,11 @@
       pkgs.fd                  # simple, fast, friendly alternative to find
       pkgs.fzf                 # command-line fuzzy-finder
       pkgs.glow                # render Markdown on the CLI
-      #pkgs.google-chrome       # freeware browser developed by Google
       pkgs.gnupg               # GNU Privacy Guard
       pkgs.htop                # display machine stas
       #pkgs.kitty               # Modern, featureful, OpenGL based terminal emulator
       pkgs.lazygit             # Simple terminal UI for git commands
       pkgs.nix-zsh-completions # zsh compleitions for nix
-      #pkgs.nixpkgs-fmt         # format nix files
       pkgs.neovim              # vim fork focused on extensibility & agility
       pkgs.readline            # library for interactive line editing
       pkgs.ripgrep             # love child of silver searcher and grep
@@ -114,7 +122,7 @@
   #programs.kitty = {
     #enable = true;
     #font = {
-      #name = "Fira Code";
+      #name = "FiraCode Nerd Font";
       #size = 14;
     #};
     #settings = {
