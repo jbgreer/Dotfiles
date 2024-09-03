@@ -74,13 +74,11 @@
 
   programs.alacritty = {
     enable = true;
-    #package = pkgs.alacritty;
     settings = {
-      #env.TERM = "xterm-256color";
       window = {
         dimensions = {
-          columns = 80;
-          lines = 43;
+          columns = 90;
+          lines = 53;
         };
         padding = {
           x = 10;
@@ -103,7 +101,7 @@
           family = "FiraCode Nerd Font";
           style = "Italic";
         };
-        size = 14;
+        size = 16;
       };
     };
   };
