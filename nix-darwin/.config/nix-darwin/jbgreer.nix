@@ -31,7 +31,7 @@
       pkgs.fd                  # simple, fast, friendly alternative to find
       pkgs.fzf                 # command-line fuzzy-finder
       pkgs.glow                # render Markdown on the CLI
-      pkgs.google-chrome       # freeware browser developed by Google
+      #pkgs.google-chrome       # freeware browser developed by Google
       pkgs.gnupg               # GNU Privacy Guard
       pkgs.htop                # display machine stas
       #pkgs.kitty               # Modern, featureful, OpenGL based terminal emulator
@@ -72,13 +72,63 @@
     ];
   };
 
-  programs.alacritty.enable = true;
+  programs.alacritty = {
+    enable = true;
+    #package = pkgs.alacritty;
+    settings = {
+      #env.TERM = "xterm-256color";
+      window = {
+        dimensions = {
+          columns = 80;
+          lines = 43;
+        };
+        padding = {
+          x = 10;
+          y = 10;
+        };
+        decorations = "Full";
+        opacity = 1.0;
+      };
+      scrolling.history = 1000;
+      font = {
+        normal = {
+          family = "FiraCode Nerd Font";
+          style = "Regular";
+        };
+        bold = {
+          family = "FiraCode Nerd Font";
+          style = "Bold";
+        };
+        italic = {
+          family = "FiraCode Nerd Font";
+          style = "Italic";
+        };
+        size = 14;
+      };
+    };
+  };
   programs.bat.enable = true;
   programs.direnv.enable = true;
   programs.fd.enable = true;
   programs.fzf.enable = true;
   programs.home-manager.enable = true;
   programs.htop.enable = true;
+  #programs.kitty = {
+    #enable = true;
+    #font = {
+      #name = "Fira Code";
+      #size = 14;
+    #};
+    #settings = {
+      #enable_audio_bell = false;
+      #scrollback_lines = 1000;
+      #update_check_interval = 0;
+    #};
+    #shellIntegration = {
+      #enableZshIntegration = true;
+    #};
+    #theme = "One Dark";
+  #};
   programs.lazygit.enable = true;
   programs.readline.enable = true;
   programs.ripgrep.enable = true;

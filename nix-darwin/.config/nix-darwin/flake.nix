@@ -27,11 +27,21 @@
       # BROKEN
       # formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
 
+      fonts = {
+        packages = with pkgs; [
+          fira-code
+          fira-code-symbols
+          (nerdfonts.override { fonts = [ "FiraCode" ]; })
+        ];
+      };
+
       # homebrew
       homebrew.enable = true;
       homebrew.casks = [
         # "1password" separately installed
         "1password-cli"
+        "font-fira-code-nerd-font"
+        "font-fira-mono-nerd-font"
         "google-chrome"
         "iterm2"
         "spotify"
@@ -89,8 +99,8 @@
           # 14: Quick Note
           wvous-bl-corner = 1;
           wvous-br-corner = 1;
-          wvous-tl-corner = 13;
-          wvous-tr-corner = 3;
+          wvous-tl-corner = 1;
+          wvous-tr-corner = 1;
         };
         finder = {
           AppleShowAllExtensions = true;
