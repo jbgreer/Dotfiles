@@ -116,7 +116,10 @@
   programs.bat.enable = true;
   programs.direnv.enable = true;
   programs.fd.enable = true;
-  programs.fzf.enable = true;
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
   programs.home-manager.enable = true;
   programs.htop.enable = true;
   #programs.kitty = {
@@ -144,11 +147,11 @@
   };
   programs.zellij.enable = true;
   programs.zsh = {
-    enable = true;
-    defaultKeymap = "viins";
-    dotDir = ".config/zsh";
     autosuggestion.enable = true;
+    defaultKeymap = "viins";
+    enable = true;
     enableCompletion = true;
+    dotDir = ".config/zsh";
     shellAliases = {
       l = "ls -al";
     };
