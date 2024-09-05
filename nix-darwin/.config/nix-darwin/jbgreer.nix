@@ -20,8 +20,6 @@
         mkdir -p "$baseDir"
         for appFile in ${apps}/Applications/*; do
           target="$baseDir/$(basename "$appFile")"
-          echo "cp '$appFile' to '$baseDir'"
-          echo "chmod '$appFile' to '$target'"
           $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
           $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
         done
@@ -47,6 +45,7 @@
       pkgs.lazygit             # Simple terminal UI for git commands
       pkgs.nix-zsh-completions # zsh compleitions for nix
       pkgs.neovim              # vim fork focused on extensibility & agility
+      pkgs.oh-my-posh          # prompt theme engine for any shell
       pkgs.readline            # library for interactive line editing
       pkgs.ripgrep             # love child of silver searcher and grep
       pkgs.silver-searcher     # code-searching tool like ack
@@ -65,12 +64,7 @@
         source                       = ../../../nvim/.config/nvim;
         recursive = true;
       };
-      #".config/starship.toml".source = ../../../starship/.config/starship.toml;
       ".tmux.conf".source             = ../../../tmux/.tmux.conf;
-      #".config/zsh" = {
-        #source                       = ../../../zsh/.config/zsh;
-        #recursive = true;
-      #};
     };
 
     sessionPath = [
@@ -121,23 +115,12 @@
   };
   programs.home-manager.enable = true;
   programs.htop.enable = true;
-  #programs.kitty = {
-    #enable = true;
-    #font = {
-      #name = "FiraCode Nerd Font";
-      #size = 14;
-    #};
-    #settings = {
-      #enable_audio_bell = false;
-      #scrollback_lines = 1000;
-      #update_check_interval = 0;
-    #};
-    #shellIntegration = {
-      #enableZshIntegration = true;
-    #};
-    #theme = "One Dark";
-  #};
   programs.lazygit.enable = true;
+  programs.oh-my-posh = {
+    enable = true;
+    useTheme = "atomic";
+    enableZshIntegration = true;
+  };
   programs.readline.enable = true;
   programs.ripgrep.enable = true;
   programs.tmux = {
