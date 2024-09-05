@@ -1,4 +1,4 @@
-# jbgreer.nix
+# jbgreer.niprofileExtra
 
 { config, lib, pkgs, ... }:
 
@@ -67,10 +67,10 @@
       };
       #".config/starship.toml".source = ../../../starship/.config/starship.toml;
       ".tmux.conf".source             = ../../../tmux/.tmux.conf;
-      ".config/zsh" = {
-        source                       = ../../../zsh/.config/zsh;
-        recursive = true;
-      };
+      #".config/zsh" = {
+        #source                       = ../../../zsh/.config/zsh;
+        #recursive = true;
+      #};
     };
 
     sessionPath = [
@@ -148,13 +148,34 @@
   programs.zsh = {
     autosuggestion.enable = true;
     defaultKeymap = "viins";
+    dotDir = ".config/zsh";
     enable = true;
     enableCompletion = true;
-    dotDir = ".config/zsh";
+    envExtra = ''
+    # programs.zsh.envExtra
+    # programs.zsh.envExtra
+    '';
+    initExtraBeforeCompInit = ''
+    # programs.zsh.initExtraBeforeCompInit
+    # programs.zsh.initExtraBeforeCompInit
+    '';
+    initExtra = ''
+    # programs.zsh.initExtra
+    # programs.zsh.initExtra
+    '';
+    initExtraFirst = ''
+    # programs.zsh.initExtraFirst
+    # programs.zsh.initExtraFirst
+    '';
+    profileExtra = ''
+    # programs.zsh.profileExtra
+    # programs.zsh.profileExtra
+    '';
     shellAliases = {
       l = "ls -al";
     };
     sessionVariables = {
+      EDITOR = "nvim";
       XDG_CACHE_HOME = "$HOME/.cache";
       XDG_CONFIG_HOME = "$HOME/.config";
       XDG_DATA_HOME = "$HOME/.local/share";
