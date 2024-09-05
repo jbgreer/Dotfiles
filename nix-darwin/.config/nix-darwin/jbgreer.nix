@@ -67,7 +67,6 @@
       };
       #".config/starship.toml".source = ../../../starship/.config/starship.toml;
       ".tmux.conf".source             = ../../../tmux/.tmux.conf;
-      ".zshenv".source                = ../../../zsh/.zshenv;
       ".config/zsh" = {
         source                       = ../../../zsh/.config/zsh;
         recursive = true;
@@ -154,6 +153,13 @@
     dotDir = ".config/zsh";
     shellAliases = {
       l = "ls -al";
+    };
+    sessionVariables = {
+      XDG_CACHE_HOME = "$HOME/.cache";
+      XDG_CONFIG_HOME = "$HOME/.config";
+      XDG_DATA_HOME = "$HOME/.local/share";
+      XDG_STATE_HOME = "$HOME/.local/state";
+      XDG_RUNTIME_DIR = "$HOME/.xdg";
     };
   };
 
