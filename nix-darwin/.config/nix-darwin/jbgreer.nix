@@ -58,7 +58,7 @@
     ];
 
     file = {
-      ".gitconfig".source             = ../../../git/.gitconfig;
+      #".gitconfig".source             = ../../../git/.gitconfig;
       ".config/nvim" = {
         source                       = ../../../nvim/.config/nvim;
         recursive = true;
@@ -72,99 +72,22 @@
     ];
   };
 
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      window = {
-        dimensions = {
-          columns = 90;
-          lines = 53;
-        };
-        padding = {
-          x = 10;
-          y = 10;
-        };
-        decorations = "Full";
-        opacity = 1.0;
-      };
-      scrolling.history = 1000;
-      font = {
-        normal = {
-          family = "FiraCode Nerd Font";
-          style = "Regular";
-        };
-        bold = {
-          family = "FiraCode Nerd Font";
-          style = "Bold";
-        };
-        italic = {
-          family = "FiraCode Nerd Font";
-          style = "Italic";
-        };
-        size = 16;
-      };
-    };
-  };
-  programs.bat.enable = true;
-  programs.direnv.enable = true;
-  programs.fd.enable = true;
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-  programs.home-manager.enable = true;
-  programs.htop.enable = true;
-  programs.lazygit.enable = true;
-  programs.oh-my-posh = {
-    enable = true;
-    useTheme = "atomic";
-    enableZshIntegration = true;
-  };
-  programs.readline.enable = true;
-  programs.ripgrep.enable = true;
-  programs.tmux = {
-    enable = true;
-    #enableFzf = true;
-  };
-  programs.zellij.enable = true;
-  programs.zsh = {
-    autosuggestion.enable = true;
-    defaultKeymap = "viins";
-    dotDir = ".config/zsh";
-    enable = true;
-    enableCompletion = true;
-    envExtra = ''
-    # programs.zsh.envExtra
-    # programs.zsh.envExtra
-    '';
-    initExtraBeforeCompInit = ''
-    # programs.zsh.initExtraBeforeCompInit
-    # programs.zsh.initExtraBeforeCompInit
-    '';
-    initExtra = ''
-    # programs.zsh.initExtra
-    # programs.zsh.initExtra
-    '';
-    initExtraFirst = ''
-    # programs.zsh.initExtraFirst
-    # programs.zsh.initExtraFirst
-    '';
-    profileExtra = ''
-    # programs.zsh.profileExtra
-    # programs.zsh.profileExtra
-    '';
-    shellAliases = {
-      l = "ls -al";
-    };
-    sessionVariables = {
-      EDITOR = "nvim";
-      XDG_CACHE_HOME = "$HOME/.cache";
-      XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_DATA_HOME = "$HOME/.local/share";
-      XDG_STATE_HOME = "$HOME/.local/state";
-      XDG_RUNTIME_DIR = "$HOME/.xdg";
-    };
-  };
+  imports = [
+    ./apps/alacritty.nix
+    ./apps/bat.nix
+    ./apps/direnv.nix
+    ./apps/fd.nix
+    ./apps/fzf.nix
+    ./apps/git.nix
+    ./apps/htop.nix
+    ./apps/lazygit.nix
+    ./apps/home-manager.nix
+    ./apps/oh-my-posh.nix
+    ./apps/readline.nix
+    ./apps/ripgrep.nix
+    ./apps/tmux.nix
+    ./apps/zsh.nix
+  ];
 
   xdg.enable = true; 
 }
