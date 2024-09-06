@@ -18,9 +18,6 @@
   homebrew.enable = true;
   homebrew.casks = [
     # "1password" separately installed
-    "1password-cli"
-    "google-chrome"
-    "iterm2"
     "spotify"
   ];
 #homebrew.brews = [
