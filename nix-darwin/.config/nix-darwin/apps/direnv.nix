@@ -1,6 +1,6 @@
 # ./apps/direnv.nix
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.direnv = {

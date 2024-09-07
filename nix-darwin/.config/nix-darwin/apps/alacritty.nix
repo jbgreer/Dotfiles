@@ -1,6 +1,6 @@
 # ./apps/alacritty.nix
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.alacritty = {

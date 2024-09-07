@@ -1,6 +1,6 @@
 # ./apps/oh-my-posh.nix
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.oh-my-posh = {

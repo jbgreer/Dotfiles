@@ -1,6 +1,6 @@
 # ./apps/fd.nix
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.fd = {

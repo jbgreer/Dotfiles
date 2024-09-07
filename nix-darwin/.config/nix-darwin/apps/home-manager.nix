@@ -1,6 +1,6 @@
 # ./apps/home-manager.nix
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.home-manager = {

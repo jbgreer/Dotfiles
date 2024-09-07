@@ -1,6 +1,6 @@
 # ./apps/zellij.nix
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.zellij = {

@@ -1,6 +1,6 @@
 # ./apps/readline.nix
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.readline = {

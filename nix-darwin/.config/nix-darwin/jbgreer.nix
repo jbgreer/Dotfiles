@@ -58,12 +58,10 @@
     ];
 
     file = {
-      #".gitconfig".source             = ../../../git/.gitconfig;
       ".config/nvim" = {
         source                       = ../../../nvim/.config/nvim;
         recursive = true;
       };
-      ".tmux.conf".source             = ../../../tmux/.tmux.conf;
     };
 
     sessionPath = [

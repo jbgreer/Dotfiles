@@ -1,6 +1,6 @@
 # ./apps/ripgrep.nix
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.ripgrep = {
