@@ -5,7 +5,7 @@
 {
   programs.oh-my-posh = {
     enable = true;
-    useTheme = "atomic";
+    useTheme = "catppuccin_mocha";
     enableZshIntegration = true;
   };
 }
