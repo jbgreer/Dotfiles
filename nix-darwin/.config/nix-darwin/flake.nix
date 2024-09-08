@@ -20,11 +20,10 @@
   }: let 
     lib = inputs.nixpkgs.lib;
   in {
-    inherit self;
-
     # $ darwin-rebuild switch --flake .
     darwinConfigurations."Ishiguro" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
+      specialArgs = { inherit inputs; };
 
       modules = [ 
         ./darwin.nix

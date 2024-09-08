@@ -1,5 +1,5 @@
 # darwin.nix
-{ self, pkgs, ... }: {
+{ self, pkgs, inputs, ... }: {
   # List of system packages. To search by name, run: $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [ 
       git              # distributed version control system
@@ -42,7 +42,7 @@
   services.nix-daemon.enable = true;
 
 # Set Git commit hash for darwin-version.
-  #system.configurationRevision = self.rev or self.dirtyRev or null;
+  system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
 # MacOS / Darwin settings
   system.defaults = {

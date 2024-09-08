@@ -36,6 +36,7 @@
       alacritty           # GPU-accelerated terminal emulator
       bat                 # cat clone with highlighting and git integration
       direnv              # shell extension that manages the environment
+      eza                 # a modern replacement for ls
       fd                  # simple, fast, friendly alternative to find
       fzf                 # command-line fuzzy-finder
       glow                # render Markdown on the CLI
@@ -74,6 +75,7 @@
     ./apps/alacritty.nix
     ./apps/bat.nix
     ./apps/direnv.nix
+    ./apps/eza.nix
     ./apps/fd.nix
     ./apps/fzf.nix
     ./apps/git.nix
