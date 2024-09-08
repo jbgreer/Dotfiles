@@ -40,6 +40,10 @@
       XDG_STATE_HOME = "$HOME/.local/state";
       XDG_RUNTIME_DIR = "$HOME/.xdg";
     };
+    syntaxHighlighting = {
+      catppuccin.enable = true;
+      catppuccin.flavor = "mocha";
+    };
   };
 }
 

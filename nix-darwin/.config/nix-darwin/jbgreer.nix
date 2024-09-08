@@ -1,8 +1,13 @@
 # jbgreer.niprofileExtra
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, self, catppuccin, ... }:
 
 {
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+  };
+
   home = {
     activation = {
       copyApplications = let

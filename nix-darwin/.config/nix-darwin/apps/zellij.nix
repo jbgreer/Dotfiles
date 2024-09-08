@@ -5,5 +5,9 @@
 {
   programs.zellij = {
     enable = true;
+    catppuccin = {
+      enable = true;
+      flavor = "mocha";
+    };
   };
 }

@@ -5,5 +5,9 @@
 {
   programs.lazygit = {
     enable = true;
+    catppuccin = {
+      enable = true;
+      flavor = "mocha";
+    };
   };
 }

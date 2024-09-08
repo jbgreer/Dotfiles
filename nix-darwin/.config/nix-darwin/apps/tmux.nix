@@ -4,8 +4,12 @@
 
 {
   programs.tmux = {
-    clock24 = true;
     enable = true;
+    catppuccin = {
+      enable = true;
+      flavor = "mocha";
+    };
+    clock24 = true;
     extraConfig = "
       # tmux.nix extraConfig
 
@@ -34,7 +38,7 @@
       # don't exit copy mode when dragging with mouse
       unbind -T copy-mode-vi MouseDragEnd1Pane 
 
-      set -g @catppuccin_flavour 'mocha'
+      #set -g @catppuccin_flavour 'mocha'
       set -g @catppuccin_window_left_separator \"\"
       set -g @catppuccin_window_right_separator \" \"
       set -g @catppuccin_window_middle_separator \" █\"

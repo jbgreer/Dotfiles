@@ -10,6 +10,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin.url = "github:catppuccin/nix";
   };
 
   outputs = inputs @ {
@@ -17,13 +18,16 @@
     nix-darwin, 
     nixpkgs, 
     home-manager,
+    catppuccin,
   }: let 
     lib = inputs.nixpkgs.lib;
   in {
     # $ darwin-rebuild switch --flake .
     darwinConfigurations."Ishiguro" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
-      specialArgs = { inherit inputs; };
+      specialArgs = { 
+        inherit self;
+      };
 
       modules = [ 
         ./darwin.nix
@@ -31,7 +35,12 @@
           home-manager.backupFileExtension = "backup";
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.jbgreer = import ./jbgreer.nix;
+          home-manager.users.jbgreer = {
+            imports = [
+              ./jbgreer.nix
+              catppuccin.homeManagerModules.catppuccin
+            ];
+          };
         }
       ];
     };
