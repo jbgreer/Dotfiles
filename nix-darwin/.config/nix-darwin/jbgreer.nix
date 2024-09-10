@@ -1,6 +1,6 @@
 # jbgreer.niprofileExtra
 
-{ config, lib, pkgs, self, catppuccin, ... }:
+{ config, lib, pkgs, self, nixvim, catppuccin, ... }:
 
 {
   catppuccin = {
@@ -50,7 +50,7 @@
       htop                # display machine stas
       lazygit             # Simple terminal UI for git commands
       nix-zsh-completions # zsh compleitions for nix
-      neovim              # vim fork focused on extensibility & agility
+      #neovim              # vim fork focused on extensibility & agility
       oh-my-posh          # prompt theme engine for any shell
       readline            # library for interactive line editing
       ripgrep             # love child of silver searcher and grep
@@ -63,12 +63,12 @@
       zellij              # terminal workspace with batteries included
     ];
 
-    file = {
-      ".config/nvim" = {
-        source                       = ../../../nvim/.config/nvim;
-        recursive = true;
-      };
-    };
+    #file = {
+      #".config/nvim" = {
+        #source                       = ../../../nvim/.config/nvim;
+        #recursive = true;
+      #};
+    #};
 
     sessionPath = [
       "/run/current-system/sw/bin"
@@ -87,6 +87,7 @@
     ./apps/htop.nix
     ./apps/lazygit.nix
     ./apps/home-manager.nix
+    ./apps/neovim/neovim.nix
     ./apps/oh-my-posh.nix
     ./apps/readline.nix
     ./apps/ripgrep.nix

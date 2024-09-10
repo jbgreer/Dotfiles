@@ -2,12 +2,29 @@
 {
   description = "jbgreer nix-darwin system flake";
 
+  nixConfig = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    substituters = [ "https://cache.nixos.org" ];
+    extra-substituters = [ "https://nix-community.cachix.org" ];
+    extra-trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixvim = {
+      url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin.url = "github:catppuccin/nix";
@@ -18,6 +35,7 @@
     nix-darwin, 
     nixpkgs, 
     home-manager,
+    nixvim,
     catppuccin,
   }: let 
     lib = inputs.nixpkgs.lib;
@@ -27,6 +45,7 @@
       system = "aarch64-darwin";
       specialArgs = { 
         inherit self;
+        inherit nixvim;
       };
 
       modules = [ 
@@ -39,6 +58,7 @@
             imports = [
               ./jbgreer.nix
               catppuccin.homeManagerModules.catppuccin
+              nixvim.homeManagerModules.nixvim
             ];
           };
         }
