@@ -50,7 +50,6 @@
       htop                # display machine stas
       lazygit             # Simple terminal UI for git commands
       nix-zsh-completions # zsh compleitions for nix
-      #neovim              # vim fork focused on extensibility & agility
       oh-my-posh          # prompt theme engine for any shell
       readline            # library for interactive line editing
       ripgrep             # love child of silver searcher and grep
@@ -62,13 +61,6 @@
       tree-sitter         # Parser generator and incremental parsing library
       zellij              # terminal workspace with batteries included
     ];
-
-    #file = {
-      #".config/nvim" = {
-        #source                       = ../../../nvim/.config/nvim;
-        #recursive = true;
-      #};
-    #};
 
     sessionPath = [
       "/run/current-system/sw/bin"
@@ -95,5 +87,5 @@
     ./apps/zsh.nix
   ];
 
-  xdg.enable = true; 
+  xdg.enable = true;
 }

@@ -13,11 +13,11 @@
     extraConfig = "
       # tmux.nix extraConfig
 
-      set -g status-position top  # 
+      set -g status-position top  #
 
       # change vertical split key to |
       unbind %
-      bind | split-window -h 
+      bind | split-window -h
 
       # change hortizontal split key to -
       unbind '\"'
@@ -28,15 +28,15 @@
       bind -r k resize-pane -U 5
       bind -r l resize-pane -R 5
       bind -r h resize-pane -L 5
-      
+
       bind -r m resize-pane -Z
-      
+
       # start selecting text with v
-      bind-key -T copy-mode-vi 'v' send -X begin-selection 
+      bind-key -T copy-mode-vi 'v' send -X begin-selection
       # copy text with y
-      bind-key -T copy-mode-vi 'y' send -X copy-selection 
+      bind-key -T copy-mode-vi 'y' send -X copy-selection
       # don't exit copy mode when dragging with mouse
-      unbind -T copy-mode-vi MouseDragEnd1Pane 
+      unbind -T copy-mode-vi MouseDragEnd1Pane
 
       #set -g @catppuccin_flavour 'mocha'
       set -g @catppuccin_window_left_separator \"\"
