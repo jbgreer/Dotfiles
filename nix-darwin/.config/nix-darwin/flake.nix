@@ -31,24 +31,24 @@
   };
 
   outputs = inputs @ {
-    self, 
-    nix-darwin, 
-    nixpkgs, 
+    self,
+    nix-darwin,
+    nixpkgs,
     home-manager,
     nixvim,
     catppuccin,
-  }: let 
+  }: let
     lib = inputs.nixpkgs.lib;
   in {
     # $ darwin-rebuild switch --flake .
     darwinConfigurations."Ishiguro" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
-      specialArgs = { 
+      specialArgs = {
         inherit self;
         inherit nixvim;
       };
 
-      modules = [ 
+      modules = [
         ./darwin.nix
         home-manager.darwinModules.home-manager {
           home-manager.backupFileExtension = "backup";

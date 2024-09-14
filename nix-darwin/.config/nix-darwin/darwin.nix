@@ -1,7 +1,7 @@
 # darwin.nix
 { self, pkgs, catppuccin, ... }: {
   # List of system packages. To search by name, run: $ nix-env -qaP | grep wget
-  environment.systemPackages = with pkgs; [ 
+  environment.systemPackages = with pkgs; [
       git              # distributed version control system
       wget             # tool for retrieving files via FTP, HTTP, HTTPS
     ];

@@ -1,33 +1,33 @@
 {
   programs.nixvim.autoCmd = [
-    # Vertically center document when entering insert mode
     {
+      desc = "Vertically center document when entering insert mode";
       event = "InsertEnter";
       command = "norm zz";
     }
 
-    # Remove trailing whitespace on save
     {
+      desc = "Remove trailing whitespace on save";
       event = "BufWrite";
       command = "%s/\\s\\+$//e";
     }
 
-    # Open help in a vertical split
     {
+      desc = "open help in vertical split";
       event = "FileType";
       pattern = "help";
       command = "wincmd L";
     }
 
-    # Set indentation to 2 spaces for nix files
     {
+      desc = "set indent to 2 spaces for nix files";
       event = "FileType";
       pattern = "nix";
       command = "setlocal tabstop=2 shiftwidth=2";
     }
 
-    # Enable spellcheck for some filetypes
     {
+      desc = "enable spellcheck for tex / latex / markdown";
       event = "FileType";
       pattern = [
         "tex"

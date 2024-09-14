@@ -1,3 +1,5 @@
+# neovim/plugins/lualine.nix
+# https://github.com/nvim-lualine/lualine.nvim
 {
   programs.nixvim.plugins.lualine = {
     enable = true;

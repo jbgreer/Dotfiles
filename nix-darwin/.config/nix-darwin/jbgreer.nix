@@ -79,7 +79,7 @@
     ./apps/htop.nix
     ./apps/lazygit.nix
     ./apps/home-manager.nix
-    ./apps/neovim/neovim.nix
+    ./apps/neovim
     ./apps/oh-my-posh.nix
     ./apps/readline.nix
     ./apps/ripgrep.nix

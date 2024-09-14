@@ -12,7 +12,7 @@
     settings = {
       window = {
         dimensions = {
-          columns = 90;
+          columns = 100;
           lines = 53;
         };
         padding = {
