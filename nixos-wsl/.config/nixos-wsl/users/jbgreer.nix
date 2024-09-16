@@ -8,7 +8,7 @@
   };
 
   home = {
- 
+
     username = "jbgreer";
     homeDirectory = "/home/jbgreer";
     stateVersion = "24.05";  # WARNING DO NOT CHANGE
@@ -24,7 +24,6 @@
       fzf                 # command-line fuzzy-finder
       glow                # render Markdown on the CLI
       gnupg               # GNU Privacy Guard
-      #google-chrome       # web browser developed by Google
       htop                # display machine stas
       lazygit             # Simple terminal UI for git commands
       nix-zsh-completions # zsh compleitions for nix

@@ -26,7 +26,16 @@
     enableAllTerminfo = true;
   };
 
-  security.sudo.wheelNeedsPassword = false;
+  fonts = {
+    packages = with pkgs; [
+      fira-code
+      fira-code-symbols
+      font-awesome
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+    ];
+  };
+
+  #security.sudo.wheelNeedsPassword = false;
 
   users.users.jbgreer = {
     isNormalUser = true;
