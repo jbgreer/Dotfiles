@@ -59,7 +59,6 @@
     ./options.nix
     ./autocommands.nix
     ./clipboard.nix
-    #./completions.nix
     ./keymaps.nix
     ./plugins
   ];
