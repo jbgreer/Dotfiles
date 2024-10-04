@@ -47,6 +47,9 @@
     tree-sitter # for neovim
     unzip # uncompress files
     wl-clipboard # wayland cut and paste clipboard
+    xdg-desktop-portal
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-hyprland
     zellij # terminal multiplexer
     zip # compress files
     (import ../scripts/task-waybar.nix { inherit pkgs; })
@@ -98,6 +101,14 @@
 
   xdg = {
     enable = true;
+    portal = {
+      enable = true;
+      config.common.default = "*";
+      extraPortals = [
+        pkgs.xdg-desktop-portal
+        pkgs.xdg-desktop-portal-gtk
+      ];
+    };
     userDirs = {
       enable = true;
       createDirectories = true;
