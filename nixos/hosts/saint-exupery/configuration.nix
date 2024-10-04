@@ -67,8 +67,10 @@
     systemPackages = with pkgs; [
       curl
       cryptsetup
+      exfatprogs
       git
       home-manager
+      ntfs3g
       sbctl
       wget
       vim
@@ -102,10 +104,14 @@
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
+
   # must set this manually if not enabling sway
   security.pam.services.swaylock = { };
 
