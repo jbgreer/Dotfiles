@@ -29,7 +29,7 @@
     '';
     loginExtra = ''
       # start hyprland only on 1st console
-      #[ -z  "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && [ $(tty) = "/dev/tty1" ] && exec Hyprland
+      [ -z  "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && [ $(tty) = "/dev/tty1" ] && exec Hyprland
     '';
     profileExtra = ''
     # programs.zsh.profileExtra

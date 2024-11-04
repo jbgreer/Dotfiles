@@ -12,6 +12,7 @@
     asciidoctor
     bat
     brightnessctl
+    catppuccin-cursors
     eza
     fd
     file
@@ -95,6 +96,14 @@
     enable = true;
     xwayland.enable = true;
     systemd.variables = [ "--all" ];
+  };
+
+  home.pointerCursor = {
+    x11.enable = true;
+    gtk.enable = true;
+    name = "catppuccin-mocha-dark-cursors";
+    package = pkgs.catppuccin-cursors.mochaDark;
+    size = 32;
   };
 
   xdg = {
