@@ -23,11 +23,11 @@
   ];
   hardware.enableAllFirmware = true;
 
-  # TODO set hostname
+  # set hostname
   networking.hostName = "saint-exupery";
   networking.networkmanager.enable = true;
 
-  # TODO set locale and timezone
+  # set locale and timezone
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
@@ -42,7 +42,7 @@
   };
   time.timeZone = "America/Chicago";
 
-  # TODO set username
+  # set username
   users.users.jbgreer = {
     isNormalUser = true;
     extraGroups = [
@@ -51,7 +51,6 @@
       "video"
       "audio"
     ];
-    packages = with pkgs; [ lua-language-server ];
     shell = pkgs.zsh;
   };
 
@@ -74,6 +73,7 @@
       sbctl
       wget
       vim
+      xdg-desktop-portal-hyprland
       zsh
     ];
   };
@@ -95,50 +95,33 @@
     };
   };
 
+  security.pam.services.hyprlock = {};
+  security.rtkit.enable = true;
+
+  services.gvfs.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
 
-  services.gvfs.enable = true;
   services.udisks2.enable = true;
+  services.upower.enable = true;
 
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    xwayland.enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage =  inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
-  # must set this manually if not enabling sway
-  security.pam.services.swaylock = { };
-
-  services.upower = {
-    enable = true;
-  };
-
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = [ "jbgreer" ];
-  };
+  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 
   # must enable here because it is available system wide
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
-
-  # required for hyprland
-  xdg = {
-    portal = {
-      enable = true;
-      extraPortals = [
-        pkgs.xdg-desktop-portal
-        pkgs.xdg-desktop-portal-gtk
-      ];
-    };
-  };
 
   # WARNING! Be careful when changing.
   system.stateVersion = "24.05";

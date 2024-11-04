@@ -1,9 +1,5 @@
 {
-  config,
-  lib,
   pkgs,
-  nixvim,
-  catppuccin,
   ...
 }:
 
@@ -12,47 +8,39 @@
   home.homeDirectory = "/home/jbgreer";
 
   home.packages = with pkgs; [
-    alacritty # terminal
-    asciidoctor # text formatting / type setting
-    bat # cat substitute
-    brightnessctl # read and control device brightness
-    cmake # builder
-    fd # file display
-    file # learn file type
-    firefox # web browser
-    fira-code # font
-    fira-code-symbols # additional font
-    font-awesome # additional font
-    fzf # fast finder
-    gcc # compiler
-    gnupg # encrypt/decrypt/sign/validate
-    kitty # terminal
-    lazygit # git ui
-    libnotify # for hyprland - notification daemon support
-    lua-language-server # for neovime
-    material-icons # icons
-    makeWrapper # for Nixos?
-    ninja # builder
+    alacritty
+    asciidoctor
+    bat
+    brightnessctl
+    eza
+    fd
+    file
+    fira-code
+    fira-code-symbols
+    font-awesome
+    fzf
+    gnupg
+    htop
+    kitty
+    lazygit
+    libnotify
+    material-icons
     nix-zsh-completions # zsh completions for nix
     nixpkgs-fmt # format nix files
-    pavucontrol # read and control sound volume
+    pavucontrol
     pfetch # shell-based system info tool
     ripgrep # grep substitute
-    #rofi-wayland # for hyprland dmenu support
-    swaynotificationcenter # notifications for hyprland
-    swww # for hyprland
+    rofi-wayland
+    swaynotificationcenter
     tldr # better man pages
-    tmux # terminal multiplexer
-    tofi # for hyprland dmenu support
+    tofi
+    tmux
     tree-sitter # for neovim
     unzip # uncompress files
-    wl-clipboard # wayland cut and paste clipboard
-    xdg-desktop-portal
-    xdg-desktop-portal-gtk
+    wl-clipboard
     xdg-desktop-portal-hyprland
-    zellij # terminal multiplexer
+    zellij
     zip # compress files
-    (import ../scripts/task-waybar.nix { inherit pkgs; })
   ];
 
   imports = [
@@ -63,23 +51,21 @@
     ../apps/fd.nix
     ../apps/fzf.nix
     ../apps/git.nix
-    ../apps/helix.nix
     ../apps/home-manager.nix
     ../apps/htop.nix
+    ../apps/hyprlock.nix
     ../apps/kitty.nix
     ../apps/lazygit.nix
     ../apps/neovim
-    ../apps/nix-index.nix
     ../apps/oh-my-posh.nix
+    ../apps/tmux.nix
     ../apps/readline.nix
     ../apps/ripgrep.nix
-    ../apps/starship.nix
-    ../apps/swaylock.nix
-    ../apps/tmux.nix
-    ../apps/tofi.nix
+    #    ../apps/swaylock.nix
     ../apps/waybar.nix
     ../apps/zellij.nix
     ../apps/zsh.nix
+    #(import ../scripts/task-waybar.nix { inherit pkgs; })
   ];
 
   home.file.".config/pipewire/pipewire.conf".source = ../apps/pipewire/pipewire.conf;
@@ -89,8 +75,8 @@
     recursive = true;
   };
 
-  home.file.".config/tofi" = {
-    source = ../apps/tofi;
+  home.file.".config/rofi" = {
+    source = ../apps/rofi;
     recursive = true;
   };
 
@@ -99,12 +85,27 @@
     recursive = true;
   };
 
-  xdg = {
+  # integrate nix-index into shell
+  programs.nix-index.enable = true;
+
+  # self-manage home-manager
+  programs.home-manager.enable = true;
+
+  wayland.windowManager.hyprland = {
     enable = true;
+    xwayland.enable = true;
+    systemd.variables = [ "--all" ];
+  };
+
+  xdg = {
     portal = {
       enable = true;
-      config.common.default = "*";
       extraPortals = [
+        pkgs.xdg-desktop-portal
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal-hyprland
+      ];
+      configPackages = [
         pkgs.xdg-desktop-portal
         pkgs.xdg-desktop-portal-gtk
         pkgs.xdg-desktop-portal-hyprland
@@ -120,12 +121,6 @@
     enable = true;
     flavor = "mocha";
   };
-
-  # integrate nix-index into shell
-  programs.nix-index.enable = true;
-
-  # self-manage home-manager
-  programs.home-manager.enable = true;
 
   # DO NOT CHANGE WITHOUT READING MANUAL
   home.stateVersion = "24.05";

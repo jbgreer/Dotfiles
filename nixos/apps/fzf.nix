@@ -1,6 +1,8 @@
 # ./apps/fzf.nix
 
-{ config, pkgs, ... }:
+{
+  ...
+}:
 
 {
   programs.fzf = {

@@ -1,9 +1,12 @@
-{ config, pkgs, ... }:
+# apps/rofi.nix
+
+{
+  ...
+}:
 
 {
   programs.rofi-wayland = {
     enable = true;
-    #theme = "solarized";
     font = "Fira Code 12";
   };
 }

@@ -59,9 +59,9 @@
           modules = [
             nixos-hardware.nixosModules.framework-13-7040-amd
             ./hosts/saint-exupery/configuration.nix
-            catppuccin.nixosModules.catppuccin
+            catppu
 
-            home-manager.nixosModules.home-manager {
+            home-manager.nixosModules.home-manager {ccin.nixosModules.catppuccin
               home-manager.backupFileExtension = "backup";
               home-manager.extraSpecialArgs = {
                 inherit system;
@@ -71,9 +71,9 @@
               home-manager.useUserPackages = true;
               home-manager.users.jbgreer = {
                 imports = [
-                  ./users/jbgreer.nix
                   catppuccin.homeManagerModules.catppuccin
                   nixvim.homeManagerModules.nixvim
+                  ./users/jbgreer.nix
                 ];
               };
             }

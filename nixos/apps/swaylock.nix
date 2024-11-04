@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+# apps/swaylock.nix
+
+{
+  ...
+}:
 
 {
   programs.swaylock = {

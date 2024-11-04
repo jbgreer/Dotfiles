@@ -1,6 +1,8 @@
 # ./apps/bat.nix
 
-{ config, pkgs, ... }:
+{
+  ...
+}:
 
 {
   programs.bat = {

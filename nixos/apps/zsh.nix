@@ -1,6 +1,8 @@
 # ./apps/zsh.nix
 
-{ config, pkgs, ... }:
+{
+  ...
+}:
 
 {
   programs.zsh = {
@@ -27,7 +29,7 @@
     '';
     loginExtra = ''
       # start hyprland only on 1st console
-      [ -z  "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && [ $(tty) = "/dev/tty1" ] && exec Hyprland
+      #[ -z  "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && [ $(tty) = "/dev/tty1" ] && exec Hyprland
     '';
     profileExtra = ''
     # programs.zsh.profileExtra
@@ -42,13 +44,8 @@
       XDG_CONFIG_HOME = "$HOME/.config";
       XDG_DATA_HOME = "$HOME/.local/share";
       XDG_STATE_HOME = "$HOME/.local/state";
-      XDG_RUNTIME_DIR = "$HOME/.xdg";
-    };
-    syntaxHighlighting = {
-      catppuccin.enable = true;
-      catppuccin.flavor = "mocha";
+      #XDG_RUNTIME_DIR = "$HOME/.xdg";
     };
   };
 }
-
 

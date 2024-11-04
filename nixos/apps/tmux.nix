@@ -1,6 +1,9 @@
 # ./apps/tmux.nix
 
-{ config, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 {
   programs.tmux = {

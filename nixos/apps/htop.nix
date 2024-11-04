@@ -1,6 +1,8 @@
 # ./apps/htop.nix
 
-{ config, pkgs, ... }:
+{
+  ...
+}:
 
 {
   programs.htop = {

@@ -1,6 +1,9 @@
 # ./apps/git.nix
 
-{ config, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 {
   programs.git = {

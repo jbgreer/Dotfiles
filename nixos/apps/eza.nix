@@ -1,6 +1,8 @@
 # ./apps/eza.nix
 
-{ config, pkgs, ... }:
+{
+  ...
+}:
 
 {
   programs.eza = {

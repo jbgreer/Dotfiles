@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+# apps/starship.nix
+
+{
+  ...
+}:
 
 {
   programs.starship = {
