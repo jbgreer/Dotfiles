@@ -1,5 +1,9 @@
 # darwin.nix
-{ self, pkgs, catppuccin, ... }: {
+{
+  self,
+  pkgs,
+  ...
+}: {
   # List of system packages. To search by name, run: $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
       git              # distributed version control system
@@ -20,6 +24,7 @@
   homebrew.casks = [
     # "1password" separately installed
     "spotify"
+    "karabiner-elements"
   ];
 #homebrew.brews = [
 #  "exercism"

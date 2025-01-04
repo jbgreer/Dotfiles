@@ -43,11 +43,13 @@
       direnv              # shell extension that manages the environment
       eza                 # a modern replacement for ls
       fd                  # simple, fast, friendly alternative to find
+      font-awesome
       fzf                 # command-line fuzzy-finder
       glow                # render Markdown on the CLI
       gnupg               # GNU Privacy Guard
       google-chrome       # web browser developed by Google
       htop                # display machine stas
+      inkscape            # feature-rich vector graphics editor
       lazygit             # Simple terminal UI for git commands
       nix-zsh-completions # zsh compleitions for nix
       oh-my-posh          # prompt theme engine for any shell
