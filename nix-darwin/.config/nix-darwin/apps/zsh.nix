@@ -1,8 +1,11 @@
 # ./apps/zsh.nix
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
+  catppuccin.zsh-syntax-highlighting.enable = true;
+  catppuccin.zsh-syntax-highlighting.flavor = "mocha";
+
   programs.zsh = {
     autosuggestion.enable = true;
     defaultKeymap = "viins";
@@ -39,10 +42,6 @@
       XDG_DATA_HOME = "$HOME/.local/share";
       XDG_STATE_HOME = "$HOME/.local/state";
       XDG_RUNTIME_DIR = "$HOME/.xdg";
-    };
-    syntaxHighlighting = {
-      catppuccin.enable = true;
-      catppuccin.flavor = "mocha";
     };
   };
 }

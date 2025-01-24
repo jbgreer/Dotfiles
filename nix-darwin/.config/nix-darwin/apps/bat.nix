@@ -1,14 +1,13 @@
 # ./apps/bat.nix
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
+  catppuccin.bat.enable = true;
+  catppuccin.bat.flavor = "mocha";
+
   programs.bat = {
     enable = true;
-    catppuccin = {
-      enable = true;
-      flavor = "mocha";
-    };
   };
 }
 

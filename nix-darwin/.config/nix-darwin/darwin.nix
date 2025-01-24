@@ -12,14 +12,11 @@
       wget             # tool for retrieving files via FTP, HTTP, HTTPS
     ];
 
-  fonts = {
-    packages = with pkgs; [
-      fira-code
+  fonts.packages = with pkgs; [
       fira-code-symbols
       font-awesome
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
-    ];
-  };
+      nerd-fonts.fira-code
+  ];
 
   # homebrew
   homebrew.enable = true;

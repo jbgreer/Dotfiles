@@ -1,13 +1,12 @@
 # ./apps/lazygit.nix
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
+  catppuccin.lazygit.enable = true;
+  catppuccin.lazygit.flavor = "mocha";
+
   programs.lazygit = {
     enable = true;
-    catppuccin = {
-      enable = true;
-      flavor = "mocha";
-    };
   };
 }

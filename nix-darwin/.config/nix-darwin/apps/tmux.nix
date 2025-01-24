@@ -1,14 +1,13 @@
 # ./apps/tmux.nix
 
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
+  catppuccin.tmux.enable = true;
+  catppuccin.tmux.flavor = "mocha";
+
   programs.tmux = {
     enable = true;
-    catppuccin = {
-      enable = true;
-      flavor = "mocha";
-    };
     clock24 = true;
     extraConfig = "
       # tmux.nix extraConfig

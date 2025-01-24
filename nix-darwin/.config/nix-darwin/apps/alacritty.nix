@@ -1,14 +1,13 @@
 # ./apps/alacritty.nix
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
+  catppuccin.alacritty.enable = true;
+  catppuccin.alacritty.flavor = "mocha";
+
   programs.alacritty = {
     enable = true;
-    catppuccin = {
-      enable = true;
-      flavor = "mocha";
-    };
     settings = {
       window = {
         dimensions = {

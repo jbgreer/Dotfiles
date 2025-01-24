@@ -1,14 +1,14 @@
 # ./apps/fzf.nix
 
-{ config, pkgs, ... }:
+{ ... }:
+
 
 {
+  catppuccin.fzf.enable = true;
+  catppuccin.fzf.flavor = "mocha";
+
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
-    catppuccin = {
-      enable = true;
-      flavor = "mocha";
-    };
   };
 }

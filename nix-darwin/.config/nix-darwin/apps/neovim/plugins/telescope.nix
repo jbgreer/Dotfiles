@@ -1,7 +1,10 @@
 # neovim/plugins/telescope.nix
 # https://github.com/nvim-telescope/telescope.nvim/
 {
+
   programs.nixvim = {
+    plugins.web-devicons.enable = true;
+
     plugins.telescope = {
       enable = true;
 

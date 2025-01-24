@@ -1,6 +1,6 @@
 # ./apps/direnv.nix
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   programs = {
