@@ -7,6 +7,8 @@
   # List of system packages. To search by name, run: $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
       git              # distributed version control system
+      hugo             # fast and modern static website engine
+      sass             # Tools and Ruby libraries for the CSS3 extension langs SASS and SCSS
       wget             # tool for retrieving files via FTP, HTTP, HTTPS
     ];
 
