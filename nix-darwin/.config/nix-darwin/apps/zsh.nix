@@ -14,6 +14,10 @@
     enableCompletion = true;
     envExtra = ''
     # programs.zsh.envExtra
+
+    # Racket
+    [ -d '/Applications/Racket v8.14/bin' ] && path+=('/Applications/Racket v8.14/bin')
+
     # programs.zsh.envExtra
     '';
     initExtraBeforeCompInit = ''
@@ -34,6 +38,7 @@
     '';
     shellAliases = {
       l = "ls -al";
+      vim = "nvim";
     };
     sessionVariables = {
       EDITOR = "nvim";

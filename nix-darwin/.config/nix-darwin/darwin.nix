@@ -29,6 +29,7 @@
       # "1password" separately installed
       "spotify"
       "karabiner-elements"
+      "racket"
     ];
     brews = [
       "exercism"

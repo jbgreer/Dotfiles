@@ -44,7 +44,7 @@
       direnv              # shell extension that manages the environment
       eza                 # a modern replacement for ls
       fd                  # simple, fast, friendly alternative to find
-      font-awesome
+      font-awesome        # Font Awesome - OTF font
       fzf                 # command-line fuzzy-finder
       glow                # render Markdown on the CLI
       gnupg               # GNU Privacy Guard
