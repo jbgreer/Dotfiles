@@ -1,6 +1,6 @@
 # jbgreer.niprofileExtra
 
-{ config, lib, pkgs, self, nixvim, catppuccin, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   catppuccin = {
@@ -28,7 +28,8 @@
           $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
           $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
         done
-      '';
+        '';
+      #jk '';
     };
 
     username = "jbgreer";
@@ -74,6 +75,7 @@
     ./apps/alacritty.nix
     ./apps/bat.nix
     ./apps/direnv.nix
+    ./apps/emacs.nix
     ./apps/eza.nix
     ./apps/fd.nix
     ./apps/fzf.nix
@@ -88,6 +90,12 @@
     ./apps/tmux.nix
     ./apps/zsh.nix
   ];
+
+  # emacs config files for now
+  home.file.".config/emacs" = {
+    source = ./config/emacs;
+    recursive = true;
+  };
 
   xdg.enable = true;
 }

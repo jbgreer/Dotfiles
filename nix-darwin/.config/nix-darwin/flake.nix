@@ -38,6 +38,7 @@
     home-manager,
     nixvim,
     catppuccin,
+    ...
   }: let
     lib = inputs.nixpkgs.lib;
   in {
@@ -46,7 +47,9 @@
       system = "aarch64-darwin";
       specialArgs = {
         inherit self;
+        inherit nixpkgs;
         inherit nixvim;
+        inherit inputs;
       };
 
       modules = [
@@ -55,6 +58,10 @@
           home-manager.backupFileExtension = "backup";
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit nixpkgs;
+          };
           home-manager.users.jbgreer = {
             imports = [
               ./jbgreer.nix

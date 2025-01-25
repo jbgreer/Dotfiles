@@ -8,6 +8,7 @@
   environment.systemPackages = with pkgs; [
       git              # distributed version control system
       hugo             # fast and modern static website engine
+      jq               # lightweight and flexible command-line JSON processosr
       sass             # Tools and Ruby libraries for the CSS3 extension langs SASS and SCSS
       wget             # tool for retrieving files via FTP, HTTP, HTTPS
     ];
@@ -16,21 +17,36 @@
       fira-code-symbols
       font-awesome
       nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.ubuntu
   ];
 
   # homebrew
-  homebrew.enable = true;
-  homebrew.casks = [
-    # "1password" separately installed
-    "spotify"
-    "karabiner-elements"
-  ];
-#homebrew.brews = [
-#  "exercism"
-#];
+  homebrew = {
+    enable = true;
+    global.autoUpdate = true;
+    casks = [
+      # "1password" separately installed
+      "spotify"
+      "karabiner-elements"
+    ];
+    brews = [
+      "exercism"
+    ];
+  };
 
 # Necessary for using flakes on this system.
-  nix.settings.experimental-features = "nix-command flakes";
+  nix = {
+    settings = {
+      builders-use-substitutes = true;
+      experimental-features = [ "nix-command" "flakes" ];
+      substituters = [ "https://nix-community.cachix.org" ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+      trusted-users = [ "jbgreer" ];
+    };
+  };
 
   nix.configureBuildUsers = true;
   nix.useDaemon = true;
