@@ -14,10 +14,26 @@ let
     withWebP = true;
   };
   my-emacs-with-packages = (pkgs.emacsPackagesFor my-emacs).emacsWithPackages (epkgs: with epkgs; [
-    vterm
+    company
+    counsel
+    evil
+    evil-collection
+    evil-surround
+    evil-textobj-anyblock
+    geiser-racket
+    magit
     multi-vterm
+    paredit
     pdf-tools
+    projectile
+    quack
+    racket-mode
+    rainbow-delimiters
+    scribble-mode
+    smartparens
+    transient
     treesit-grammars.with-all-grammars
+    vterm
   ]);
 in
 {

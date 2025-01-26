@@ -25,6 +25,5 @@
             (setq gc-cons-threshold default-gc-cons-threshold
                   gc-cons-percentage 0.1
                   file-name-handler-alist default-file-name-handler-alist)
-	    
             ;; delete no longer necessary startup variable
             (makunbound 'default-file-name-handler-alist)))

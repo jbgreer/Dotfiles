@@ -75,6 +75,9 @@
   (setq evil-collection-mode-list '(dashboard dired ibuffer))
   (evil-collection-init))
 
+(use-package evil-surround
+  :after evil)
+
 (use-package evil-tutor)
 
 
@@ -91,17 +94,12 @@
 			  :prefix "SPC" ;; set leader
 			  :global-prefix "M-SPC") ;; access leader in insert mode
 
-  ;; org-mode
-  (setq org-log-done 'time)
-
-
   ;; find
   (jg/leader-keys
     "f f" '(find-file :wk "Find file")
     "f c" '((lambda () (interactive) (find-file (concat user-emacs-directory "init.el"))) :wk "Edit emacs config")
     "f r" '(counsel-recentf :wk "Find recent files")
     "TAB TAB" '(comment-line :wk "Comment lines"))
-
 
   ;; buffer
   (jg/leader-keys
@@ -112,7 +110,6 @@
      "b n" '(next-buffer :wk "Next buffer")
      "b p" '(previous-buffer :wk "Previous buffer")
      "b r" '(revert-buffer :wk "Reload buffer"))
-
 
   ;; evaluate
   (jg/leader-keys
@@ -125,7 +122,6 @@
      "e r" '(eval-region :wk "Evaluate elisp in region")
      "e s" '(eshell :which-key "Eshell"))
 
-
   ;; help
   (jg/leader-keys
      "h" '(:ignore t :wk "Help")
@@ -134,23 +130,9 @@
      "h r r" '((lambda () (interactive) (load-file (concat user-emacs-directory "init.el")) :wk "Reload emacs config")))
      ;; "h r r" '(reload-init-file :wk "Reload emacs config"))
 
-
-  ;; org-mode
-  (jg/leader-keys
-      "o" '(:ignore t :wk "Org")
-      "o a" '(org-agenda :wk "Org Agenda")
-      "o e" '(org-export-dispatch :wk "Org Export Dispatch")
-      "o i" '(org-toggle-item :wk "Org Item Toggle")
-      "o t" '(org-todo :wk "Org Todo")
-      "o B" '(org-babel-tangle :wk "Org Babel Tangle")
-      "o T" '(org-todo-list :wk "Org Todo List")
-      "o d" '(org-time-stamp :wk "Org Date/timestamp"))
-
-
   ;; projectile
   (jg/leader-keys
       "p" '(projectile-command-map :wk "Projectile"))
-
 
   ;; toggle
   (jg/leader-keys
@@ -158,7 +140,6 @@
    "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
    "t t" '(visual-line-mode :wk "Toggle truncated lines")
    "t v" '(vterm-toggle :wk "Toggle vterm"))
-
 
   ;; windows
   (jg/leader-keys
@@ -182,30 +163,17 @@
 )
 
 
-;; UI STUFF
+;;; UI STUFF
 
-;; DOOM-THEMES : UI Theme
-;;(use-package doom-themes
-;;	    :ensure t
-	    ;;:config
-	    ;;(setq doom-themes-enable-bold t
-		  ;;doom-themes-enable-italic t)
-	    ;;(if (daemonp)
-		;;(add-hook 'after-make-frame-functions
-			  ;;(lambda (frame)
-			    ;;(select-frame frame)
-			    ;;(load-theme 'doom-dracula t)))
-		;;(load-theme 'doom-dracula t))
-		;;(load-theme 'catppuccin t))
-	    ;;(doom-themes-visual-bell-config))
-;;;;	    (doom-themes-org-config))
-;;(use-package 'catppuccin-theme)
+;;  CATPPUCCIN theme
 (load-theme 'catppuccin :no-confirm)
+
 
 ;; ALL-THE-ICONS, ALL-THE-ICONS-DIRED : Icons for dired, etc.  Install the latest fonts with M-x all-the-icons-install-fonts
 (use-package all-the-icons
 ;;  :ensure t
     :if (display-graphic-p))
+
 (use-package all-the-icons-dired
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 
@@ -303,14 +271,13 @@
 
 
 
-;; COUNSEL, IVY, ALL-THE-ICONS-IVY-RICH, IVY-RICH, SWIPER
-;; Ivy, a generic completion mechanism for Emacs.
-;; Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
-;; Ivy-rich allows us to add descriptions alongside the commands in M-x.
-;; Swiper, an enhanced alternative to isearch
+;; COUNSEL, a collection of Ivy-enhanced versions of common Emacs commands.
 (use-package counsel
   :after ivy
   :config (counsel-mode))
+
+
+;; IVY, a generic completion mechanism for Emacs.
 (use-package ivy
   :bind
   ;; ivy-resume resumes the last Ivy-based completion.
@@ -322,9 +289,15 @@
   (setq enable-recursive-minibuffers t)
   :config
   (ivy-mode))
+
+
+;; ALL-THE-ICONS-IVY-RICH
 (use-package all-the-icons-ivy-rich
 ;; :ensure t
   :init (all-the-icons-ivy-rich-mode 1))
+
+
+;; IVY-RICH allows us to add descriptions alongside the commands in M-x.
 (use-package ivy-rich
   :after ivy
 ;;  :ensure t
@@ -333,6 +306,10 @@
   (ivy-rich-ivy-path-style 'abbrev
 			   ivy-virtual-abbreviate 'full
 			   ivy-rich-switch-buffer-align-virtual-buffer t))
+
+
+
+;; SWIPER, an enhanced alternative to isearch
 (use-package swiper
   :after ivy
   :bind ("C-s" . swiper))
@@ -353,7 +330,7 @@
 
 
 
-;; MAGIT : a git porcelion inside emacs
+;; MAGIT : a git porcelain inside emacs
 (use-package transient )
 (use-package magit
              :after transient)
@@ -364,39 +341,38 @@
 ;; PAREDIT : Parentheses matching and colorization for lisps
 (use-package paredit)
 ;;(add-hook 'prog-mode-hook #'enable-paredit-mode)
+
+
+
+;; RAINBOW-DELIMITERS : different colored parens based on nesting
 (use-package rainbow-delimiters)
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;;(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 
 
-;; CLOJURE-MODE, CIDER : clojure development
-(use-package clojure-mode)
-(use-package cider)
-(add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
-(add-hook 'cider-mode-hook #'enable-paredit-mode)
-(add-hook 'clojure-repl-mode-hook #'enable-paredit-mode)
-;;(add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
-;;(add-hook 'cider-mode-hook #'rainbow-delimiters-mode)
-;;(add-hook 'clojure-repl-mode-hook #'rainbow-delimiters-mode)
-
-
-
-;; GEISER-CHEZZ : chez scheme development
-(use-package geiser-chez)
-(add-to-list 'auto-mode-alist
-	     '("\\.sls\\'" . scheme-mode)
-	     '("\\.sc\\'" . scheme-mode))
-;;(add-hook 'scheme-mode #'rainbow-delimiters-mode)
-
-
-
-;; RACKET-MODE : racket development
+;; RACKET-MODE : Racket development
 (use-package racket-mode)
-;;(add-hook 'racket-mode #'rainbow-delimiters-mode)
+(add-hook 'racket-mode-hook #'enable-paredit-mode)
+(add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'racket-mode-hook #'turn-on-surround-mode)
+(add-hook 'racket-repl-mode-hook #'enable-paredit-mode)
+(add-hook 'racket-repl-hook #'rainbow-delimiters-mode)
+(add-hook 'racket-repl-mode-hook #'turn-on-surround-mode)
 
 
-;; company - complete anything
+
+;; GEISER-RACKET : Racket development
+(use-package geiser-racket)
+;;(setq geiser-racket-binary "/Applications/Racket v8.14/bin/racket")
+(setq geiser-active-implementations '(racket))
+
+
+
+;; COMPANY - complete anything
 ;;(use-package company)
+;;(add-hook 'after-init-hook 'global-company-mode)
+
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
