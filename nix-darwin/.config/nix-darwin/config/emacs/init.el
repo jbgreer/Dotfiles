@@ -1,89 +1,81 @@
 ;; 2023-07-03 jbgreer init.el
+;; 2025-01-26 jbgreer removed pre-29 cruft
 
-;; always process early-init.el first
-(when (version< emacs-version "27")
-  (load (concat user-emacs-directory "early-init.el")))
 
 (setq debug-on-error t)
-;;(setq user-emacs-directory "~/.config/emacs/")
+
+;; dump generated custom settings in a separate file
+(setq custom-file "~/.config/emacs/custom.el")
+(load custom-file 'noerror)
 
 
+;; PACKAGE
+(require 'package)
 
-;; ELPACA: The Elisp Package Manager  https://github.com/progfolio/elpaca
-(defvar elpaca-installer-version 0.9)
-(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref nil
-                              :files (:defaults (:exclude "extensions"))
-                              :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-       (build (expand-file-name "elpaca/" elpaca-builds-directory))
-       (order (cdr elpaca-order))
-       (default-directory repo))
-  (add-to-list 'load-path (if (file-exists-p build) build repo))
-  (unless (file-exists-p repo)
-    (make-directory repo t)
-    (when (< emacs-major-version 28) (require 'subr-x))
-    (condition-case-unless-debug err
-        (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                 ((zerop (call-process "git" nil buffer t "clone"
-                                       (plist-get order :repo) repo)))
-                 ((zerop (call-process "git" nil buffer t "checkout"
-                                       (or (plist-get order :ref) "--"))))
-                 (emacs (concat invocation-directory invocation-name))
-                 ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                       "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                 ((require 'elpaca))
-                 ((elpaca-generate-autoloads "elpaca" repo)))
-            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-          (error "%s" (with-current-buffer buffer (buffer-string))))
-      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-  (unless (require 'elpaca-autoloads nil t)
-    (require 'elpaca)
-    (elpaca-generate-autoloads "elpaca" repo)
-    (load "./elpaca-autoloads")))
-(add-hook 'after-init-hook #'elpaca-process-queues)
-(elpaca `(,@elpaca-order))
+;; Nice macro for updating lists in place.
+(defmacro append-to-list (target suffix)
+  "Append SUFFIX to TARGET in place."
+  `(setq ,target (append ,target ,suffix)))
 
+;; Set up emacs package archives with 'package
+(append-to-list package-archives
+                '(("melpa" . "http://melpa.org/packages/") ;; Main package archive
+                  ("melpa-stable" . "http://stable.melpa.org/packages/") ;; Some packages might only do stable releases?
+                  ("org-elpa" . "https://orgmode.org/elpa/"))) ;; Org packages, I don't use org but seems like a harmless default
 
+(package-initialize)
 
-;; ELPACA-USE-PACKAGE : use-package for succint package inclusion
-(elpaca elpaca-use-package
-  ;; Enable :elpaca use-package keyword.
-  (elpaca-use-package-mode)
-  ;; Assume :elpaca t unless otherwise specified.
-  (setq elpaca-use-package-by-default t))
-;; Block until current queue processed.
-(elpaca-wait)
+;; Ensure use-package is present. From here on out, all packages are loaded
+;; with use-package, a macro for importing and installing packages.
+;; Also, refresh the package archive on load so we can pull the latest packages.
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+;; allow use-package
+(require 'use-package)
+(setq
+ use-package-always-ensure t ;; download new packages if they aren't already downloaded
+ use-package-verbose t) ;; Package installation logging.
+
+;; Slurp environment variables from the shell.
+;; a.k.a. The Most Asked Question On r/emacs
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
 
 
 
 ;; EVIL, EVIL-COLLECTION, EVIL-TUTOR- vi emulation
 (use-package evil
+  :ensure t
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
-  (evil-mode))
+  (evil-mode 1))
 
 (use-package evil-collection
+  :ensure t
   :after evil
   :config
   (setq evil-collection-mode-list '(dashboard dired ibuffer))
-  (evil-collection-init))
+  :init (evil-collection-init))
 
 (use-package evil-surround
+  :ensure t
   :after evil)
 
-(use-package evil-tutor)
+(use-package evil-tutor
+  :ensure t
+  :after evil)
 
 
 
 ;; GENERAL - keybindings
 (use-package general
+  :ensure t
   :config
   (general-evil-setup)
 
@@ -116,7 +108,7 @@
      "e" '(:ignore t :wk "Eshell/Evaluate")
      "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
      "e d" '(eval-defun :wk "Evaluate defun containing or after point")
-     "e e" '(eval-expression :wk "Evaluate and elisp expression")
+     "e e" '(eval-expression :wk "Evaluate an elisp expression")
      "e h" '(counsel-esh-history :which-key "Eshell history")
      "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
      "e r" '(eval-region :wk "Evaluate elisp in region")
@@ -171,10 +163,11 @@
 
 ;; ALL-THE-ICONS, ALL-THE-ICONS-DIRED : Icons for dired, etc.  Install the latest fonts with M-x all-the-icons-install-fonts
 (use-package all-the-icons
-;;  :ensure t
-    :if (display-graphic-p))
+  :ensure t
+  :if (display-graphic-p))
 
 (use-package all-the-icons-dired
+  :ensure t
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 
 ;; Set the Font Face
@@ -234,6 +227,7 @@
 
 ;; WHICH-KEY : a minor mode that displays available keybindings
 (use-package which-key
+  :ensure t
   :init
   (which-key-mode 1)
   :config
@@ -256,29 +250,33 @@
 
 ;; PROJECTILE : a project interaction library
 (use-package projectile
+  :ensure t
   :defer 1
   :commands
   (projectile-find-file projectile-switch-project)
+  :init
+  (projectile-global-mode +1)
   :config
-  (projectile-global-mode)
   (setq projectile-completion-system 'ivy)
   (setq projectile-enable-caching t)
   (setq projectile-switch-project-action #'magit-status)
-  :bind-keymap
-  ("C-c p" . projectile-command-map))
-;;  :bind (:map projectile-mode-map
-;;	      ("C-c p") . projectile-command-map)))
+  (setq projectile-project-search-path '("~/Source/" "~/Projects" . 1))
+  :bind (:map projectile-mode-map
+    ("C-c p" . projectile-command-map)))
 
 
+
+;; IVY, IVY-RICH, COUNSEL
 
 ;; COUNSEL, a collection of Ivy-enhanced versions of common Emacs commands.
 (use-package counsel
+  :ensure t
   :after ivy
   :config (counsel-mode))
 
-
 ;; IVY, a generic completion mechanism for Emacs.
 (use-package ivy
+  :ensure t
   :bind
   ;; ivy-resume resumes the last Ivy-based completion.
   (("C-c C-r" . ivy-resume)
@@ -288,32 +286,30 @@
   (setq ivy-count-format "(%d/%d) ")
   (setq enable-recursive-minibuffers t)
   :config
-  (ivy-mode))
-
+  (ivy-mode 1))
 
 ;; ALL-THE-ICONS-IVY-RICH
 (use-package all-the-icons-ivy-rich
-;; :ensure t
+  :ensure t
   :init (all-the-icons-ivy-rich-mode 1))
-
 
 ;; IVY-RICH allows us to add descriptions alongside the commands in M-x.
 (use-package ivy-rich
   :after ivy
-;;  :ensure t
+  :ensure t
   :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
   :custom
   (ivy-rich-ivy-path-style 'abbrev
 			   ivy-virtual-abbreviate 'full
 			   ivy-rich-switch-buffer-align-virtual-buffer t))
 
-
-
 ;; SWIPER, an enhanced alternative to isearch
 (use-package swiper
   :after ivy
+  :ensure t
   :bind ("C-s" . swiper))
-;; ivy, counsel, swiper global keybindings
+
+;; ivy-based interface to standard commands
 ;;(global-set-key (kbd "C-s") 'swiper-isearch)
 ;;(global-set-key (kbd "M-x") 'counsel-M-x)
 ;;(global-set-key (kbd "C-x C-f") 'counsel-find-file)
@@ -328,30 +324,56 @@
 ;;(global-set-key (kbd "C-c v") 'ivy-push-view)
 ;;(global-set-key (kbd "C-c V") 'ivy-pop-view)
 
+;; ivy-based interfaces to shell and other tools
+;;(global-set-key (kbd "C-c c") 'counsel-compile)
+;;(global-set-key (kbd "C-c g") 'counsel-git)
+;;(global-set-key (kbd "C-c j") 'counsel-git-grep)
+;;(global-set-key (kbd "C-c L") 'counsel-git-log)
+;;(global-set-key (kbd "C-c k") 'counsel-rg)
+;;(global-set-key (kbd "C-c m") 'counsel-linux-app)
+;;(global-set-key (kbd "C-c n") 'counsel-fzf)
+;;(global-set-key (kbd "C-x l") 'counsel-locate)
+;;(global-set-key (kbd "C-c J") 'counsel-file-jump)
+;;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+;;(global-set-key (kbd "C-c w") 'counsel-wmctrl)
+
+;; ivy-resume and other commands
+;;(global-set-key (kbd "C-c C-r") 'ivy-resume)
+;;(global-set-key (kbd "C-c b") 'counsel-bookmark)
+;;(global-set-key (kbd "C-c d") 'counsel-descbinds)
+;;(global-set-key (kbd "C-c g") 'counsel-git)
+;;(global-set-key (kbd "C-c o") 'counsel-outline)
+;;(global-set-key (kbd "C-c t") 'counsel-load-theme)
+;;(global-set-key (kbd "C-c F") 'counsel-org-file)
+
 
 
 ;; MAGIT : a git porcelain inside emacs
-(use-package transient )
+(use-package transient
+  :ensure t)
 (use-package magit
-             :after transient)
-;;  :ensure t)
+  :after transient
+  :ensure t)
 
 
 
 ;; PAREDIT : Parentheses matching and colorization for lisps
-(use-package paredit)
+(use-package paredit
+  :ensure t)
 ;;(add-hook 'prog-mode-hook #'enable-paredit-mode)
 
 
 
 ;; RAINBOW-DELIMITERS : different colored parens based on nesting
-(use-package rainbow-delimiters)
+(use-package rainbow-delimiters
+  :ensure t)
 ;;(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 
 
 ;; RACKET-MODE : Racket development
-(use-package racket-mode)
+(use-package racket-mode
+  :ensure t)
 (add-hook 'racket-mode-hook #'enable-paredit-mode)
 (add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'racket-mode-hook #'turn-on-surround-mode)
@@ -362,15 +384,10 @@
 
 
 ;; GEISER-RACKET : Racket development
-(use-package geiser-racket)
+(use-package geiser-racket
+  :ensure t)
 ;;(setq geiser-racket-binary "/Applications/Racket v8.14/bin/racket")
 (setq geiser-active-implementations '(racket))
-
-
-
-;; COMPANY - complete anything
-;;(use-package company)
-;;(add-hook 'after-init-hook 'global-company-mode)
 
 
 
