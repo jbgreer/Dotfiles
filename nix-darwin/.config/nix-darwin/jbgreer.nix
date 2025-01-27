@@ -92,10 +92,10 @@
   ];
 
   # emacs config files for now
-  home.file.".config/emacs" = {
-    source = ./config/emacs;
-    recursive = true;
-  };
+  #home.file.".config/emacs" = {
+  #  source = ./config/emacs;
+  #  recursive = true;
+  #};
 
   xdg.enable = true;
 }
