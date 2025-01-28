@@ -123,8 +123,8 @@
      ;; "h r r" '(reload-init-file :wk "Reload emacs config"))
 
   ;; projectile
-  (jg/leader-keys
-      "p" '(projectile-command-map :wk "Projectile"))
+  ;;(jg/leader-keys
+  ;;    "p" '(projectile-command-map :wk "Projectile"))
 
   ;; toggle
   (jg/leader-keys
@@ -249,20 +249,18 @@
 
 
 ;; PROJECTILE : a project interaction library
-(use-package projectile
-  :ensure t
-  :defer 1
-  :commands
-  (projectile-find-file projectile-switch-project)
-  :init
-  (projectile-global-mode +1)
-  :config
-  (setq projectile-completion-system 'ivy)
-  (setq projectile-enable-caching t)
-  (setq projectile-switch-project-action #'magit-status)
-  (setq projectile-project-search-path '("~/Source/" "~/Projects" . 1))
-  :bind (:map projectile-mode-map
-    ("C-c p" . projectile-command-map)))
+;;(use-package projectile
+  ;;:ensure t
+  ;;:defer 1
+  ;;:commands
+  ;;(projectile-find-file projectile-switch-project)
+  ;;:init
+  ;;(projectile-global-mode +1)
+  ;;:config
+  ;;(setq projectile-completion-system 'ivy) (setq projectile-enable-caching t) (setq projectile-switch-project-action #'magit-status)
+  ;;(setq projectile-project-search-path '("~/Source/" "~/Projects" . 1))
+  ;;:bind (:map projectile-mode-map
+    ;;("C-c p" . projectile-command-map)))
 
 
 
