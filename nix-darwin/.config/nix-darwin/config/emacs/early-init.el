@@ -1,7 +1,7 @@
 ;; early-init.el jbgreer
 
 ;; turn off package.el; required by elpaca
-(setq package-enable-at-startup nil)
+;; (setq package-enable-at-startup nil)
 
 ;; default gc cons threshold
 (defvar default-gc-cons-threshold 16777216 ; 16mb
