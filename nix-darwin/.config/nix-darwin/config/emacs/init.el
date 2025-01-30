@@ -384,8 +384,14 @@
 ;; GEISER-RACKET : Racket development
 (use-package geiser-racket
   :ensure t)
-;;(setq geiser-racket-binary "/Applications/Racket v8.14/bin/racket")
-(setq geiser-active-implementations '(racket))
+;; GEISER-CHEZ : Chez Scheme development
+(use-package geiser-chez
+             :ensure t)
+(add-hook 'scheme-mode-hook #'enable-paredit-mode)
+(add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'scheme-mode-hook #'turn-on-surround-mode)
+
+(setq geiser-active-implementations '(racket chez))
 
 
 

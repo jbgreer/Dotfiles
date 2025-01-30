@@ -41,6 +41,7 @@
       age                 # modern encryption tool with small explicity keys
       alacritty           # GPU-accelerated terminal emulator
       bat                 # cat clone with highlighting and git integration
+      chez                # powerful and incredibly fast R6RS scheme compiler
       direnv              # shell extension that manages the environment
       eza                 # a modern replacement for ls
       fd                  # simple, fast, friendly alternative to find
