@@ -19,10 +19,9 @@
 
 ;; Set up emacs package archives with 'package
 (append-to-list package-archives
-                '(("melpa" . "http://melpa.org/packages/") ;; Main package archive
-                  ("melpa-stable" . "http://stable.melpa.org/packages/") ;; Some packages might only do stable releases?
-                  ("org-elpa" . "https://orgmode.org/elpa/"))) ;; Org packages, I don't use org but seems like a harmless default
-
+                '(("melpa" . "http://melpa.org/packages/")
+                  ("melpa-stable" . "http://stable.melpa.org/packages/")
+                  ("org-elpa" . "https://orgmode.org/elpa/")))
 (package-initialize)
 
 ;; Ensure use-package is present. From here on out, all packages are loaded
@@ -121,10 +120,6 @@
      "h z" '(describe-variable :wk "Describe variable")
      "h r r" '((lambda () (interactive) (load-file (concat user-emacs-directory "init.el")) :wk "Reload emacs config")))
      ;; "h r r" '(reload-init-file :wk "Reload emacs config"))
-
-  ;; projectile
-  ;;(jg/leader-keys
-  ;;    "p" '(projectile-command-map :wk "Projectile"))
 
   ;; toggle
   (jg/leader-keys
@@ -248,22 +243,6 @@
 
 
 
-;; PROJECTILE : a project interaction library
-;;(use-package projectile
-  ;;:ensure t
-  ;;:defer 1
-  ;;:commands
-  ;;(projectile-find-file projectile-switch-project)
-  ;;:init
-  ;;(projectile-global-mode +1)
-  ;;:config
-  ;;(setq projectile-completion-system 'ivy) (setq projectile-enable-caching t) (setq projectile-switch-project-action #'magit-status)
-  ;;(setq projectile-project-search-path '("~/Source/" "~/Projects" . 1))
-  ;;:bind (:map projectile-mode-map
-    ;;("C-c p" . projectile-command-map)))
-
-
-
 ;; IVY, IVY-RICH, COUNSEL
 
 ;; COUNSEL, a collection of Ivy-enhanced versions of common Emacs commands.
@@ -355,6 +334,35 @@
 
 
 
+;; ORG MODE
+
+;; These are the defaults we want to change.  We do so in the
+;; following `use-package' declaration.
+(setq org-M-RET-may-split-line '((default . t)))
+(setq org-insert-heading-respect-content nil)
+(setq org-log-done nil)
+(setq org-log-into-drawer nil)
+
+(use-package org
+  :ensure nil ; do not try to install it as it is built-in
+  :config
+  (setq org-M-RET-may-split-line '((default . nil)))
+  (setq org-insert-heading-respect-content t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+
+  (setq org-directory "/Org")
+  (setq org-agenda-files (list org-directory))
+
+  ;; Learn about the ! and more by reading the relevant section of the
+  ;; Org manual.  Evaluate: (info "(org) Tracking TODO state changes")
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)"))))
+
+
+
+;; DEVELOPMENT PACKAGES
+
 ;; PAREDIT : Parentheses matching and colorization for lisps
 (use-package paredit
   :ensure t)
@@ -367,8 +375,6 @@
   :ensure t)
 ;;(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-
-
 ;; RACKET-MODE : Racket development
 (use-package racket-mode
   :ensure t)
@@ -378,8 +384,6 @@
 (add-hook 'racket-repl-mode-hook #'enable-paredit-mode)
 (add-hook 'racket-repl-hook #'rainbow-delimiters-mode)
 (add-hook 'racket-repl-mode-hook #'turn-on-surround-mode)
-
-
 
 ;; GEISER-RACKET : Racket development
 (use-package geiser-racket
