@@ -1,47 +1,57 @@
 ;; 2023-07-03 jbgreer init.el
 ;; 2025-01-26 jbgreer removed pre-29 cruft
+;; 2025-01-30 jbgreer prot simple +
 
 
 (setq debug-on-error t)
 
 ;; dump generated custom settings in a separate file
-(setq custom-file "~/.config/emacs/custom.el")
-(load custom-file 'noerror)
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(load custom-file :no-error-if-file-is-missing)
 
 
 ;; PACKAGE
 (require 'package)
-
-;; Nice macro for updating lists in place.
-(defmacro append-to-list (target suffix)
-  "Append SUFFIX to TARGET in place."
-  `(setq ,target (append ,target ,suffix)))
-
-;; Set up emacs package archives with 'package
-(append-to-list package-archives
-                '(("melpa" . "http://melpa.org/packages/")
-                  ("melpa-stable" . "http://stable.melpa.org/packages/")
-                  ("org-elpa" . "https://orgmode.org/elpa/")))
 (package-initialize)
 
-;; Ensure use-package is present. From here on out, all packages are loaded
-;; with use-package, a macro for importing and installing packages.
-;; Also, refresh the package archive on load so we can pull the latest packages.
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("org-elpa" . "https://orgmode.org/elpa/"))
 
-;; allow use-package
-(require 'use-package)
-(setq
- use-package-always-ensure t ;; download new packages if they aren't already downloaded
- use-package-verbose t) ;; Package installation logging.
+(when (< emacs-major-version 29)
+  (unless (package-installed-p 'use-package)
+    (unless package-archive-contents
+      (package-refresh-contents))
+    (package-install 'use-package)))
 
-;; Slurp environment variables from the shell.
-;; a.k.a. The Most Asked Question On r/emacs
-(use-package exec-path-from-shell
-  :config
-  (exec-path-from-shell-initialize))
+(setq use-package-verbose t)
+
+
+;; DELSEL
+(use-package delsel
+  :ensure nil
+  :hook (after-init . delete-selection-mode))
+
+
+(defun jg/keyboard-quit-dwim ()
+  "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+
+- When the region is active, disable it.
+- When a minibuffer is open, but not focused, close the minibuffer.
+- When the Completions buffer is selected, close it.
+- In every other case use the regular `keyboard-quit'."
+  (interactive)
+  (cond
+   ((region-active-p)
+    (keyboard-quit))
+   ((derived-mode-p 'completion-list-mode)
+    (delete-completion-window))
+   ((> (minibuffer-depth) 0)
+    (abort-recursive-edit))
+   (t
+    (keyboard-quit))))
+
+(define-key global-map (kbd "C-g") #'jg/keyboard-quit-dwim)
 
 
 
@@ -49,7 +59,7 @@
 (use-package evil
   :ensure t
   :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-integration t) ;; default setting
   (setq evil-want-keybinding nil)
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
@@ -62,9 +72,13 @@
   (setq evil-collection-mode-list '(dashboard dired ibuffer))
   :init (evil-collection-init))
 
-(use-package evil-surround
-  :ensure t
-  :after evil)
+;;(use-package evil-surround
+  ;;:ensure t
+  ;;:after evil)
+
+(use-package evil-smartparens
+             :ensure t
+             :after evil)
 
 (use-package evil-tutor
   :ensure t
@@ -156,14 +170,28 @@
 (load-theme 'catppuccin :no-confirm)
 
 
-;; ALL-THE-ICONS, ALL-THE-ICONS-DIRED : Icons for dired, etc.  Install the latest fonts with M-x all-the-icons-install-fonts
-(use-package all-the-icons
-  :ensure t
-  :if (display-graphic-p))
+;; ICONS and FONTS
 
-(use-package all-the-icons-dired
+;; Remember to do M-x and run `nerd-icons-install-fonts' to get the
+;; font files.  Then restart Emacs to see the effect.
+(use-package nerd-icons
+  :ensure t)
+
+(use-package nerd-icons-completion
   :ensure t
-  :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+  :after marginalia
+  :config
+  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :ensure t
+  :hook (dired-mode . nerd-icons-dired-mode))
 
 ;; Set the Font Face
 (set-face-attribute 'default nil
@@ -243,85 +271,79 @@
 
 
 
-;; IVY, IVY-RICH, COUNSEL
-
-;; COUNSEL, a collection of Ivy-enhanced versions of common Emacs commands.
-(use-package counsel
+;; VERTICO, MARGINALIA, ORDERLESS, SAVEHIST, CORFU
+(use-package vertico
   :ensure t
-  :after ivy
-  :config (counsel-mode))
+  :hook (after-init . vertico-mode))
 
-;; IVY, a generic completion mechanism for Emacs.
-(use-package ivy
+(use-package marginalia
   :ensure t
-  :bind
-  ;; ivy-resume resumes the last Ivy-based completion.
-  (("C-c C-r" . ivy-resume)
-   ("C-x B" . ivy-switch-buffer-other-window))
-  :custom
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (setq enable-recursive-minibuffers t)
+  :hook (after-init . marginalia-mode))
+
+(use-package orderless
+  :ensure t
   :config
-  (ivy-mode 1))
+  (setq completion-styles '(orderless basic))
+  (setq completion-category-defaults nil)
+  (setq completion-category-overrides nil))
 
-;; ALL-THE-ICONS-IVY-RICH
-(use-package all-the-icons-ivy-rich
+(use-package savehist
+  :ensure nil ; it is built-in
+  :hook (after-init . savehist-mode))
+
+(use-package corfu
   :ensure t
-  :init (all-the-icons-ivy-rich-mode 1))
+  :hook (after-init . global-corfu-mode)
+  :bind (:map corfu-map ("<tab>" . corfu-complete))
+  :config
+  (setq tab-always-indent 'complete)
+  (setq corfu-preview-current nil)
+  (setq corfu-min-width 20)
 
-;; IVY-RICH allows us to add descriptions alongside the commands in M-x.
-(use-package ivy-rich
-  :after ivy
+  (setq corfu-popupinfo-delay '(1.25 . 0.5))
+  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
+
+  ;; Sort by input history (no need to modify `corfu-sort-function').
+  (with-eval-after-load 'savehist
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history)))
+
+
+
+;;; DIRED, DIRED-SUBTREEE, TRASHEED
+
+(use-package dired
+  :ensure nil
+  :commands (dired)
+  :hook
+  ((dired-mode . dired-hide-details-mode)
+   (dired-mode . hl-line-mode))
+  :config
+  (setq dired-recursive-copies 'always)
+  (setq dired-recursive-deletes 'always)
+  (setq delete-by-moving-to-trash t)
+  (setq dired-dwim-target t))
+
+(use-package dired-subtree
   :ensure t
-  :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
-  :custom
-  (ivy-rich-ivy-path-style 'abbrev
-			   ivy-virtual-abbreviate 'full
-			   ivy-rich-switch-buffer-align-virtual-buffer t))
+  :after dired
+  :bind
+  ( :map dired-mode-map
+    ("<tab>" . dired-subtree-toggle)
+    ("TAB" . dired-subtree-toggle)
+    ("<backtab>" . dired-subtree-remove)
+    ("S-TAB" . dired-subtree-remove))
+  :config
+  (setq dired-subtree-use-backgrounds nil))
 
-;; SWIPER, an enhanced alternative to isearch
-(use-package swiper
-  :after ivy
+(use-package trashed
   :ensure t
-  :bind ("C-s" . swiper))
-
-;; ivy-based interface to standard commands
-;;(global-set-key (kbd "C-s") 'swiper-isearch)
-;;(global-set-key (kbd "M-x") 'counsel-M-x)
-;;(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-;;(global-set-key (kbd "M-y") 'counsel-yank-pop)
-;;(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-;;(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-;;(global-set-key (kbd "<f1> l") 'counsel-describe-library)
-;;(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-;;(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-;;(global-set-key (kbd "<f2> j") 'counsel-set-variable)
-;;(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-;;(global-set-key (kbd "C-c v") 'ivy-push-view)
-;;(global-set-key (kbd "C-c V") 'ivy-pop-view)
-
-;; ivy-based interfaces to shell and other tools
-;;(global-set-key (kbd "C-c c") 'counsel-compile)
-;;(global-set-key (kbd "C-c g") 'counsel-git)
-;;(global-set-key (kbd "C-c j") 'counsel-git-grep)
-;;(global-set-key (kbd "C-c L") 'counsel-git-log)
-;;(global-set-key (kbd "C-c k") 'counsel-rg)
-;;(global-set-key (kbd "C-c m") 'counsel-linux-app)
-;;(global-set-key (kbd "C-c n") 'counsel-fzf)
-;;(global-set-key (kbd "C-x l") 'counsel-locate)
-;;(global-set-key (kbd "C-c J") 'counsel-file-jump)
-;;(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-;;(global-set-key (kbd "C-c w") 'counsel-wmctrl)
-
-;; ivy-resume and other commands
-;;(global-set-key (kbd "C-c C-r") 'ivy-resume)
-;;(global-set-key (kbd "C-c b") 'counsel-bookmark)
-;;(global-set-key (kbd "C-c d") 'counsel-descbinds)
-;;(global-set-key (kbd "C-c g") 'counsel-git)
-;;(global-set-key (kbd "C-c o") 'counsel-outline)
-;;(global-set-key (kbd "C-c t") 'counsel-load-theme)
-;;(global-set-key (kbd "C-c F") 'counsel-org-file)
+  :commands (trashed)
+  :config
+  (setq trashed-action-confirmer 'y-or-n-p)
+  (setq trashed-use-header-line t)
+  (setq trashed-sort-key '("Date deleted" . t))
+  (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 
 
@@ -364,51 +386,40 @@
 ;; DEVELOPMENT PACKAGES
 
 ;; PAREDIT : Parentheses matching and colorization for lisps
-(use-package paredit
-  :ensure t)
-;;(add-hook 'prog-mode-hook #'enable-paredit-mode)
-
-
+;;(use-package paredit
+  ;;:ensure t)
 
 ;; RAINBOW-DELIMITERS : different colored parens based on nesting
 (use-package rainbow-delimiters
   :ensure t)
-;;(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+;; SMARTPARENS :
+(use-package smartparens
+             :ensure t)
 
 ;; RACKET-MODE : Racket development
 (use-package racket-mode
-  :ensure t)
-(add-hook 'racket-mode-hook #'enable-paredit-mode)
+             :ensure t)
 (add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'racket-mode-hook #'turn-on-surround-mode)
-(add-hook 'racket-repl-mode-hook #'enable-paredit-mode)
-(add-hook 'racket-repl-hook #'rainbow-delimiters-mode)
-(add-hook 'racket-repl-mode-hook #'turn-on-surround-mode)
+(add-hook 'racket-mode-hook #'smartparens-mode)
+(add-hook 'racket-repl-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'racket-repl-mode-hook #'smartparens-mode)
+
+;; SCHEME MODE
+(add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'scheme-mode-hook #'smartparens-mode)
 
 ;; GEISER-RACKET : Racket development
 (use-package geiser-racket
-  :ensure t)
+             :ensure t)
+
 ;; GEISER-CHEZ : Chez Scheme development
 (use-package geiser-chez
              :ensure t)
-(add-hook 'scheme-mode-hook #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'scheme-mode-hook #'turn-on-surround-mode)
 
+(add-hook 'geiser-repl-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'geiser-repl-mode-hook #'smartparens-mode)
 (setq geiser-active-implementations '(racket chez))
 
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992" default)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-)
+;; 2025-02-01 jbgreer debugging evil-surround-mode
+;; (defun surround-mode () (debug))

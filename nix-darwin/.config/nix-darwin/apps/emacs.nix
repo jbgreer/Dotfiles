@@ -6,6 +6,7 @@
   services.emacs = {
     enable = true;
     package = pkgs.emacs;
+    # additionalPath = "";
   };
 
   programs.emacs = {
