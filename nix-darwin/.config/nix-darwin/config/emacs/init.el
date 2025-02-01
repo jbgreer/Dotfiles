@@ -366,13 +366,12 @@
 (setq org-log-into-drawer nil)
 
 (use-package org
-  :ensure nil ; do not try to install it as it is built-in
+  :ensure nil ; built-in
   :config
   (setq org-M-RET-may-split-line '((default . nil)))
   (setq org-insert-heading-respect-content t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
-
   (setq org-directory "/Org")
   (setq org-agenda-files (list org-directory))
 
@@ -385,10 +384,6 @@
 
 ;; DEVELOPMENT PACKAGES
 
-;; PAREDIT : Parentheses matching and colorization for lisps
-;;(use-package paredit
-  ;;:ensure t)
-
 ;; RAINBOW-DELIMITERS : different colored parens based on nesting
 (use-package rainbow-delimiters
   :ensure t)
@@ -397,7 +392,7 @@
 (use-package smartparens
              :ensure t)
 
-;; RACKET-MODE : Racket development
+;; RACKET-MODE :
 (use-package racket-mode
              :ensure t)
 (add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
@@ -409,17 +404,14 @@
 (add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'scheme-mode-hook #'smartparens-mode)
 
-;; GEISER-RACKET : Racket development
+;; GEISER-RACKET
 (use-package geiser-racket
              :ensure t)
 
-;; GEISER-CHEZ : Chez Scheme development
+;; GEISER-CHEZ
 (use-package geiser-chez
              :ensure t)
 
 (add-hook 'geiser-repl-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'geiser-repl-mode-hook #'smartparens-mode)
 (setq geiser-active-implementations '(racket chez))
-
-;; 2025-02-01 jbgreer debugging evil-surround-mode
-;; (defun surround-mode () (debug))
