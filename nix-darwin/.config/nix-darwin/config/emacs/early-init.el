@@ -1,14 +1,14 @@
 ;; early-init.el jbgreer
 
 ;; default gc cons threshold
-(defvar default-gc-cons-threshold 16777216 ; 16mb
+(defvar default-gc-cons-threshold (* 16 1024 1024)
   "desired value of `gc-cons-threshold'during normal emacs operations.")
 
 ;; make garbage collector less invasive during startup
 (setq gc-cons-threshold  most-positive-fixnum
       gc-cons-percentage 0.6)
 
-;; Prevent early unstalyed emacs
+;; Prevent early unstylized emacs
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)

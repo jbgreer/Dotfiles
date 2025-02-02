@@ -12,22 +12,33 @@
 
 ;; PACKAGE
 (require 'package)
-(package-initialize)
-
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("org-elpa" . "https://orgmode.org/elpa/"))
+(package-initialize)
 
 (when (< emacs-major-version 29)
   (unless (package-installed-p 'use-package)
     (unless package-archive-contents
       (package-refresh-contents))
     (package-install 'use-package)))
-
 (setq use-package-verbose t)
 
+;; disable nativing compilation warnings
+(setq native-comp-async-report-warnings-errors nil)
 
-;; DELSEL
+
+;; Indent with 2 spaces
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
+
+
+;; YYYY-MM-DD Calendar
+(setq calendar-date-style 'iso)
+
+
+
+;; DELSEL : delete selection if you insert
 (use-package delsel
   :ensure nil
   :hook (after-init . delete-selection-mode))
@@ -358,6 +369,9 @@
 
 ;; ORG MODE
 
+;; pin org to built-in version
+(setq package-pinned-packages '((org . "built-in")))
+
 ;; These are the defaults we want to change.  We do so in the
 ;; following `use-package' declaration.
 (setq org-M-RET-may-split-line '((default . t)))
@@ -372,7 +386,7 @@
   (setq org-insert-heading-respect-content t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
-  (setq org-directory "/Org")
+  (setq org-directory "~/Org")
   (setq org-agenda-files (list org-directory))
 
   ;; Learn about the ! and more by reading the relevant section of the
