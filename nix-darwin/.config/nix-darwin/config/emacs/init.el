@@ -146,6 +146,19 @@
      "h r r" '((lambda () (interactive) (load-file (concat user-emacs-directory "init.el")) :wk "Reload emacs config")))
      ;; "h r r" '(reload-init-file :wk "Reload emacs config"))
 
+  ;; org-mode
+  (jg/leader-keys
+    "o" '(:ignore t :wk "Org")
+    "o a" '(org-agenda :wk "Org Agenda")
+    "o c" '(org-capture :wk "Org Capture")
+    "o e" '(org-export-dispatch :wk "Org Export Dispatch")
+    "o i" '(org-toggle-item :wk "Org Item Toggle")
+    "o l" '(org-store-link :wk "Org Store Link")
+    "o t" '(org-todo :wk "Org Todo")
+    "o B" '(org-babel-tangle :wk "Org Babel Tangle")
+    "o T" '(org-todo-list :wk "Org Todo List")
+    "o d" '(org-time-stamp :wk "Org Date/timestamp"))
+
   ;; toggle
   (jg/leader-keys
    "t" '(:ignore t :wk "Toggle")
@@ -368,9 +381,6 @@
 
 
 ;; ORG MODE
-
-;; pin org to built-in version
-(setq package-pinned-packages '((org . "built-in")))
 
 ;; These are the defaults we want to change.  We do so in the
 ;; following `use-package' declaration.
