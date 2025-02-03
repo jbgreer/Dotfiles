@@ -13,6 +13,7 @@
       wget             # tool for retrieving files via FTP, HTTP, HTTPS
     ];
 
+  # fonts
   fonts.packages = with pkgs; [
       fira-code-symbols
       font-awesome
@@ -26,13 +27,9 @@
     enable = true;
     global.autoUpdate = true;
     casks = [
-      # "1password" separately installed
       "spotify"
       "karabiner-elements"
       "racket"
-    ];
-    brews = [
-      "exercism"
     ];
   };
 
@@ -54,7 +51,7 @@
 
 # Platform should be either "x86_64-darwin" or "aarch64-darwin"
   nixpkgs.hostPlatform = "aarch64-darwin";
-# needed for Google Chrome
+# needed for Google Chrome, 1Password
   nixpkgs.config.allowUnfree = true;
 
 # Create /etc/zshrc that loads the nix-darwin environment.

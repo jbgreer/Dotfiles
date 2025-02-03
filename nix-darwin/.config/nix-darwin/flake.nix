@@ -54,6 +54,7 @@
 
       modules = [
         ./darwin.nix
+
         home-manager.darwinModules.home-manager {
           home-manager.backupFileExtension = "backup";
           home-manager.useGlobalPkgs = true;
