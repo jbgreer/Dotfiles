@@ -38,8 +38,6 @@
 
     # user account packages
     packages = with pkgs; [
-      _1password
-      _1password-gui
       age                 # modern encryption tool with small explicity keys
       alacritty           # GPU-accelerated terminal emulator
       bat                 # cat clone with highlighting and git integration
@@ -75,7 +73,6 @@
   };
 
   imports = [
-    ./apps/1password.nix
     ./apps/alacritty.nix
     ./apps/bat.nix
     ./apps/direnv.nix
@@ -84,7 +81,6 @@
     ./apps/fd.nix
     ./apps/fzf.nix
     ./apps/git.nix
-    ./apps/google-chrome.nix
     ./apps/htop.nix
     ./apps/lazygit.nix
     ./apps/home-manager.nix
