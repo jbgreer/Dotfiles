@@ -13,7 +13,7 @@ family = "FiraCode Nerd Font"
 style = "Regular"
 
 [general]
-import = ["/nix/store/8vskmvkg587b9bp8wdnks4x66qwgymb7-alacritty-f6cb5a5/catppuccin-mocha.toml"]
+import = ["~/.config/alacritty/catppuccin-mocha.toml"]
 
 [scrolling]
 history = 1000
