@@ -38,7 +38,7 @@ eval "$(fzf --zsh)"
 
 
 # OH-MY-POSH
-eval "$(oh-my-posh init zsh)"
+eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
 
 # Aliases
 alias -- eza='eza --git'
