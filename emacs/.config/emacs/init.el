@@ -1,6 +1,7 @@
 ;; 2023-07-03 jbgreer init.el
 ;; 2025-01-26 jbgreer removed pre-29 cruft
 ;; 2025-01-30 jbgreer prot simple +
+;; 2025-02-09 jbgreer remove evil
 
 
 (setq debug-on-error t)
@@ -17,11 +18,6 @@
 (add-to-list 'package-archives '("org-elpa" . "https://orgmode.org/elpa/"))
 (package-initialize)
 
-(when (< emacs-major-version 29)
-  (unless (package-installed-p 'use-package)
-    (unless package-archive-contents
-      (package-refresh-contents))
-    (package-install 'use-package)))
 (setq use-package-verbose t)
 
 ;; disable nativing compilation warnings
@@ -44,148 +40,21 @@
   :hook (after-init . delete-selection-mode))
 
 
+;; 
 (defun jg/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
-
-- When the region is active, disable it.
-- When a minibuffer is open, but not focused, close the minibuffer.
-- When the Completions buffer is selected, close it.
-- In every other case use the regular `keyboard-quit'."
+  - When the region is active, disable it.
+  - When a minibuffer is open, but not focused, close the minibuffer.
+  - When the Completions buffer is selected, close it.
+  - In every other case use the regular `keyboard-quit'."
   (interactive)
   (cond
-   ((region-active-p)
-    (keyboard-quit))
-   ((derived-mode-p 'completion-list-mode)
-    (delete-completion-window))
-   ((> (minibuffer-depth) 0)
-    (abort-recursive-edit))
-   (t
-    (keyboard-quit))))
-
+    ((region-active-p) (keyboard-quit))
+     ((derived-mode-p 'completion-list-mode) (delete-completion-window))
+     ((> (minibuffer-depth) 0) (abort-recursive-edit))
+     (t (keyboard-quit))))
 (define-key global-map (kbd "C-g") #'jg/keyboard-quit-dwim)
 
-
-
-;; EVIL, EVIL-COLLECTION, EVIL-TUTOR- vi emulation
-(use-package evil
-  :ensure t
-  :init
-  (setq evil-want-integration t) ;; default setting
-  (setq evil-want-keybinding nil)
-  (setq evil-vsplit-window-right t)
-  (setq evil-split-window-below t)
-  (evil-mode 1))
-
-(use-package evil-collection
-  :ensure t
-  :after evil
-  :config
-  (setq evil-collection-mode-list '(dashboard dired ibuffer))
-  :init (evil-collection-init))
-
-;;(use-package evil-surround
-  ;;:ensure t
-  ;;:after evil)
-
-(use-package evil-smartparens
-             :ensure t
-             :after evil)
-
-(use-package evil-tutor
-  :ensure t
-  :after evil)
-
-
-
-;; GENERAL - keybindings
-(use-package general
-  :ensure t
-  :config
-  (general-evil-setup)
-
-  ;; set up 'SPC' as the global leader key
-  (general-create-definer jg/leader-keys
-			  :states '(normal insert visual emacs)
-			  :keymaps 'override
-			  :prefix "SPC" ;; set leader
-			  :global-prefix "M-SPC") ;; access leader in insert mode
-
-  ;; find
-  (jg/leader-keys
-    "f f" '(find-file :wk "Find file")
-    "f c" '((lambda () (interactive) (find-file (concat user-emacs-directory "init.el"))) :wk "Edit emacs config")
-    "f r" '(counsel-recentf :wk "Find recent files")
-    "TAB TAB" '(comment-line :wk "Comment lines"))
-
-  ;; buffer
-  (jg/leader-keys
-     "b" '(:ignore t :wk "buffer")
-     "b b" '(switch-to-buffer :wk "Switch buffer")
-     "b i" '(ibuffer :wk "Ibuffer")
-     "b k" '(kill-this-buffer :wk "Kill this buffer")
-     "b n" '(next-buffer :wk "Next buffer")
-     "b p" '(previous-buffer :wk "Previous buffer")
-     "b r" '(revert-buffer :wk "Reload buffer"))
-
-  ;; evaluate
-  (jg/leader-keys
-     "e" '(:ignore t :wk "Eshell/Evaluate")
-     "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
-     "e d" '(eval-defun :wk "Evaluate defun containing or after point")
-     "e e" '(eval-expression :wk "Evaluate an elisp expression")
-     "e h" '(counsel-esh-history :which-key "Eshell history")
-     "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
-     "e r" '(eval-region :wk "Evaluate elisp in region")
-     "e s" '(eshell :which-key "Eshell"))
-
-  ;; help
-  (jg/leader-keys
-     "h" '(:ignore t :wk "Help")
-     "h f" '(describe-function :wk "Describe function")
-     "h z" '(describe-variable :wk "Describe variable")
-     "h r r" '((lambda () (interactive) (load-file (concat user-emacs-directory "init.el")) :wk "Reload emacs config")))
-     ;; "h r r" '(reload-init-file :wk "Reload emacs config"))
-
-  ;; org-mode
-  (jg/leader-keys
-    "o" '(:ignore t :wk "Org")
-    "o a" '(org-agenda :wk "Org Agenda")
-    "o c" '(org-capture :wk "Org Capture")
-    "o e" '(org-export-dispatch :wk "Org Export Dispatch")
-    "o i" '(org-toggle-item :wk "Org Item Toggle")
-    "o l" '(org-store-link :wk "Org Store Link")
-    "o t" '(org-todo :wk "Org Todo")
-    "o B" '(org-babel-tangle :wk "Org Babel Tangle")
-    "o T" '(org-todo-list :wk "Org Todo List")
-    "o d" '(org-time-stamp :wk "Org Date/timestamp"))
-
-  ;; toggle
-  (jg/leader-keys
-   "t" '(:ignore t :wk "Toggle")
-   "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
-   "t t" '(visual-line-mode :wk "Toggle truncated lines")
-   "t v" '(vterm-toggle :wk "Toggle vterm"))
-
-  ;; windows
-  (jg/leader-keys
-    "w" '(:ignore t :wk "Windows")
-    ;; Window splits
-    "w c" '(evil-window-delete :wk "Close window")
-    "w n" '(evil-window-new :wk "New window")
-    "w s" '(evil-window-split :wk "Horizontal split window")
-    "w v" '(evil-window-vsplit :wk "Vertical split window")
-    ;; Window motions
-    "w h" '(evil-window-left :wk "Window left")
-    "w j" '(evil-window-down :wk "Window down")
-    "w k" '(evil-window-up :wk "Window up")
-    "w l" '(evil-window-right :wk "Window right")
-    "w w" '(evil-window-next :wk "Goto next window")
-    ;; Move Windows
-    "w H" '(buf-move-left :wk "Buffer move left")
-    "w J" '(buf-move-down :wk "Buffer move down")
-    "w K" '(buf-move-up :wk "Buffer move up")
-    "w L" '(buf-move-right :wk "Buffer move right"))
-)
 
 
 ;;; UI STUFF
