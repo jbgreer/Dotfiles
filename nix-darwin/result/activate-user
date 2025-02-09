@@ -1,0 +1,459 @@
+#! /nix/store/ap4xjkwp0lshyywxqw88phnnc0j1fnzw-bash-5.2p32/bin/bash
+set -e
+set -o pipefail
+export PATH="/nix/store/mhba9c4ky90xp6w433ilvnfrg3zfxwrf-gnugrep-3.11/bin:/nix/store/21myf7jnm3j5myc9yp8nlhgp427si0cw-coreutils-9.5/bin:/nix/store/8zy0sqabdmby0ddr31llhg12a6030j3b-darwin-system-24.11.20240909.5775c25+darwin4.5b2d8e9/sw/bin:/usr/bin:/bin"
+
+systemConfig=/nix/store/8zy0sqabdmby0ddr31llhg12a6030j3b-darwin-system-24.11.20240909.5775c25+darwin4.5b2d8e9
+
+_status=0
+trap "_status=1" ERR
+
+# Ensure a consistent umask.
+umask 0022
+
+
+
+# This should be running at the system level, but as user activation runs first
+# we run it here with sudo
+if ! test -L /run; then
+  if ! grep -q '^run\b' /etc/synthetic.conf 2>/dev/null; then
+      echo "setting up /run via /etc/synthetic.conf..."
+      echo -e "run\tprivate/var/run" | sudo tee -a /etc/synthetic.conf >/dev/null
+      sudo /System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -B &>/dev/null || true
+      sudo /System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -t &>/dev/null || true
+      if ! test -L /run; then
+        echo "warning: apfs.util failed to symlink /run"
+      fi
+  fi
+  if ! test -L /run; then
+      echo "setting up /run..."
+      sudo ln -sfn private/var/run /run
+  fi
+  if ! test -L /run; then
+    echo "warning: failed to symlink /run"
+  fi
+fi
+
+darwinChanges=/dev/null
+if test -e /run/current-system/darwin-changes; then
+  darwinChanges=/run/current-system/darwin-changes
+fi
+
+darwinChanges=$(diff --changed-group-format='%>' --unchanged-group-format= /run/current-system/darwin-changes $systemConfig/darwin-changes 2> /dev/null) || true
+if test -n "$darwinChanges"; then
+  echo >&2
+  echo "[1;1mCHANGELOG[0m" >&2
+  echo >&2
+  echo "$darwinChanges" >&2
+  echo >&2
+fi
+
+if ! test -e /run; then
+    echo "[1;31merror: Directory /run does not exist, aborting activation[0m" >&2
+    echo "Create a symlink to /var/run with:" >&2
+    if test -e /etc/synthetic.conf; then
+        echo >&2
+        echo "$ printf 'run\tprivate/var/run\n' | sudo tee -a /etc/synthetic.conf" >&2
+        echo "$ sudo /System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -B # For Catalina" >&2
+        echo "$ sudo /System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -t # For Big Sur and later" >&2
+        echo >&2
+        echo "The current contents of /etc/synthetic.conf is:" >&2
+        echo >&2
+        sed 's/^/    /' /etc/synthetic.conf >&2
+        echo >&2
+    else
+        echo >&2
+        echo "$ sudo ln -s private/var/run /run" >&2
+        echo >&2
+    fi
+    exit 2
+fi
+
+if dscl . -list /Users | grep -q '^nixbld'; then
+    echo "[1;31mwarning: Detected old style nixbld users[0m" >&2
+    echo "These can cause migration problems when upgrading to certain macOS versions" >&2
+    echo "You can enable the following option to migrate to new style nixbld users" >&2
+    echo >&2
+    echo "    nix.configureBuildUsers = true;" >&2
+    echo >&2
+fi
+
+buildUser=$(dscl . -read /Groups/nixbld GroupMembership 2>&1 | awk '/^GroupMembership: / {print $2}') || true
+if [ -z $buildUser ]; then
+    echo "[1;31merror: Using the nix-daemon requires build users, aborting activation[0m" >&2
+    echo "Create the build users or disable the daemon:" >&2
+    echo "$ darwin-install" >&2
+    echo >&2
+    echo "or set (this requires some manual intervention to restore permissions)" >&2
+    echo >&2
+    echo "    services.nix-daemon.enable = false;" >&2
+    echo >&2
+    exit 2
+fi
+
+if test -w /nix/var/nix/db -a ! -O /nix/store; then
+    echo >&2 "[1;31merror: the store is not owned by this user, but /nix/var/nix/db is writable[0m"
+    echo >&2 "If you are using the daemon:"
+    echo >&2
+    echo >&2 "    sudo chown -R root:wheel /nix/var/nix/db"
+    echo >&2
+    echo >&2 "Otherwise:"
+    echo >&2
+    echo >&2 "    sudo chown -R $USER:staff /nix/store"
+    echo >&2
+    exit 2
+fi
+
+channelsLink=$(readlink "$HOME/.nix-defexpr/channels") || true
+case "$channelsLink" in
+  *"$USER"*)
+    ;;
+  "")
+    ;;
+  *)
+    echo "[1;31merror: The ~/.nix-defexpr/channels symlink does not point your users channels, aborting activation[0m" >&2
+    echo "Running nix-channel will regenerate it" >&2
+    echo >&2
+    echo "    rm ~/.nix-defexpr/channels" >&2
+    echo "    nix-channel --update" >&2
+    echo >&2
+    exit 2
+    ;;
+esac
+
+if grep -q 'etc/profile.d/nix-daemon.sh' /etc/profile; then
+    echo "[1;31merror: Found nix-daemon.sh reference in /etc/profile, aborting activation[0m" >&2
+    echo "This will override options like nix.nixPath because it runs later," >&2
+    echo "remove this snippet from /etc/profile:" >&2
+    echo >&2
+    echo "    # Nix" >&2
+    echo "    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then" >&2
+    echo "      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'" >&2
+    echo "    fi" >&2
+    echo "    # End Nix" >&2
+    echo >&2
+    exit 2
+fi
+
+if [[ -d /etc/ssh/authorized_keys.d ]]; then
+    printf >&2 '\e[1;31merror: /etc/ssh/authorized_keys.d exists, aborting activation\e[0m\n'
+    printf >&2 'SECURITY NOTICE: The previous implementation of the\n'
+    printf >&2 '`users.users.<name>.openssh.authorizedKeys.*` options would not delete\n'
+    printf >&2 'authorized keys files when the setting for a given user was removed.\n'
+    printf >&2 '\n'
+    printf >&2 "This means that if you previously stopped managing a user's authorized\n"
+    printf >&2 'SSH keys with nix-darwin, or intended to revoke their access by\n'
+    printf >&2 'removing the option, the previous set of keys could still be used to\n'
+    printf >&2 'log in as that user.\n'
+    printf >&2 '\n'
+    printf >&2 'You can check the /etc/ssh/authorized_keys.d directory to see which\n'
+    printf >&2 'keys were permitted; afterwards, please remove the directory and\n'
+    printf >&2 're-run activation. The options continue to be supported and will now\n'
+    printf >&2 'correctly permit only the keys in your current system configuration.\n'
+    exit 2
+fi
+
+
+if test ${checkActivation:-0} -eq 1; then
+  echo "ok" >&2
+  exit 0
+fi
+
+declare -A etcSha256Hashes=(
+  [bashrc]='444c716ac2ccd9e1e3347858cb08a00d2ea38e8c12fdc5798380dc261e32e9ef 617b39e36fa69270ddbee19ddc072497dbe7ead840cbd442d9f7c22924f116f4 6be16cf7c24a3c6f7ae535c913347a3be39508b3426f5ecd413e636e21031e66 08ffbf991a9e25839d38b80a0d3bce3b5a6c84b9be53a4b68949df4e7e487bb7'
+  [nix/nix.conf]='7c2d80499b39256b03ee9abd3d6258343718306aca8d472c26ac32c9b0949093 19299897fa312d9d32b3c968c2872dd143085aa727140cec51f57c59083e93b9 c4ecc3d541c163c8fcc954ccae6b8cab28c973dc283fea5995c69aaabcdf785f ef78f401a9b5a42fd15e967c50da384f99ec62f9dbc66ea38f1390b46b63e1ff c06b0c6080dd1d62e61a30cfad100c0cfed2d3bcd378e296632dc3b28b31dc69 ff08c12813680da98c4240328f828647b67a65ba7aa89c022bd8072cba862cf1 f3e03d851c240c1aa7daccd144ee929f0f5971982424c868c434eb6030e961d4 c6080216f2a170611e339c3f46e4e1d61aaf0d8b417ad93ade8d647da1382c11 97f4135d262ca22d65c9554aad795c10a4491fa61b67d9c2430f4d82bbfec9a2 5d23e6d7015756c6f300f8cd558ec4d9234ca61deefd4f2478e91a49760b0747 e4974acb79c56148cb8e92137fa4f2de9b7356e897b332fc4e6769e8c0b83e18 966d22ef5bb9b56d481e8e0d5f7ca2deaf4d24c0f0fc969b2eeaa7ae0aa42907 24797ac05542ff8b52910efc77870faa5f9e3275097227ea4e50c430a5f72916 b027b5cad320b5b8123d9d0db9f815c3f3921596c26dc3c471457098e4d3cc40'
+  [nix/registry.json]=''
+  [profiles/per-user/jbgreer]=''
+  [ssh/sshd_config.d/101-authorized-keys.conf]=5a5dc1e20e8abc162ad1cc0259bfd1dbb77981013d87625f97d9bd215175fc0a
+  [ssl/certs/ca-certificates.crt]=''
+  [zprofile]='db8422f92d8cff684e418f2dcffbb98c10fe544b5e8cd588b2009c7fa89559c5 0235d3c1b6cf21e7043fbc98e239ee4bc648048aafaf6be1a94a576300584ef2'
+  [zshenv]=d07015be6875f134976fce84c6c7a77b512079c1c5f9594dfa65c70b7968b65f
+  [zshrc]='19a2d673ffd47b8bed71c5218ff6617dfc5e8533b240b9ba79142a45f8823c23 fb5827cb4712b7e7932d438067ec4852c8955a9ff0f55e282473684623ebdfa1 c5a00c072c920f46216454978c44df044b2ec6d03409dc492c7bdcd92c94a110 40b0d8751adae5b0100a4f863be5b75613a49f62706427e92604f7e04d2e2261 2af1b563e389d11b76a651b446e858116d7a20370d9120a7e9f78991f3e5f336'
+)
+
+declare -a etcProblems=()
+
+while IFS= read -r -d "" configFile; do
+  subPath=${configFile#"$systemConfig"/etc/}
+  etcStaticFile=/etc/static/$subPath
+  etcFile=/etc/$subPath
+
+  # We need to check files that exist and aren't already links to
+  # $etcStaticFile for known hashes.
+  if [[
+    -e $etcFile
+    && $(readlink "$etcFile") != "$etcStaticFile"
+  ]]; then
+    # Only check hashes of paths that resolve to regular files;
+    # everything else (e.g. directories) we complain about
+    # unconditionally.
+    if [[ -f $(readlink -f "$etcFile") ]]; then
+      etcFileSha256Output=$(shasum -a 256 "$etcFile")
+      etcFileSha256Hash=${etcFileSha256Output%% *}
+      for knownSha256Hash in ${etcSha256Hashes[$subPath]}; do
+        if [[ $etcFileSha256Hash == "$knownSha256Hash" ]]; then
+          # Hash matches, OK to overwrite; go to the next file.
+          continue 2
+        fi
+      done
+    fi
+    etcProblems+=("$etcFile")
+  fi
+done < <(find -H "$systemConfig/etc" -type l -print0)
+
+if (( ${#etcProblems[@]} )); then
+  printf >&2 '\x1B[1;31merror: Unexpected files in /etc, aborting '
+  printf >&2 'activation\x1B[0m\n'
+  printf >&2 'The following files have unrecognized content and would be '
+  printf >&2 'overwritten:\n\n'
+  printf >&2 '  %s\n' "${etcProblems[@]}"
+  printf >&2 '\nPlease check there is nothing critical in these files, '
+  printf >&2 'rename them by adding .before-nix-darwin to the end, and '
+  printf >&2 'then try again.\n'
+  exit 2
+fi
+
+
+# Set defaults
+echo >&2 "user defaults..."
+
+defaults write -g 'AppleShowAllExtensions' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write -g 'AppleShowAllFiles' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write -g 'AppleShowScrollBars' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<string>Always</string>
+</plist>'
+defaults write -g 'NSTableViewDefaultSizeMode' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<integer>2</integer>
+</plist>'
+
+
+
+defaults write com.apple.menuextra.clock 'Show24Hour' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write com.apple.menuextra.clock 'ShowDate' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<integer>1</integer>
+</plist>'
+defaults write com.apple.menuextra.clock 'ShowDayOfMonth' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write com.apple.menuextra.clock 'ShowDayOfWeek' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write com.apple.menuextra.clock 'ShowSeconds' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write com.apple.dock 'autohide' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write com.apple.dock 'mru-spaces' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<false/>
+</plist>'
+defaults write com.apple.dock 'orientation' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<string>right</string>
+</plist>'
+defaults write com.apple.dock 'persistent-apps' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>tile-data</key>
+		<dict>
+			<key>file-data</key>
+			<dict>
+				<key>_CFURLString</key>
+				<string>/Applications/Google Chrome.app</string>
+				<key>_CFURLStringType</key>
+				<integer>0</integer>
+			</dict>
+		</dict>
+	</dict>
+	<dict>
+		<key>tile-data</key>
+		<dict>
+			<key>file-data</key>
+			<dict>
+				<key>_CFURLString</key>
+				<string>/Applications/Spotify.app</string>
+				<key>_CFURLStringType</key>
+				<integer>0</integer>
+			</dict>
+		</dict>
+	</dict>
+	<dict>
+		<key>tile-data</key>
+		<dict>
+			<key>file-data</key>
+			<dict>
+				<key>_CFURLString</key>
+				<string>/Applications/Visual Studio Code.app</string>
+				<key>_CFURLStringType</key>
+				<integer>0</integer>
+			</dict>
+		</dict>
+	</dict>
+	<dict>
+		<key>tile-data</key>
+		<dict>
+			<key>file-data</key>
+			<dict>
+				<key>_CFURLString</key>
+				<string>/Applications/Firefox.app</string>
+				<key>_CFURLStringType</key>
+				<integer>0</integer>
+			</dict>
+		</dict>
+	</dict>
+	<dict>
+		<key>tile-data</key>
+		<dict>
+			<key>file-data</key>
+			<dict>
+				<key>_CFURLString</key>
+				<string>/Applications/Mozilla VPN.app</string>
+				<key>_CFURLStringType</key>
+				<integer>0</integer>
+			</dict>
+		</dict>
+	</dict>
+</array>
+</plist>'
+defaults write com.apple.dock 'show-recents' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<false/>
+</plist>'
+defaults write com.apple.dock 'tilesize' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<integer>48</integer>
+</plist>'
+defaults write com.apple.dock 'wvous-bl-corner' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<integer>1</integer>
+</plist>'
+defaults write com.apple.dock 'wvous-br-corner' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<integer>1</integer>
+</plist>'
+defaults write com.apple.dock 'wvous-tl-corner' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<integer>1</integer>
+</plist>'
+defaults write com.apple.dock 'wvous-tr-corner' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<integer>1</integer>
+</plist>'
+defaults write com.apple.finder 'AppleShowAllExtensions' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write com.apple.finder 'AppleShowAllFiles' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write com.apple.finder 'FXPreferredViewStyle' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<string>Nisv</string>
+</plist>'
+defaults write com.apple.finder 'ShowPathbar' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+defaults write com.apple.finder 'ShowStatusBar' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<true/>
+</plist>'
+
+
+defaults write com.apple.screencapture 'location' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<string>~/Pictures/screenshots/</string>
+</plist>'
+defaults write com.apple.screensaver 'askForPasswordDelay' $'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<integer>10</integer>
+</plist>'
+
+
+
+
+
+
+
+
+# Only restart Dock if current user is logged in
+if pgrep -xu $UID Dock; then
+  echo >&2 "restarting Dock..."
+  killall Dock || true
+fi
+
+
+# Set up user launchd services in ~/Library/LaunchAgents
+echo "setting up user launchd services..."
+
+
+
+
+
+
+for f in $(ls /run/current-system/user/Library/LaunchAgents 2> /dev/null); do
+  if test ! -e "/nix/store/756s8shsklj58cmx6f3q2jr0lqc7fid6-launchd/user/Library/LaunchAgents/$f"; then
+    echo "removing user service $(basename $f .plist)" >&2
+    launchctl unload ~/Library/LaunchAgents/$f || true
+    if test -e ~/Library/LaunchAgents/$f; then rm -f ~/Library/LaunchAgents/$f; fi
+  fi
+done
+
+# Homebrew Bundle
+echo >&2 "Homebrew bundle..."
+if [ -f "/opt/homebrew/bin/brew" ]; then
+  PATH="/opt/homebrew/bin":$PATH HOMEBREW_NO_AUTO_UPDATE=1 brew bundle --file='/nix/store/2gl02vj3d0q0ml6ggfaqi883la23iq1v-Brewfile' --no-lock --no-upgrade
+else
+  echo -e "\e[1;31merror: Homebrew is not installed, skipping...\e[0m" >&2
+fi
+
+
+
+
+exit $_status
+

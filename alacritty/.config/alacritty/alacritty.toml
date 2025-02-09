@@ -1,0 +1,31 @@
+[font]
+size = 16
+[font.bold]
+family = "FiraCode Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "FiraCode Nerd Font"
+style = "Italic"
+
+[font.normal]
+family = "FiraCode Nerd Font"
+style = "Regular"
+
+[general]
+import = ["/nix/store/8vskmvkg587b9bp8wdnks4x66qwgymb7-alacritty-f6cb5a5/catppuccin-mocha.toml"]
+
+[scrolling]
+history = 1000
+
+[window]
+decorations = "Full"
+opacity = 1.0
+
+[window.dimensions]
+columns = 100
+lines = 53
+
+[window.padding]
+x = 10
+y = 10

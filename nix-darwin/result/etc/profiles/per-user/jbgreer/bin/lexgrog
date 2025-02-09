@@ -1,0 +1,20 @@
+#! /nix/store/ap4xjkwp0lshyywxqw88phnnc0j1fnzw-bash-5.2p32/bin/bash -e
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/hbp1vjv3zql60sr3gpy7jqs1bkgfzjzz-zstd-1.5.6-bin/bin'':'/':'}
+PATH='/nix/store/hbp1vjv3zql60sr3gpy7jqs1bkgfzjzz-zstd-1.5.6-bin/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/f2xwqy8xq17kxbmgfa7q7n3gjfxyj3ax-gzip-1.13/bin'':'/':'}
+PATH='/nix/store/f2xwqy8xq17kxbmgfa7q7n3gjfxyj3ax-gzip-1.13/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+PATH=${PATH:+':'$PATH':'}
+PATH=${PATH/':''/nix/store/wcci622w638g5lrfjgjbwr7w7gs2v389-groff-1.23.0/bin'':'/':'}
+PATH='/nix/store/wcci622w638g5lrfjgjbwr7w7gs2v389-groff-1.23.0/bin'$PATH
+PATH=${PATH#':'}
+PATH=${PATH%':'}
+export PATH
+exec -a "$0" "/nix/store/f0xybbgri3jkg3945h3cgjlys42p0qn6-man-db-2.12.1/bin/.lexgrog-wrapped"  "$@" 

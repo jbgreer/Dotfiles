@@ -1,0 +1,74 @@
+#! /nix/store/ap4xjkwp0lshyywxqw88phnnc0j1fnzw-bash-5.2p32/bin/bash
+set -e
+set -o pipefail
+export PATH=/nix/store/ag9235bpy0jjsrddimvx4p7660c5y8j7-nix-2.18.5/bin:/nix/store/21myf7jnm3j5myc9yp8nlhgp427si0cw-coreutils-9.5/bin:/nix/store/a0qb3qz9nancghgi3z1734c5k79hzwgn-jq-1.7.1-bin/bin:/nix/store/w443mfir51ws94kyl7zq5kipqj74j6m3-git-2.46.0/bin:$HOME/.nix-profile/bin:/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH
+
+evalNix() {
+  nix-instantiate --eval --strict "${extraEvalFlags[@]}" -E "with import <darwin> {}; $*" 2>/dev/null
+}
+
+evalOpt() {
+  evalNix "options.$option.$*"
+}
+
+evalOptAttrs() {
+  evalNix "builtins.concatStringsSep \"\\n\" (builtins.attrNames $*)" | jq -r .
+}
+
+evalOptText() {
+  evalNix "options.$option.$*" | jq -r .
+}
+
+showSyntax() {
+  echo "$0: [-I path] <option>" >&2
+  evalOptAttrs "options"
+  exit 1
+}
+
+# Parse the command line.
+origArgs=("$@")
+extraEvalFlags=()
+option=
+
+while [ "$#" -gt 0 ]; do
+  i="$1"; shift 1
+  case "$i" in
+    --help)
+      showSyntax
+      ;;
+    -I)
+      if [ -z "$1" ]; then
+        echo "$0: ‘$i’ requires an argument"
+        exit 1
+      fi
+      j="$1"; shift 1
+      extraEvalFlags+=("$i" "$j")
+      ;;
+    *)
+      option="$i"
+      ;;
+  esac
+done
+
+if [ -z "$option" ]; then showSyntax; fi
+
+if [ "$(evalOpt "_type")" = '"option"' ]; then
+  echo "Value:"
+  evalOpt "value" || echo "no value"
+  echo
+  echo "Default:"
+  evalOpt "default" || evalOptText "defaultText" || echo "no default"
+  echo
+  echo "Example:"
+  if [ "$(evalOpt "example._type")" = '"literalExpression"' ]; then
+    evalOptText "example.text" || echo "no example"
+  else
+    evalOpt "example" || echo "no example"
+  fi
+  echo
+  echo "Description:"
+  evalOptText "description.text" || echo "no description"
+  echo
+else
+  evalOptAttrs "options.$option"
+fi
