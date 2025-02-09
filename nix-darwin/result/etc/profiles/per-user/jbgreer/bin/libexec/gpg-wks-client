@@ -1,2 +1,0 @@
-#!/nix/store/ap4xjkwp0lshyywxqw88phnnc0j1fnzw-bash-5.2p32/bin/sh
-exec "/nix/store/8qigdawv5riy3z02sxm1rhpc1ia1hfrx-gnupg-2.4.5/bin/gpg-wks-client" "$@"

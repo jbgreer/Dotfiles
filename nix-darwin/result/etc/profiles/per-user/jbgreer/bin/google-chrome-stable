@@ -1,2 +1,0 @@
-#! /nix/store/ap4xjkwp0lshyywxqw88phnnc0j1fnzw-bash-5.2p32/bin/bash -e
-exec "/nix/store/va63fx1cjz6jrwllpfvslz8fi40bci64-google-chrome-128.0.6613.114/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"  --simulate-outdated-no-au='Tue, 31 Dec 2099 23:59:59 GMT'  "$@" 

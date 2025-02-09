@@ -411,6 +411,18 @@
 
 
 
+;; EASY-HUGO - blogging
+(use-package easy-hugo
+             :ensure t
+             :init
+             (setq easy-hugo-bin "/opt/homebrew/bin/hugo")
+             (setq easy-hugo-basedir "~/Blog/")
+             (setq easy-hugo-url "https://jbreer.github.io")
+             :bind ("C-c C-k" . easy-hugo-menu)
+             :config
+             (easy-hugo-enable-menu))
+
+
 ;; DEVELOPMENT PACKAGES
 
 ;; RAINBOW-DELIMITERS : different colored parens based on nesting
@@ -444,3 +456,5 @@
 (add-hook 'geiser-repl-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'geiser-repl-mode-hook #'smartparens-mode)
 (setq geiser-active-implementations '(racket chez))
+(setq geiser-racket-binary "/opt/homebrew/bin/racket")
+(setq geiser-chez-binary "/opt/homebrew/bin/chez")

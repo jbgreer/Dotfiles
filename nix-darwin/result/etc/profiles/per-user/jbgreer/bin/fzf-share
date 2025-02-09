@@ -1,4 +1,0 @@
-#!/nix/store/ap4xjkwp0lshyywxqw88phnnc0j1fnzw-bash-5.2p32/bin/bash
-# Run this script to find the fzf shared folder where all the shell
-# integration scripts are living.
-echo /nix/store/cabxqwq1964bglm63scbjpk64v2fgh6k-fzf-0.55.0/share/fzf

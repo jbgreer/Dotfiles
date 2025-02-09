@@ -1,0 +1,17 @@
+[alias]
+	amend = "commit -a --amend"
+	co = "checkout"
+	undo = "reset HEAD~1 --mixed"
+
+[commit]
+	gpgSign = false
+
+[init]
+	defaultBranch = "main"
+
+[tag]
+	gpgSign = false
+
+[user]
+	email = "jbgreer@gmail.com"
+	name = "Jim Greer"

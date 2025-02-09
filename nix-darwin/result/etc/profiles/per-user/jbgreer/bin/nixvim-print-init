@@ -1,9 +1,0 @@
-#!/nix/store/ap4xjkwp0lshyywxqw88phnnc0j1fnzw-bash-5.2p32/bin/bash
-set -o errexit
-set -o nounset
-set -o pipefail
-
-export PATH="/nix/store/da94qmrdrsaxrakxbnnisncmzjqp17gl-bat-0.24.0/bin:$PATH"
-
-bat --language=lua "/nix/store/bkl0ha06gzcb34iwwqh2hqfbyfhja6vs-init.lua"
-
