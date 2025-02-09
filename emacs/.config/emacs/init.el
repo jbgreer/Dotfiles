@@ -17,7 +17,6 @@
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("org-elpa" . "https://orgmode.org/elpa/"))
 (package-initialize)
-
 (setq use-package-verbose t)
 
 ;; disable nativing compilation warnings
@@ -100,15 +99,12 @@
       :height 140
       :weight 'medium)
 ;; Makes commented text and keywords italics. Font must have italic face available.
-;; This is working in emacsclient but not emacs.
 (set-face-attribute 'font-lock-comment-face nil
       :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil
 		    :slant 'italic)
 
 ;; Set default font on all graphical frames created after restarting Emacs.
-;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
-;; are not right unless I also add this method of setting the default font.
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
 
 ;; Key bindings and mouse whell for zooming in/out
@@ -165,14 +161,21 @@
 
 
 ;; VERTICO, MARGINALIA, ORDERLESS, SAVEHIST, CORFU
+
+;; VERTICO : VERTical Interactive COmpletion
+;; <TAB> : vertico-insert
+;; <RETURN> : vertico-exit
+;; M-<RETURN> : vertico-exit-input
 (use-package vertico
   :ensure t
   :hook (after-init . vertico-mode))
 
+;; MARGINALIA : Marginalia (marks or annotations) in the minibuffer
 (use-package marginalia
   :ensure t
   :hook (after-init . marginalia-mode))
 
+;; ORDERLESS : completion style dividing pattery into space-separated components
 (use-package orderless
   :ensure t
   :config
@@ -180,10 +183,12 @@
   (setq completion-category-defaults nil)
   (setq completion-category-overrides nil))
 
+;; SAVEHIST: save minibuffer history
 (use-package savehist
   :ensure nil ; it is built-in
   :hook (after-init . savehist-mode))
 
+;; CORFU : COmpletion in Region FUnction - enhances in-buffer completion with a popupo
 (use-package corfu
   :ensure t
   :hook (after-init . global-corfu-mode)
@@ -192,10 +197,8 @@
   (setq tab-always-indent 'complete)
   (setq corfu-preview-current nil)
   (setq corfu-min-width 20)
-
   (setq corfu-popupinfo-delay '(1.25 . 0.5))
   (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
-
   ;; Sort by input history (no need to modify `corfu-sort-function').
   (with-eval-after-load 'savehist
     (corfu-history-mode 1)
@@ -205,6 +208,7 @@
 
 ;;; DIRED, DIRED-SUBTREEE, TRASHEED
 
+;; DIRED : create a buffer containing a listing of a directory
 (use-package dired
   :ensure nil
   :commands (dired)
@@ -217,11 +221,14 @@
   (setq delete-by-moving-to-trash t)
   (setq dired-dwim-target t))
 
+;; DIRED-SUBTREE : insert subdirectories in a tree-like fashion
+;; TAB : subtree-toggle
+;; BACKTAB / S-TAB : subtree-remove
 (use-package dired-subtree
   :ensure t
   :after dired
   :bind
-  ( :map dired-mode-map
+  (:map dired-mode-map
     ("<tab>" . dired-subtree-toggle)
     ("TAB" . dired-subtree-toggle)
     ("<backtab>" . dired-subtree-remove)
@@ -229,6 +236,7 @@
   :config
   (setq dired-subtree-use-backgrounds nil))
 
+;; TRASHED : open, view, browse, restore, permanently delete files in the trash
 (use-package trashed
   :ensure t
   :commands (trashed)
@@ -239,10 +247,13 @@
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 
+;; TRANSIENT and MAGIS
 
-;; MAGIT : a git porcelain inside emacs
+;; TRANSIENT : implements keyboard-driven menus in magit
 (use-package transient
   :ensure t)
+
+;; MAGIT : a git porcelain inside emacs
 (use-package magit
   :after transient
   :ensure t)
@@ -292,17 +303,21 @@
              (easy-hugo-enable-menu))
 
 
+
 ;; DEVELOPMENT PACKAGES
 
 ;; RAINBOW-DELIMITERS : different colored parens based on nesting
 (use-package rainbow-delimiters
   :ensure t)
 
-;; SMARTPARENS :
+;; SMARTPARENS : minor mode for working with pairs
 (use-package smartparens
-             :ensure t)
+  :ensure t
+  :config
+  (require 'smartparens-config))
 
-;; RACKET-MODE :
+
+;; RACKET-MODE : Racket programming language mode
 (use-package racket-mode
              :ensure t)
 (add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
@@ -310,7 +325,7 @@
 (add-hook 'racket-repl-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'racket-repl-mode-hook #'smartparens-mode)
 
-;; SCHEME MODE
+;; SCHEME MODE : Scheme programming language mode
 (add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'scheme-mode-hook #'smartparens-mode)
 

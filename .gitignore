@@ -10,4 +10,5 @@ emacs/.config/emacs/config.el
 emacs/.config/emacs/eln-cache
 emacs/.config/emacs/elpaca
 emacs/.config/emacs/eshell
+emacs/.config/emacs/history
 emacs/.config/emacs/transient
