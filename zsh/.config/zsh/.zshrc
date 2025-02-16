@@ -6,7 +6,6 @@ typeset -U path cdpath fpath manpath
 # Use viins keymap as the default.
 bindkey -v
 
-
 # History options should be set in .zshrc and after oh-my-zsh sourcing.
 # See https://github.com/nix-community/home-manager/issues/177.
 HISTSIZE="10000"
@@ -27,15 +26,19 @@ unsetopt EXTENDED_HISTORY
 
 # ZSH autosuggestions
 #source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# ZSH completions
 if type brew &>/dev/null; then
-  fpath=($(brew --prefix)/share/zsh-completions:$fpath)
+  fpath+=/opt/homebrew/share/zsh-completions
+  fpath+=/opt/homebrew/share/zsh/site-functions
 fi
 
 autoload -Uz compinit && compinit
 
 # FZF
-eval "$(fzf --zsh)"
-
+# https://github.com/junegunn/fzf#setting-up-shell-integration
+# set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
 
 # OH-MY-POSH
 eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
