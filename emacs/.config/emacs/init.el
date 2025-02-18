@@ -48,10 +48,10 @@
   - In every other case use the regular `keyboard-quit'."
   (interactive)
   (cond
-    ((region-active-p) (keyboard-quit))
-     ((derived-mode-p 'completion-list-mode) (delete-completion-window))
-     ((> (minibuffer-depth) 0) (abort-recursive-edit))
-     (t (keyboard-quit))))
+   ((region-active-p) (keyboard-quit))
+   ((derived-mode-p 'completion-list-mode) (delete-completion-window))
+   ((> (minibuffer-depth) 0) (abort-recursive-edit))
+   (t (keyboard-quit))))
 (define-key global-map (kbd "C-g") #'jg/keyboard-quit-dwim)
 
 
@@ -87,22 +87,22 @@
 
 ;; Set the Font Face
 (set-face-attribute 'default nil
-      :font "JetBrains Mono"
-      :height 140
-      :weight 'medium)
+                    :font "JetBrains Mono"
+                    :height 140
+                    :weight 'medium)
 (set-face-attribute 'variable-pitch nil
-      :font "Ubuntu"
-      :height 140
-      :weight 'medium)
+                    :font "Ubuntu"
+                    :height 140
+                    :weight 'medium)
 (set-face-attribute 'fixed-pitch nil
-      :font "JetBrains Mono"
-      :height 140
-      :weight 'medium)
+                    :font "JetBrains Mono"
+                    :height 140
+                    :weight 'medium)
 ;; Makes commented text and keywords italics. Font must have italic face available.
 (set-face-attribute 'font-lock-comment-face nil
-      :slant 'italic)
+                    :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil
-		    :slant 'italic)
+		                :slant 'italic)
 
 ;; Set default font on all graphical frames created after restarting Emacs.
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
@@ -119,7 +119,7 @@
 
 ;; Set Frame width/heighth
 (setq default-frame-alist
-  '((top . 25) (left . 275) (width . 140) (height . 60)))
+      '((top . 25) (left . 275) (width . 140) (height . 60)))
 
 ;; Disable Menubar, Toolbars Tooltips, and Scrollbars, and set fringe
 (menu-bar-mode -1)
@@ -270,7 +270,7 @@
 (setq org-log-into-drawer nil)
 
 (use-package org
-  :ensure nil ; built-in
+  :ensure nil                           ; built-in
   :config
   (setq org-M-RET-may-split-line '((default . nil)))
   (setq org-insert-heading-respect-content t)
@@ -293,14 +293,14 @@
 
 ;; EASY-HUGO - blogging
 (use-package easy-hugo
-             :ensure t
-             :init
-             (setq easy-hugo-bin "/opt/homebrew/bin/hugo")
-             (setq easy-hugo-basedir "~/Blog/")
-             (setq easy-hugo-url "https://jbreer.github.io")
-             :bind ("C-c C-k" . easy-hugo-menu)
-             :config
-             (easy-hugo-enable-menu))
+  :ensure t
+  :init
+  (setq easy-hugo-bin "/opt/homebrew/bin/hugo")
+  (setq easy-hugo-basedir "~/Blog/")
+  (setq easy-hugo-url "https://jbreer.github.io")
+  :bind ("C-c C-k" . easy-hugo-menu)
+  :config
+  (easy-hugo-enable-menu))
 
 
 
@@ -319,7 +319,7 @@
 
 ;; RACKET-MODE : Racket programming language mode
 (use-package racket-mode
-             :ensure t)
+  :ensure t)
 (add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'racket-mode-hook #'smartparens-mode)
 (add-hook 'racket-repl-mode-hook #'rainbow-delimiters-mode)
@@ -331,11 +331,11 @@
 
 ;; GEISER-RACKET
 (use-package geiser-racket
-             :ensure t)
+  :ensure t)
 
 ;; GEISER-CHEZ
 (use-package geiser-chez
-             :ensure t)
+  :ensure t)
 
 (add-hook 'geiser-repl-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'geiser-repl-mode-hook #'smartparens-mode)
