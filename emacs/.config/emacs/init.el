@@ -289,6 +289,15 @@
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 
+;; JOURNALING
+(setq journal-file (concat org-directory "/journal.org"))
+(setq tasks-file (concat org-directory "/tasks.org"))
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline tasks-file "Tasks")
+         "* TODO %?\n  %i\n  %a")
+        ("j" "Journal Entry" entry (file+datetree journal-file)
+         "* %?" :empty-lines 1)))
+
 
 
 ;; EASY-HUGO - blogging
