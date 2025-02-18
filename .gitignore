@@ -6,6 +6,7 @@ emacs/.config/emacs/'#*
 emacs/.config/emacs/#*
 emacs/.config/emacs/*~
 emacs/.config/emacs/auto-save-list
+emacs/.config/emacs/bookmarks
 emacs/.config/emacs/config.el
 emacs/.config/emacs/eln-cache
 emacs/.config/emacs/elpaca
