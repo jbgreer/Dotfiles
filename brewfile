@@ -68,6 +68,7 @@ lz4
 lzo
 m4
 make
+mise
 mpdecimal
 msgpack
 ncurses
@@ -96,11 +97,15 @@ tree
 tree-sitter
 unbound
 unibilium
+usage
 utf8proc
+uv
 wget
 xorgproto
 xz
+z3
 zellij
+zig
 zsh-autocomplete
 zsh-autosuggestions
 zsh-completions
