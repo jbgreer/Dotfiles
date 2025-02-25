@@ -3,11 +3,47 @@
 	co = "checkout"
 	undo = "reset HEAD~1 --mixed"
 
+[branch]
+  sort = -committerdate
+
+[column]
+  ui = auto 
+
 [commit]
 	gpgSign = false
+  verbose = true
+
+[diff]
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
+
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
+
+[help]
+  autocorrect = prompt
 
 [init]
-	defaultBranch = "main"
+	defaultBranch = main
+  sort = version:refname
+
+[push]
+  default = simple
+  autoSetupRemote = true
+  followTags = true
+
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
+
+[rerere]
+  enabled = true
+  autoupdate = true
 
 [tag]
 	gpgSign = false

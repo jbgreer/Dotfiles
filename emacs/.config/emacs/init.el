@@ -247,6 +247,46 @@
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 
+;; MU4E
+(add-to-list 'load-path "/opt/homebrew/Cellar/mu/1.12.8/share/emacs/site-list/mu/mu4e")
+(use-package mu4e
+  :ensure nil 
+  :config
+  (setq
+   mu4e-mu-binary "/opt/homebrew/bin/mu"
+   mu4e-headers-skip-duplicates  t
+   mu4e-view-show-images t
+   mu4e-view-show-addresses t
+   mu4e-compose-format-flowed nil
+   mu4e-date-format "%y/%m/%d"
+   mu4e-headers-date-format "%Y/%m/%d"
+   mu4e-change-filenames-when-moving t
+   mu4e-attachments-dir "~/Downloads"
+   mu4e-maildir       "~/Maildir"
+   mu4e-update-interval (* 15 60)
+   ;; the paths must start w/ / and are relative to maildir root
+   mu4e-refile-folder "/Archive"
+   mu4e-sent-folder   "/Sent"
+   mu4e-drafts-folder "/Drafts"
+   mu4e-trash-folder  "/Trash")
+
+  ;; press U to re-sync and re-index mail
+  (setq mu4e-get-mail-command  "mbsync -a"))
+
+;; move email to trash rather than destroy it
+(fset 'my-move-to-trash "mTrash")
+(define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
+(define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
+
+;; sending email
+(setq mail-user-agent 'mu4e-user-agent
+      send-mail-function 'message-send-mail-with-sendmail
+      message-send-mail-function 'message-send-mail-with-sendmail)
+(setq sendmail-program (executable-find "msmtp"))
+(setq messsage-sendmail-envelope-from 'header)
+(setq mu4e-user-mail-address-list '("jbgreer@grimjeer.com"))
+(setq user-mail-address "jbgreer@grimjeer.com")
+
 ;; TRANSIENT and MAGIS
 
 ;; TRANSIENT : implements keyboard-driven menus in magit
@@ -306,7 +346,7 @@
   :init
   (setq easy-hugo-bin "/opt/homebrew/bin/hugo")
   (setq easy-hugo-basedir "~/Blog/")
-  (setq easy-hugo-url "https://jbreer.github.io")
+  (setq easy-hugo-url "https://jbgreer.github.io")
   :bind ("C-c C-k" . easy-hugo-menu)
   :config
   (easy-hugo-enable-menu))
