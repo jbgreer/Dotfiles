@@ -32,6 +32,8 @@
 (setq calendar-date-style 'iso)
 
 
+;; set 'exec-path' to match shell PATH automatically
+
 
 ;; DELSEL : delete selection if you insert
 (use-package delsel
@@ -54,6 +56,17 @@
    (t (keyboard-quit))))
 (define-key global-map (kbd "C-g") #'jg/keyboard-quit-dwim)
 
+
+;; quit emacslient vs emacs
+(defun jg/emacsclient-c-x-c-c (&optional arg)
+    "If running in emacsclient, make C-x C-c exit frame, and C-u C-x C-c exit Emacs."
+    (interactive "P") ; prefix arg in raw form
+    (if arg
+        (save-buffers-kill-emacs)
+    (save-buffers-kill-terminal)))
+
+(if (daemonp)
+    (global-set-key (kbd "C-x C-c") #'jg/emacsclient-c-x-c-c))
 
 
 ;;; UI STUFF
