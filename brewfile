@@ -65,6 +65,8 @@ libxext
 libxrender
 libzip
 little-cms2
+lld
+llvm
 lpeg
 luajit
 luv
@@ -91,6 +93,7 @@ pinentry
 pixman
 pkgconf
 python-packaging
+python-setuptools
 python@3.13
 readline
 ripgrep
@@ -111,6 +114,7 @@ wget
 xapian
 xorgproto
 xz
+z3
 zellij
 zig
 zls
