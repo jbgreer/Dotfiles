@@ -261,7 +261,7 @@
 
 
 ;; MU4E
-(add-to-list 'load-path "/opt/homebrew/Cellar/mu/1.12.8/share/emacs/site-list/mu/mu4e")
+(add-to-list 'load-path "/opt/homebrew/share/emacs/site-list/mu/mu4e")
 (use-package mu4e
   :ensure nil 
   :config
@@ -277,7 +277,7 @@
    mu4e-attachments-dir "~/Downloads"
    mu4e-maildir       "~/Maildir"
    mu4e-update-interval (* 15 60)
-   ;; the paths must start w/ / and are relative to maildir root
+   ;; the paths must start with / and are relative to maildir root
    mu4e-refile-folder "/Archive"
    mu4e-sent-folder   "/Sent"
    mu4e-drafts-folder "/Drafts"
