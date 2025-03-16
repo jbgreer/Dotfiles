@@ -19,6 +19,7 @@
 (package-initialize)
 (setq use-package-verbose t)
 
+
 ;; disable nativing compilation warnings
 (setq native-comp-async-report-warnings-errors nil)
 
@@ -32,19 +33,15 @@
 (setq calendar-date-style 'iso)
 
 
-;; set 'exec-path' to match shell PATH automatically
-
-
 ;; DELSEL : delete selection if you insert
 (use-package delsel
   :ensure nil
   :hook (after-init . delete-selection-mode))
 
 
-;; 
+;;   "Do-What-I-Mean behaviour for a general `keyboard-quit'.  
 (defun jg/keyboard-quit-dwim ()
-  "Do-What-I-Mean behaviour for a general `keyboard-quit'.
-  - When the region is active, disable it.
+" - When the region is active, disable it.
   - When a minibuffer is open, but not focused, close the minibuffer.
   - When the Completions buffer is selected, close it.
   - In every other case use the regular `keyboard-quit'."
@@ -260,6 +257,13 @@
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 
+;; EPA - EasyPG Assistant, an interface to GNU Privacy Guard
+;; -*- epa-file-encrypt-to: ("jbgreeer@grimjeer.com") -*-
+(require 'epa-file)
+(epa-file-enable)
+(setq epa-file-inhibit-auto-save t) ;; default
+
+
 ;; MU4E
 (add-to-list 'load-path "/opt/homebrew/share/emacs/site-list/mu/mu4e")
 (use-package mu4e
@@ -300,7 +304,7 @@
 (setq mu4e-user-mail-address-list '("jbgreer@grimjeer.com"))
 (setq user-mail-address "jbgreer@grimjeer.com")
 
-;; TRANSIENT and MAGIS
+;; TRANSIENT and MAGIT
 
 ;; TRANSIENT : implements keyboard-driven menus in magit
 (use-package transient
