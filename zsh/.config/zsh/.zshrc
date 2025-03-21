@@ -43,6 +43,9 @@ source <(fzf --zsh)
 # OH-MY-POSH
 eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
 
+# RUST 
+[ -d $HOME/.cargo ] && path+=$HOME/.cargo/bin
+
 # Aliases
 alias -- eza='eza --git'
 alias -- l='ls -al'
@@ -55,4 +58,3 @@ alias -- vim="nvim"
 alias -- e="emacsclient -c -a emacs"
 
 # Named Directory Hashes
-

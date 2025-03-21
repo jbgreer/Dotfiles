@@ -12,4 +12,3 @@ if [[ -z "$__ZSH_SESS_VARS_SOURCED" ]]; then
 
   export ZDOTDIR=$HOME/.config/zsh
 fi
-
