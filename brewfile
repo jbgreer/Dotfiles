@@ -35,6 +35,7 @@ harfbuzz
 htop
 hugo
 icu4c@76
+icu4c@77
 isync
 jansson
 jpeg-turbo
@@ -66,7 +67,9 @@ libxrender
 libzip
 little-cms2
 lld
+lld@19
 llvm
+llvm@19
 lpeg
 luajit
 luv
@@ -144,3 +147,4 @@ rectangle
 spotify
 visual-studio-code
 yubico-yubikey-manager
+zoom
