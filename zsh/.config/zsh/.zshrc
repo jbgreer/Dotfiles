@@ -46,6 +46,9 @@ eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppucc
 # RUST 
 [ -d $HOME/.cargo ] && path+=$HOME/.cargo/bin
 
+# uv environments
+[ -d $HOME/.local/bin ] && path=("$HOME/.local/bin" $path)
+
 # Aliases
 alias -- eza='eza --git'
 alias -- l='ls -al'
