@@ -1,4 +1,4 @@
-;; early-init.el jbgreer
+;; early-init.el jbgreer  -*- lexical-binding: t; -*-
 
 ;; default gc cons threshold
 (defvar default-gc-cons-threshold (* 16 1024 1024)

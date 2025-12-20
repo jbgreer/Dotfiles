@@ -1,4 +1,4 @@
-;; 2023-07-03 jbgreer init.el
+;; 2023-07-03 jbgreer init.el  -*- lexical-binding: t; -*-
 ;; 2025-01-26 jbgreer removed pre-29 cruft
 ;; 2025-01-30 jbgreer prot simple +
 ;; 2025-02-09 jbgreer remove evil
