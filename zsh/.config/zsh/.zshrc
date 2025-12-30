@@ -49,6 +49,9 @@ eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppucc
 # uv environments
 [ -d $HOME/.local/bin ] && path=("$HOME/.local/bin" $path)
 
+# Mise-en-place
+eval "$(/opt/homebrew/bin/mise activate zsh)"
+
 # Aliases
 alias -- eza='eza --git'
 alias -- l='ls -al'
