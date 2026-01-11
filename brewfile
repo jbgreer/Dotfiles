@@ -11,7 +11,6 @@ cairo
 chezscheme
 coreutils
 direnv
-emacs-plus@29
 emacs-plus@31
 exercism
 eza
@@ -23,6 +22,7 @@ fzf
 gcc
 gdk-pixbuf
 gettext
+gh
 giflib
 git
 glib
@@ -40,12 +40,10 @@ grep
 harfbuzz
 htop
 hugo
-icu4c@76
 icu4c@77
 icu4c@78
 isl
 isync
-jansson
 jpeg
 jpeg-turbo
 jq
@@ -145,6 +143,7 @@ alfred
 anki
 balenaetcher
 discord
+dropbox
 firefox
 font-fira-code-nerd-font
 font-fira-mono-nerd-font
@@ -160,6 +159,7 @@ inkscape
 iterm2
 karabiner-elements
 kicad
+libreoffice
 little-snitch
 obsidian
 orion
