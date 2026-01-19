@@ -109,6 +109,7 @@ readline
 ripgrep
 simdjson
 sqlite
+starship
 stow
 texinfo
 tldr
@@ -129,6 +130,7 @@ wget
 xapian
 xorgproto
 xz
+yazi
 zellij
 zig
 zlib
