@@ -8,8 +8,9 @@ bindkey -v
 
 # History options should be set in .zshrc and after oh-my-zsh sourcing.
 # See https://github.com/nix-community/home-manager/issues/177.
-HISTSIZE="10000"
-SAVEHIST="10000"
+# 2026-01-18 jbgreer exporting HISTSIZE and SAVEHIST
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
 
 HISTFILE="$HOME/.zsh_history"
 mkdir -p "$(dirname "$HISTFILE")"
@@ -21,8 +22,8 @@ unsetopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 unsetopt HIST_EXPIRE_DUPS_FIRST
 setopt SHARE_HISTORY
-unsetopt EXTENDED_HISTORY
-
+# 2026-01-18 jbgreer now setting EXTENDED_HISTORY; adds timestampes 
+setopt EXTENDED_HISTORY
 
 # ZSH autosuggestions
 #source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -32,7 +33,6 @@ if type brew &>/dev/null; then
   fpath+=/opt/homebrew/share/zsh-completions
   fpath+=/opt/homebrew/share/zsh/site-functions
 fi
-
 autoload -Uz compinit && compinit
 
 # FZF
@@ -41,7 +41,13 @@ autoload -Uz compinit && compinit
 source <(fzf --zsh)
 
 # OH-MY-POSH
-eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
+# 2026-01-18 jbgreer commenting out oh-my-posh eval
+# eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
+
+# starship
+# 2026-01-18 jbgreer adding
+eval "$(starship init zsh)"
+
 
 # RUST 
 [ -d $HOME/.cargo ] && path+=$HOME/.cargo/bin
