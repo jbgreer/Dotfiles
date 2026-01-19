@@ -1,31 +1,33 @@
+# alacritty.toml 
+# 2026-01-18 jbgreer
+
 [font]
 size = 16
-[font.bold]
-family = "FiraCode Nerd Font"
-style = "Bold"
-
-[font.italic]
-family = "FiraCode Nerd Font"
-style = "Italic"
-
-[font.normal]
-family = "FiraCode Nerd Font"
-style = "Regular"
+bold = { family = "FiraCode Nerd Font", style = "Bold" }
+italic = { family = "FiraCode Nerd Font", style = "Italic" }
+normal = { family = "FiraCode Nerd Font", style = "Regular" }
 
 [general]
 import = ["~/.config/alacritty/catppuccin-mocha.toml"]
 
 [scrolling]
-history = 1000
+# scrolling.history = [lines]
+# default 10000
+# max number of lines in scrollback buffer
+history = 2000
 
 [window]
+# window.decorations = ["Full" | "None" | "Transparent" | "Buttonless" ]
+# Full: borders and title bar
 decorations = "Full"
+# wimdow.dimensions
+dimensions = { columns = 100, lines = 70 }
+# dynamic_title = [true | false]
+# allow terminal applications to change window title
+dynamic_title = true
+# window.opacity = [0.0 - 1.0]
+# 0.0: completely transparent
+# 1.0 completely opaque
 opacity = 1.0
-
-[window.dimensions]
-columns = 100
-lines = 53
-
-[window.padding]
-x = 10
-y = 10
+# padding around window
+padding = { x = 10, y = 10 }
