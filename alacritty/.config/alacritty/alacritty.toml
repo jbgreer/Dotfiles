@@ -21,7 +21,7 @@ history = 2000
 # Full: borders and title bar
 decorations = "Full"
 # wimdow.dimensions
-dimensions = { columns = 100, lines = 70 }
+dimensions = { columns = 90, lines = 88 }
 # dynamic_title = [true | false]
 # allow terminal applications to change window title
 dynamic_title = true
