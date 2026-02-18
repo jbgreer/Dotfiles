@@ -1,2 +1,3 @@
 # Dotfiles
-Dotfiles for MacOS
+
+Dotfiles for a container
