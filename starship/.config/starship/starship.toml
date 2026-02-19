@@ -1,21 +1,11 @@
 # starship.toml
 # 2026-01-18 jbgreer initial
+#
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
 
-[aws]
-disabled = true
-
-[package]
-disabled = true
-
-[gcloud]
-disabled = true
-
-[azure]
-disabled = true
-
-
-[nodejs]
-disabled = true
+[container]
+format = '[$symbol \[$name\]]($style) '
 
 [character]
 success_symbol = '[➜](bold green)'
