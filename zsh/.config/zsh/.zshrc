@@ -11,7 +11,6 @@ bindkey -v
 # 2026-01-18 jbgreer exporting HISTSIZE and SAVEHIST
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
-
 HISTFILE="$HOME/.zsh_history"
 mkdir -p "$(dirname "$HISTFILE")"
 
@@ -22,7 +21,7 @@ unsetopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 unsetopt HIST_EXPIRE_DUPS_FIRST
 setopt SHARE_HISTORY
-# 2026-01-18 jbgreer now setting EXTENDED_HISTORY; adds timestampes 
+# 2026-01-18 jbgreer now setting EXTENDED_HISTORY; adds timestamps 
 setopt EXTENDED_HISTORY
 
 # ZSH autosuggestions
@@ -44,6 +43,3 @@ source <(fzf --zsh)
 # 2026-01-18 jbgreer adding
 eval "$(starship init zsh)"
 
-
-
-# Named Directory Hashes
