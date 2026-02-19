@@ -24,6 +24,9 @@ setopt SHARE_HISTORY
 # 2026-01-18 jbgreer now setting EXTENDED_HISTORY; adds timestamps 
 setopt EXTENDED_HISTORY
 
+# Prevent forwarded SSH agent from leaking into shell sessions
+unset SSH_AUTH_SOCK
+
 # ZSH autosuggestions
 #source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
