@@ -40,33 +40,10 @@ autoload -Uz compinit && compinit
 # set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
-# OH-MY-POSH
-# 2026-01-18 jbgreer commenting out oh-my-posh eval
-# eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
-
 # starship
 # 2026-01-18 jbgreer adding
 eval "$(starship init zsh)"
 
 
-# RUST 
-[ -d $HOME/.cargo ] && path+=$HOME/.cargo/bin
-
-# uv environments
-[ -d $HOME/.local/bin ] && path=("$HOME/.local/bin" $path)
-
-# Mise-en-place
-eval "$(/opt/homebrew/bin/mise activate zsh)"
-
-# Aliases
-alias -- eza='eza --git'
-alias -- l='ls -al'
-alias -- la='eza -a'
-alias -- ll='eza -l'
-alias -- lla='eza -la'
-alias -- ls=eza
-alias -- lt='eza --tree'
-alias -- vim="nvim"
-alias -- e="emacsclient -c -a emacs"
 
 # Named Directory Hashes
