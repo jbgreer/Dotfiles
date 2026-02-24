@@ -84,6 +84,7 @@ libzip
 little-cms2
 lld@20
 llhttp
+llmfit
 llvm@20
 lpeg
 luajit
@@ -91,6 +92,7 @@ luv
 lz4
 lzo
 m4
+mactop
 make
 mise
 mpfr
