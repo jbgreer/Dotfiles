@@ -1,3 +1,4 @@
+ada-url
 age
 autoconf
 awk
@@ -15,6 +16,7 @@ emacs-plus@31
 exercism
 eza
 fd
+fmt
 fontconfig
 freetype
 fribidi
@@ -38,6 +40,7 @@ gpgme
 graphite2
 grep
 harfbuzz
+hdrhistogram_c
 htop
 hugo
 icu4c@77
@@ -49,6 +52,7 @@ jpeg-turbo
 jq
 lazygit
 libassuan
+libdatrie
 libevent
 libgccjit
 libgcrypt
@@ -65,6 +69,7 @@ libpng
 librsvg
 libssh2
 libtasn1
+libthai
 libtiff
 libunistring
 libusb
@@ -78,6 +83,7 @@ libxrender
 libzip
 little-cms2
 lld@20
+llhttp
 llvm@20
 lpeg
 luajit
@@ -95,7 +101,6 @@ neovim
 nettle
 node
 npth
-oh-my-posh
 oniguruma
 openssl@3
 p11-kit
@@ -168,6 +173,7 @@ orion
 racket
 rectangle
 spotify
+utm
 visual-studio-code
 yubico-yubikey-manager
 zoom
