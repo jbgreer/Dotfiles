@@ -60,10 +60,7 @@ just
 lazygit
 libassuan
 libdatrie
-<<<<<<< HEAD
-=======
 libev
->>>>>>> a45a860 (added cli tools..)
 libevent
 libgccjit
 libgcrypt
