@@ -1,4 +1,7 @@
 .DS_Store
+tmux/.config/tmux/plugins/tmux
+tmux/.config/tmux/plugins/tmux-sensible
+tmux/.config/tmux/plugins/tpm
 zsh/.config/zsh/.zcompcache
 zsh/.config/zsh/.zcompdump
 zsh/.config/zsh/.zsh_history
