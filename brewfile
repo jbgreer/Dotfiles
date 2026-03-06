@@ -15,6 +15,7 @@ chezscheme
 coreutils
 cryptography
 direnv
+duckdb
 dust
 dwarfutils
 emacs-plus@31
