@@ -67,7 +67,6 @@ libgccjit
 libgcrypt
 libgit2
 libgpg-error
-libiconv
 libidn2
 libksba
 libmpc
