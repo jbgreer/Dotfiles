@@ -369,3 +369,15 @@
 (setq geiser-active-implementations '(racket chez))
 (setq geiser-racket-binary "/opt/homebrew/bin/racket")
 (setq geiser-chez-binary "/opt/homebrew/bin/chez")
+
+;; CIDER for CLOJURE
+(use-package cider
+  :ensure t)
+;; Enables eldoc in clojure-buffers
+;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;; hide the *nrepl-connection* and *nrepl-server* buffers
+(setq nrepl-hide-special-buffers t)
+;; use smartparens
+(add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+;; highlight parens, brackets, and braces according to depth
+(add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
