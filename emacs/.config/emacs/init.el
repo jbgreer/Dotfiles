@@ -370,6 +370,13 @@
 (setq geiser-racket-binary "/opt/homebrew/bin/racket")
 (setq geiser-chez-binary "/opt/homebrew/bin/chez")
 
+;; CLOJURE
+(use-package clojure-mode
+  :ensure t)
+(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'clojure-mode-hook #'smartparens-mode)
+(add-hook 'clojure-repl-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'clojure-repl-mode-hook #'smartparens-mode)
 ;; CIDER for CLOJURE
 (use-package cider
   :ensure t)
