@@ -109,6 +109,7 @@ lzo
 m4
 mactop
 make
+maven
 mise
 mpdecimal
 mpfr
@@ -200,6 +201,7 @@ karabiner-elements
 kicad
 libreoffice
 little-snitch
+macfuse
 obsidian
 orion
 racket

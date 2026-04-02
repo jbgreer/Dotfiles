@@ -342,6 +342,16 @@
   :ensure t
   :config
   (require 'smartparens-config))
+;; defining a few keybindings for wrapping sexps 
+(define-key smartparens-mode-map (kbd "M-(") 'sp-wrap-round)
+(define-key smartparens-mode-map (kbd "M-[") 'sp-wrap-square)
+(define-key smartparens-mode-map (kbd "M-{") 'sp-wrap-curly)
+(define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-M-<right>") 'sp-backward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-M-<left>") 'sp-backward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-s-f") 'sp-forward-sexp)
+(define-key smartparens-mode-map (kbd "C-s-b") 'sp-backward-sexp)
 
 
 ;; RACKET-MODE : Racket programming language mode
