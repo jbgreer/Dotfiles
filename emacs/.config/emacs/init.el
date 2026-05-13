@@ -11,16 +11,25 @@
 (load custom-file :no-error-if-file-is-missing)
 
 
-;; PACKAGE
+;; PACKAGE : builtin package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("org-elpa" . "https://orgmode.org/elpa/"))
 (package-initialize)
-(setq use-package-verbose t)
 
 
-;; when using emacs from a GUI or via a daemon, extend path with shell setting
+;; USE-PACKAGE
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-verbose t
+        use-package-always-ensure t
+        use-package-expand-minimally t))
+
+
+;; EXEC-PATH-FROM-SHELL: when using emacs from a GUI or via a daemon, extend path with shell setting
 (use-package  exec-path-from-shell
   :ensure t)
 (when (memq window-system '(mac ns x))
@@ -28,13 +37,14 @@
 ;;(when (daemonp)
 ;;  (exec-path-from-shell-initialize))
 
+
 ;; disable nativing compilation warnings
 (setq native-comp-async-report-warnings-errors nil)
 
 
-;; Indent with 2 spaces
+;; No tabs, but set indent to normal tab width
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 2)
+(setq-default tab-width 8)
 
 
 ;; YYYY-MM-DD Calendar
@@ -150,8 +160,31 @@
 (global-display-line-numbers-mode 1)
 (global-visual-line-mode t)
 
+;; disable bidirectional text scanning
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+;; skip fontification during input
+(setq redisplay-skip-fontification-on-input t)
+
+;; increase process output buffer for LSP
+(setq read-process-output-max (* 1 1024 1024))
+
+;; don't render cursors in non-focused windows
+(setq-default cursor-in-non-selected-windows nil)
+(setq highlight-nonselected-windows nil)
+
+;; save clipboard before killing
+(setq save-interprogram-paste-before-kill t)
+
+;; don't duplicate entries in kill ring
+(setq kill-do-not-save-duplicates t)
+
 ;; change all yes/no questions to y/n
 (fset 'yes-or-no-p 'y-or-n-p)
+
+;; refine completion suggestions on M-x
 
 
 
@@ -193,13 +226,16 @@
   :ensure t
   :hook (after-init . marginalia-mode))
 
-;; ORDERLESS : completion style dividing pattery into space-separated components
+;; ORDERLESS : completion style dividing pattern into space-separated components
 (use-package orderless
-  :ensure t
-  :config
-  (setq completion-styles '(orderless basic))
-  (setq completion-category-defaults nil)
-  (setq completion-category-overrides nil))
+  :custom
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
+  ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil) ;; Disable defaults, use our settings
+  (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
 
 ;; SAVEHIST: save minibuffer history
 (use-package savehist
@@ -354,40 +390,43 @@
 (define-key smartparens-mode-map (kbd "M-(") 'sp-wrap-round)
 (define-key smartparens-mode-map (kbd "M-[") 'sp-wrap-square)
 (define-key smartparens-mode-map (kbd "M-{") 'sp-wrap-curly)
-(define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
-(define-key smartparens-mode-map (kbd "C-M-<right>") 'sp-backward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-M-<left>") 'sp-backward-barf-sexp)
 (define-key smartparens-mode-map (kbd "C-s-f") 'sp-forward-sexp)
 (define-key smartparens-mode-map (kbd "C-s-b") 'sp-backward-sexp)
+(define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-M-<left>") 'sp-backward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-M-<right>") 'sp-backward-barf-sexp)
+
+
+;; RACKET and CHEZ
 
 ;; RACKET and CHEZ binary paths
-(setq geiser-active-implementations '(racket chez))
-(setq geiser-racket-binary "/opt/homebrew/bin/racket")
-(setq geiser-chez-binary "/opt/homebrew/bin/chez")
+;;(setq geiser-active-implementations '(racket chez))
+;;(setq geiser-racket-binary "/opt/homebrew/bin/racket")
+;;(setq geiser-chez-binary "/opt/homebrew/bin/chez")
 
 ;; RACKET-MODE : Racket programming language mode
-(use-package racket-mode
-  :ensure t)
-(add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'racket-mode-hook #'smartparens-mode)
-(add-hook 'racket-repl-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'racket-repl-mode-hook #'smartparens-mode)
+;;(use-package racket-mode
+;;  :ensure t)
+;;(add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'racket-mode-hook #'smartparens-mode)
+;;(add-hook 'racket-repl-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'racket-repl-mode-hook #'smartparens-mode)
 
 ;; SCHEME MODE : Scheme programming language mode
-(add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'scheme-mode-hook #'smartparens-mode)
+;;(add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'scheme-mode-hook #'smartparens-mode)
 
 ;; GEISER-RACKET
-(use-package geiser-racket
-  :ensure t)
+;;(use-package geiser-racket
+;;  :ensure t)
 
 ;; GEISER-CHEZ
-(use-package geiser-chez
-  :ensure t)
+;;(use-package geiser-chez
+;;  :ensure t)
+;;(add-hook 'geiser-repl-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'geiser-repl-mode-hook #'smartparens-mode)
 
-(add-hook 'geiser-repl-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'geiser-repl-mode-hook #'smartparens-mode)
 
 ;; CLOJURE
 
@@ -399,15 +438,15 @@
 (use-package cider
   :ensure t)
 
-;; CLOJURE TREESITTER MODE - replacement for Clojure Mode
-(use-package clojure-ts-mode
+;; CLOJURE MODE
+(use-package clojure-mode
   :ensure t)
-(add-hook 'clojure-ts-mode-hook #'cider-mode)
-(add-hook 'clojure-ts-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'clojure-ts-mode-hook #'smartparens-mode)
-(add-hook 'clojure-ts-mode-hook #'lsp)
+(add-hook 'clojure-mode-hook #'cider-mode)
+(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'clojure-mode-hook #'smartparens-mode)
+(add-hook 'clojure-mode-hook #'lsp)
 
-;; LSP Mode setup for CLojure
+;; LSP-MODE : LSP Mode setup for CLojure
 ;;(use-package lsp-mode
 ;;  :init (setq lsp-keymap-prefix "C-c l")
 ;;  :hook (;; replace XXX-mode with concrete major mode
@@ -426,9 +465,12 @@
 
 ;; Enables eldoc in clojure-buffers
 ;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
 ;; hide the *nrepl-connection* and *nrepl-server* buffers
 (setq nrepl-hide-special-buffers t)
+
 ;; use smartparens
 (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+
 ;; highlight parens, brackets, and braces according to depth
 (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
