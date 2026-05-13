@@ -20,6 +20,14 @@
 (setq use-package-verbose t)
 
 
+;; when using emacs from a GUI or via a daemon, extend path with shell setting
+(use-package  exec-path-from-shell
+  :ensure t)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+;;(when (daemonp)
+;;  (exec-path-from-shell-initialize))
+
 ;; disable nativing compilation warnings
 (setq native-comp-async-report-warnings-errors nil)
 
@@ -353,6 +361,10 @@
 (define-key smartparens-mode-map (kbd "C-s-f") 'sp-forward-sexp)
 (define-key smartparens-mode-map (kbd "C-s-b") 'sp-backward-sexp)
 
+;; RACKET and CHEZ binary paths
+(setq geiser-active-implementations '(racket chez))
+(setq geiser-racket-binary "/opt/homebrew/bin/racket")
+(setq geiser-chez-binary "/opt/homebrew/bin/chez")
 
 ;; RACKET-MODE : Racket programming language mode
 (use-package racket-mode
@@ -376,20 +388,42 @@
 
 (add-hook 'geiser-repl-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'geiser-repl-mode-hook #'smartparens-mode)
-(setq geiser-active-implementations '(racket chez))
-(setq geiser-racket-binary "/opt/homebrew/bin/racket")
-(setq geiser-chez-binary "/opt/homebrew/bin/chez")
 
 ;; CLOJURE
-(use-package clojure-mode
-  :ensure t)
-(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'clojure-mode-hook #'smartparens-mode)
-(add-hook 'clojure-repl-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'clojure-repl-mode-hook #'smartparens-mode)
+
+;;(add-hook 'clojure-ts-mode-hook #'clj-refactor-mode)
+;;(add-hook 'clojure-repl-mode-hook #'rainbow-delimiters-mode)
+;;(add-hook 'clojure-repl-mode-hook #'smartparens-mode)
+
 ;; CIDER for CLOJURE
 (use-package cider
   :ensure t)
+
+;; CLOJURE TREESITTER MODE - replacement for Clojure Mode
+(use-package clojure-ts-mode
+  :ensure t)
+(add-hook 'clojure-ts-mode-hook #'cider-mode)
+(add-hook 'clojure-ts-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'clojure-ts-mode-hook #'smartparens-mode)
+(add-hook 'clojure-ts-mode-hook #'lsp)
+
+;; LSP Mode setup for CLojure
+;;(use-package lsp-mode
+;;  :init (setq lsp-keymap-prefix "C-c l")
+;;  :hook (;; replace XXX-mode with concrete major mode
+;;          (clojure-ts-mode . lsp)
+;;          (lsp-mode . lsp-enable-which-key-integration))
+;;  :commands lsp)
+
+;;(use-package lsp-ui
+;;  :commands lsp-ui-mode)
+
+;;(use-package lsp-treemacs
+;;  :ensure t)
+
+;;(use-package flycheck
+;;  :ensure t)
+
 ;; Enables eldoc in clojure-buffers
 ;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 ;; hide the *nrepl-connection* and *nrepl-server* buffers

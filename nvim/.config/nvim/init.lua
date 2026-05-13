@@ -429,6 +429,11 @@ vim.pack.add({
 		version = vim.version.range("1.*"),
 	},
 	"https://github.com/L3MON4D3/LuaSnip",
+  --- CLOJURE development
+  "https://github.com/Olical/conjure",
+  "https://github.com/tpope/vim-dispatch",
+  "https://github.com/clojure-vim/vim-jack-in",
+  "https://github.com/radenling/vim-dispatch-neovim"
 })
 
 local function packadd(name)

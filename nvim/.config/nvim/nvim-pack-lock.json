@@ -9,6 +9,10 @@
       "src": "https://github.com/saghen/blink.cmp",
       "version": "1.0.0 - 2.0.0"
     },
+    "conjure": {
+      "rev": "f7a375995a19fbf085707ea0fdb1f9c167e27e27",
+      "src": "https://github.com/Olical/conjure"
+    },
     "efmls-configs-nvim": {
       "rev": "0b0ca5462a0a9c1233cc8359e64741d7d49fbbe4",
       "src": "https://github.com/creativenull/efmls-configs-nvim"
@@ -40,6 +44,18 @@
     "nvim-treesitter": {
       "rev": "7caec274fd19c12b55902a5b795100d21531391f",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "vim-dispatch": {
+      "rev": "a2ff28abdb2d89725192db5b8562977d392a4d3f",
+      "src": "https://github.com/tpope/vim-dispatch"
+    },
+    "vim-dispatch-neovim": {
+      "rev": "c8c4e21a95c25032a041002f9bf6e45a75a73021",
+      "src": "https://github.com/radenling/vim-dispatch-neovim"
+    },
+    "vim-jack-in": {
+      "rev": "45e5293cff0802a51dbed31a9b0141b0f80e2952",
+      "src": "https://github.com/clojure-vim/vim-jack-in"
     }
   }
 }
