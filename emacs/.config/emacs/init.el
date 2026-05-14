@@ -9,8 +9,7 @@
 
 ;; PACKAGE : builtin package manager
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("org-elpa" . "https://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
 
@@ -20,19 +19,23 @@
   (package-install 'use-package))
 (eval-and-compile
   (setq use-package-verbose t
-        use-package-always-ensure t
-        use-package-expand-minimally t))
+        use-package-always-ensure t))
 
 
 ;; EXEC-PATH-FROM-SHELL: when using emacs from a GUI or via a daemon, extend path with shell setting
-(use-package  exec-path-from-shell)
-(when (or (memq window-system '(mac ns x)) (daemonp))
-  (exec-path-from-shell-initialize))
+(use-package  exec-path-from-shell
+  :if (or (memq window-system '(mac ns x)) (daemonp))
+  :config (exec-path-from-shell-initialize))
 
 
 ;; disable nativing compilation warnings
 (setq native-comp-async-report-warnings-errors nil)
 
+;; utf-8 encoding
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
 
 ;; No tabs, but set indent to normal tab width
 (setq-default indent-tabs-mode nil)
@@ -41,6 +44,11 @@
 ;; YYYY-MM-DD Calendar
 (setq calendar-date-style 'iso)
 
+;;
+(use-package elec-pair
+  :ensure nil
+  :config
+  (electric-pair-mode +1))
 
 ;; DELSEL : delete selection if you insert
 (use-package delsel
@@ -48,7 +56,7 @@
   :hook (after-init . delete-selection-mode))
 
 
-;;   "Do-What-I-Mean behaviour for a general `keyboard-quit'.  
+;; Do-What-I-Mean behaviour for a general `keyboard-quit'.  
 (defun jg/keyboard-quit-dwim ()
 " - When the region is active, disable it.
   - When a minibuffer is open, but not focused, close the minibuffer.
@@ -65,10 +73,9 @@
 
 ;; quit emacslient vs emacs
 (defun jg/emacsclient-c-x-c-c (&optional arg)
-    "If running in emacsclient, make C-x C-c exit frame, and C-u C-x C-c exit Emacs."
-    (interactive "P") ; prefix arg in raw form
-    (if arg
-        (save-buffers-kill-emacs)
+  (interactive "P")
+  (if (or arg (not (frame-parameter nil 'client)))
+      (save-buffers-kill-emacs)
     (save-buffers-kill-terminal)))
 
 (if (daemonp)
@@ -78,7 +85,8 @@
 ;;; UI STUFF
 
 ;;  CATPPUCCIN theme
-(load-theme 'catppuccin :no-confirm)
+(use-package catppuccin-theme
+  :config (load-theme 'catppuccin :no-confirm))
 
 
 ;; ICONS and FONTS
@@ -89,7 +97,6 @@
 
 (use-package nerd-icons-completion
   :after marginalia
-  :config
   :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
@@ -125,8 +132,6 @@
       (top . 25) (left . 275) (width . 140) (height . 60)))
 
 ;; KEY BINDINGS AND MOUSE WHEEL for zooming in/out
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 
@@ -142,7 +147,7 @@
 (set-fringe-mode 10)
 
 ;; Display Line Numbers and Truncated Lines
-(global-display-line-numbers-mode 1)
+(global-display-line-numbers-mode t)
 (global-visual-line-mode t)
 
 ;; disable bidirectional text scanning
@@ -169,22 +174,23 @@
 (setq use-short-answers t)
 
 
+;; DIMINISH : hide minor modes from the mode line
+(use-package diminish)
+
+
 ;; WHICH-KEY : a minor mode that displays available keybindings
 (use-package which-key
   :ensure nil
   :init
   (which-key-mode 1)
   :config
-  (setq which-key-popup-type 'minibuffer
-	which-key-side-window-location 'bottom
-	which-key-side-window-max-height 0.25
+  (setq which-key-side-window-max-height 0.25
 	which-key-sort-order #'which-key-key-order-alpha
 	which-key-sort-uppercase-first nil
 	which-key-add-column-padding 1
 	which-key-max-display-columns nil
 	which-key-min-display-lines 6
 	which-key-side-window-slot -10
-	which-key-side-window-max-height 0.25
 	which-key-idle-delay 0.8
 	which-key-max-description-length 25
 	which-key-allow-imprecise-window-fit t
@@ -217,7 +223,9 @@
 ;; SAVEHIST: save minibuffer history
 (use-package savehist
   :ensure nil ; it is built-in
-  :hook (after-init . savehist-mode))
+  :hook (after-init . savehist-mode)
+  :config
+  (add-to-list 'savehist-additional-variables 'corfu-history))
 
 ;; CORFU : COmpletion in Region FUnction - enhances in-buffer completion with a popupo
 (use-package corfu
@@ -228,12 +236,8 @@
   (setq corfu-preview-current nil)
   (setq corfu-min-width 20)
   (setq corfu-popupinfo-delay '(1.25 . 0.5))
-  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
-  ;; Sort by input history (no need to modify `corfu-sort-function').
-  (with-eval-after-load 'savehist
-    (corfu-history-mode 1)
-    (add-to-list 'savehist-additional-variables 'corfu-history)))
-
+  (corfu-popupinfo-mode 1)
+  (corfu-history-mode 1))
 
 
 ;;; DIRED, DIRED-SUBTREEE, TRASHEED
@@ -252,18 +256,15 @@
   (setq dired-dwim-target t))
 
 ;; DIRED-SUBTREE : insert subdirectories in a tree-like fashion
-;; TAB : subtree-toggle
-;; BACKTAB / S-TAB : subtree-remove
 (use-package dired-subtree
   :after dired
   :bind
   (:map dired-mode-map
-    ("<tab>" . dired-subtree-toggle)
-    ("TAB" . dired-subtree-toggle)
-    ("<backtab>" . dired-subtree-remove)
-    ("S-TAB" . dired-subtree-remove))
+     ("TAB" . dired-subtree-toggle)
+     ("S-TAB" . dired-subtree-remove))
   :config
   (setq dired-subtree-use-backgrounds nil))
+
 
 ;; TRASHED : open, view, browse, restore, permanently delete files in the trash
 (use-package trashed
@@ -275,45 +276,42 @@
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 
-;; Place at top of file to be encrypted: -*- epa-file-encrypt-to: ("jbgreeer@grimjeer.com") -*-
-(require 'epa-file)
-(epa-file-enable)
-(setq epa-file-inhibit-auto-save t) ;; default
-
-
 ;; DEVELOPMENT PACKAGES
 
-;; TRANSIENT : implements keyboard-driven menus in magit
-(use-package transient)
 
 ;; MAGIT : a git porcelain inside emacs
 (use-package magit
-  :after transient)
-(global-set-key (kbd "C-c g") #'magit-status)
+  :bind ("C-c g" . magit-status))
+
 
 ;; RAINBOW-DELIMITERS : different colored parens based on nesting
 (use-package rainbow-delimiters)
 
-;; SMARTPARENS : minor mode for working with pairs
-(use-package smartparens
+
+;; paredit - structural editing for s-expressions
+(use-package paredit
   :config
-  (require 'smartparens-config))
-;; defining a few keybindings for wrapping sexps 
-(define-key smartparens-mode-map (kbd "M-(") 'sp-wrap-round)
-(define-key smartparens-mode-map (kbd "M-[") 'sp-wrap-square)
-(define-key smartparens-mode-map (kbd "M-{") 'sp-wrap-curly)
-(define-key smartparens-mode-map (kbd "C-s-f") 'sp-forward-sexp)
-(define-key smartparens-mode-map (kbd "C-s-b") 'sp-backward-sexp)
-(define-key smartparens-mode-map (kbd "C-<right>") 'sp-forward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-<left>") 'sp-forward-barf-sexp)
-(define-key smartparens-mode-map (kbd "C-M-<left>") 'sp-backward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-M-<right>") 'sp-backward-barf-sexp)
+  ;; paredit steals RET for auto-newline-and-indent, which is annoying
+  (define-key paredit-mode-map (kbd "RET") nil)
+   (define-key paredit-mode-map (kbd "M-s") search-map)
+  (define-key paredit-mode-map (kbd "M-D") #'paredit-splice-sexp)
+  ;; preserve M-? for xref-find-references
+  (define-key paredit-mode-map (kbd "M-?") nil)
+  (add-hook 'paredit-mode-hook (lambda () (electric-pair-local-mode -1)))
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+  ;; enable in the *scratch* buffer
+  (add-hook 'lisp-interaction-mode-hook #'paredit-mode)
+  (add-hook 'ielm-mode-hook #'paredit-mode)
+  (add-hook 'lisp-mode-hook #'paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
+  (diminish 'paredit-mode "()"))
 
 ;; CLOJURE MODE
 (use-package clojure-mode
   :config
   (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+  (add-hook 'clojure-mode-hook #'paredit-mode)
+  (add-hook 'clojure-mode-hook #'subword-mode)
   (add-hook 'clojure-mode-hook #'eglot-ensure))
 
 ;; EGLOT : LSP integration
@@ -324,30 +322,29 @@
   ;; Clojure-lsp is usually auto-detected, but you can be explicit:
   (add-to-list 'eglot-server-programs
                '((clojure-mode clojurec-mode clojurescript-mode)
-                 . ("/opt/homebrew/bin/clojure-lsp")))
+                 . ("clojure-lsp")))
   ;; Optional: performance tuning
-  (setq eglot-events-buffer-size (* 100 1024))
+  (setq eglot-events-buffer-config '(:size 102400 :format full))
   (setq eglot-send-changes-idle-time 0.5)
+  
   ;; Tell corfu/capf to use eglot's completion
   ;;(setq completion-category-overrides '((eglot (styles orderless))
-                                        ;;(eglot-capf (styles orderless))))
+  ;;(eglot-capf (styles orderless))))
   :bind (:map eglot-mode-map
-         ("C-c e r" . eglot-rename)
-         ("C-c e f" . eglot-format)
-         ("C-c e a" . eglot-code-actions)
-         ("C-c e d" . eldoc)
-         ("M-."     . xref-find-definitions)
-         ("M-,"     . xref-pop-marker-stack)
-         ("M-?"     . xref-find-references)))
+              ("C-c e r" . eglot-rename)
+              ("C-c e f" . eglot-format)
+              ("C-c e a" . eglot-code-actions)
+              ("C-c e d" . eldoc)
+              ("M-."     . xref-find-definitions)
+              ("M-,"     . xref-pop-marker-stack)
+              ("M-?"     . xref-find-references)))
 
 ;; CIDER: NREPL interaction for CLOJURE
 (use-package cider
   :config
   (setq nrepl-log-messages t)
   (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
-  )
-
-;; hide the *nrepl-connection* and *nrepl-server* buffers
-(setq nrepl-hide-special-buffers t)
+  (add-hook 'cider-repl-mode-hook #'paredit-mode)
+  ;; hide the *nrepl-connection* and *nrepl-server* buffers
+  (setq nrepl-hide-special-buffers t))
 
