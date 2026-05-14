@@ -1,8 +1,4 @@
 ;; 2023-07-03 jbgreer init.el  -*- lexical-binding: t; -*-
-;; 2025-01-26 jbgreer removed pre-29 cruft
-;; 2025-01-30 jbgreer prot simple +
-;; 2025-02-09 jbgreer remove evil
-
 
 (setq debug-on-error t)
 
@@ -14,7 +10,6 @@
 ;; PACKAGE : builtin package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("org-elpa" . "https://orgmode.org/elpa/"))
 (package-initialize)
 
@@ -30,12 +25,9 @@
 
 
 ;; EXEC-PATH-FROM-SHELL: when using emacs from a GUI or via a daemon, extend path with shell setting
-(use-package  exec-path-from-shell
-  :ensure t)
-(when (memq window-system '(mac ns x))
+(use-package  exec-path-from-shell)
+(when (or (memq window-system '(mac ns x)) (daemonp))
   (exec-path-from-shell-initialize))
-;;(when (daemonp)
-;;  (exec-path-from-shell-initialize))
 
 
 ;; disable nativing compilation warnings
@@ -45,7 +37,6 @@
 ;; No tabs, but set indent to normal tab width
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 8)
-
 
 ;; YYYY-MM-DD Calendar
 (setq calendar-date-style 'iso)
@@ -92,28 +83,24 @@
 
 ;; ICONS and FONTS
 
-;; Remember to do M-x and run `nerd-icons-install-fonts' to get the
+;; ICONS : Remember to do M-x and run `nerd-icons-install-fonts' to get the
 ;; font files.  Then restart Emacs to see the effect.
-(use-package nerd-icons
-  :ensure t)
+(use-package nerd-icons)
 
 (use-package nerd-icons-completion
-  :ensure t
   :after marginalia
   :config
   :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
-  :ensure t
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package nerd-icons-dired
-  :ensure t
   :hook (dired-mode . nerd-icons-dired-mode))
 
-;; Set the Font Face
+;; FONTS AND FRAME SIZE
 (set-face-attribute 'default nil
                     :font "JetBrains Mono"
                     :height 140
@@ -132,10 +119,12 @@
 (set-face-attribute 'font-lock-keyword-face nil
 		                :slant 'italic)
 
-;; Set default font on all graphical frames created after restarting Emacs.
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
+;; Set Frame width/heighth and default font on graphical frames
+(setq default-frame-alist
+      '((font . "JetBrains Mono-14")
+      (top . 25) (left . 275) (width . 140) (height . 60)))
 
-;; Key bindings and mouse whell for zooming in/out
+;; KEY BINDINGS AND MOUSE WHEEL for zooming in/out
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
@@ -144,10 +133,6 @@
 ;; Turn off startup message, set visual bell
 (setq inhibit-startup-message t)
 (setq visible-bell t)
-
-;; Set Frame width/heighth
-(setq default-frame-alist
-      '((top . 25) (left . 275) (width . 140) (height . 60)))
 
 ;; Disable Menubar, Toolbars Tooltips, and Scrollbars, and set fringe
 (menu-bar-mode -1)
@@ -161,8 +146,7 @@
 (global-visual-line-mode t)
 
 ;; disable bidirectional text scanning
-(setq-default bidi-display-reordering 'left-to-right
-              bidi-paragraph-direction 'left-to-right)
+(setq-default bidi-paragraph-direction 'left-to-right)
 (setq bidi-inhibit-bpa t)
 
 ;; skip fontification during input
@@ -182,15 +166,12 @@
 (setq kill-do-not-save-duplicates t)
 
 ;; change all yes/no questions to y/n
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; refine completion suggestions on M-x
-
+(setq use-short-answers t)
 
 
 ;; WHICH-KEY : a minor mode that displays available keybindings
 (use-package which-key
-  :ensure t
+  :ensure nil
   :init
   (which-key-mode 1)
   :config
@@ -210,7 +191,6 @@
 	which-key-separator " → " ))
 
 
-
 ;; VERTICO, MARGINALIA, ORDERLESS, SAVEHIST, CORFU
 
 ;; VERTICO : VERTical Interactive COmpletion
@@ -218,24 +198,21 @@
 ;; <RETURN> : vertico-exit
 ;; M-<RETURN> : vertico-exit-input
 (use-package vertico
-  :ensure t
   :hook (after-init . vertico-mode))
 
 ;; MARGINALIA : Marginalia (marks or annotations) in the minibuffer
 (use-package marginalia
-  :ensure t
   :hook (after-init . marginalia-mode))
 
 ;; ORDERLESS : completion style dividing pattern into space-separated components
 (use-package orderless
   :custom
-  ;; Configure a custom style dispatcher (see the Consult wiki)
-  ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
-  ;; (orderless-component-separator #'orderless-escapable-split-on-space)
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil) ;; Disable defaults, use our settings
-  (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
+    (completion-styles '(orderless basic))
+    (completion-category-defaults nil)
+    (completion-category-overrides
+     '((file (styles partial-completion))
+       (eglot (styles orderless))
+       (eglot-capf (styles orderless)))))
 
 ;; SAVEHIST: save minibuffer history
 (use-package savehist
@@ -244,7 +221,6 @@
 
 ;; CORFU : COmpletion in Region FUnction - enhances in-buffer completion with a popupo
 (use-package corfu
-  :ensure t
   :hook (after-init . global-corfu-mode)
   :bind (:map corfu-map ("<tab>" . corfu-complete))
   :config
@@ -279,7 +255,6 @@
 ;; TAB : subtree-toggle
 ;; BACKTAB / S-TAB : subtree-remove
 (use-package dired-subtree
-  :ensure t
   :after dired
   :bind
   (:map dired-mode-map
@@ -292,7 +267,6 @@
 
 ;; TRASHED : open, view, browse, restore, permanently delete files in the trash
 (use-package trashed
-  :ensure t
   :commands (trashed)
   :config
   (setq trashed-action-confirmer 'y-or-n-p)
@@ -301,89 +275,27 @@
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 
-;; EPA - EasyPG Assistant, an interface to GNU Privacy Guard
-;; -*- epa-file-encrypt-to: ("jbgreeer@grimjeer.com") -*-
+;; Place at top of file to be encrypted: -*- epa-file-encrypt-to: ("jbgreeer@grimjeer.com") -*-
 (require 'epa-file)
 (epa-file-enable)
 (setq epa-file-inhibit-auto-save t) ;; default
 
 
-;;
-;; TRANSIENT and MAGIT
+;; DEVELOPMENT PACKAGES
 
 ;; TRANSIENT : implements keyboard-driven menus in magit
-(use-package transient
-  :ensure t)
+(use-package transient)
 
 ;; MAGIT : a git porcelain inside emacs
 (use-package magit
-  :after transient
-  :ensure t)
-
-
-
-;; ORG MODE
-
-;; These are the defaults we want to change.  We do so in the
-;; following `use-package' declaration.
-(setq org-M-RET-may-split-line '((default . t)))
-(setq org-insert-heading-respect-content nil)
-(setq org-log-done nil)
-(setq org-log-into-drawer nil)
-
-(use-package org
-  :ensure nil                           ; built-in
-  :config
-  (setq org-M-RET-may-split-line '((default . nil)))
-  (setq org-insert-heading-respect-content t)
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
-  (setq org-directory "~/Org")
-  (setq org-agenda-files (list org-directory))
-
-  ;; Learn about the ! and more by reading the relevant section of the
-  ;; Org manual.  Evaluate: (info "(org) Tracking TODO state changes")
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)"))))
-
-;; recommended keybindings
-(global-set-key (kbd "C-c l") #'org-store-link)
-(global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c c") #'org-capture)
-
-;; JOURNALING
-(setq journal-file (concat org-directory "/journal.org"))
-(setq tasks-file (concat org-directory "/tasks.org"))
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline tasks-file "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("j" "Journal Entry" entry (file+datetree journal-file)
-         "* %?" :empty-lines 1)))
-
-
-
-;; EASY-HUGO - blogging
-(use-package easy-hugo
-  :ensure t
-  :init
-  (setq easy-hugo-bin "/opt/homebrew/bin/hugo")
-  (setq easy-hugo-basedir "~/Blog/")
-  (setq easy-hugo-url "https://jbgreer.github.io")
-  :bind ("C-c C-k" . easy-hugo-menu)
-  :config
-  (easy-hugo-enable-menu))
-
-
-
-;; DEVELOPMENT PACKAGES
+  :after transient)
+(global-set-key (kbd "C-c g") #'magit-status)
 
 ;; RAINBOW-DELIMITERS : different colored parens based on nesting
-(use-package rainbow-delimiters
-  :ensure t)
+(use-package rainbow-delimiters)
 
 ;; SMARTPARENS : minor mode for working with pairs
 (use-package smartparens
-  :ensure t
   :config
   (require 'smartparens-config))
 ;; defining a few keybindings for wrapping sexps 
@@ -397,80 +309,45 @@
 (define-key smartparens-mode-map (kbd "C-M-<left>") 'sp-backward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "C-M-<right>") 'sp-backward-barf-sexp)
 
-
-;; RACKET and CHEZ
-
-;; RACKET and CHEZ binary paths
-;;(setq geiser-active-implementations '(racket chez))
-;;(setq geiser-racket-binary "/opt/homebrew/bin/racket")
-;;(setq geiser-chez-binary "/opt/homebrew/bin/chez")
-
-;; RACKET-MODE : Racket programming language mode
-;;(use-package racket-mode
-;;  :ensure t)
-;;(add-hook 'racket-mode-hook #'rainbow-delimiters-mode)
-;;(add-hook 'racket-mode-hook #'smartparens-mode)
-;;(add-hook 'racket-repl-mode-hook #'rainbow-delimiters-mode)
-;;(add-hook 'racket-repl-mode-hook #'smartparens-mode)
-
-;; SCHEME MODE : Scheme programming language mode
-;;(add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
-;;(add-hook 'scheme-mode-hook #'smartparens-mode)
-
-;; GEISER-RACKET
-;;(use-package geiser-racket
-;;  :ensure t)
-
-;; GEISER-CHEZ
-;;(use-package geiser-chez
-;;  :ensure t)
-;;(add-hook 'geiser-repl-mode-hook #'rainbow-delimiters-mode)
-;;(add-hook 'geiser-repl-mode-hook #'smartparens-mode)
-
-
-;; CLOJURE
-
-;;(add-hook 'clojure-ts-mode-hook #'clj-refactor-mode)
-;;(add-hook 'clojure-repl-mode-hook #'rainbow-delimiters-mode)
-;;(add-hook 'clojure-repl-mode-hook #'smartparens-mode)
-
-;; CIDER for CLOJURE
-(use-package cider
-  :ensure t)
-
 ;; CLOJURE MODE
 (use-package clojure-mode
-  :ensure t)
-(add-hook 'clojure-mode-hook #'cider-mode)
-(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'clojure-mode-hook #'smartparens-mode)
-(add-hook 'clojure-mode-hook #'lsp)
+  :config
+  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+  (add-hook 'clojure-mode-hook #'eglot-ensure))
 
-;; LSP-MODE : LSP Mode setup for CLojure
-;;(use-package lsp-mode
-;;  :init (setq lsp-keymap-prefix "C-c l")
-;;  :hook (;; replace XXX-mode with concrete major mode
-;;          (clojure-ts-mode . lsp)
-;;          (lsp-mode . lsp-enable-which-key-integration))
-;;  :commands lsp)
+;; EGLOT : LSP integration
+(use-package eglot
+  :ensure nil   ; built-in
+  :config
+  (setq eglot-autoshutdown t)
+  ;; Clojure-lsp is usually auto-detected, but you can be explicit:
+  (add-to-list 'eglot-server-programs
+               '((clojure-mode clojurec-mode clojurescript-mode)
+                 . ("/opt/homebrew/bin/clojure-lsp")))
+  ;; Optional: performance tuning
+  (setq eglot-events-buffer-size (* 100 1024))
+  (setq eglot-send-changes-idle-time 0.5)
+  ;; Tell corfu/capf to use eglot's completion
+  ;;(setq completion-category-overrides '((eglot (styles orderless))
+                                        ;;(eglot-capf (styles orderless))))
+  :bind (:map eglot-mode-map
+         ("C-c e r" . eglot-rename)
+         ("C-c e f" . eglot-format)
+         ("C-c e a" . eglot-code-actions)
+         ("C-c e d" . eldoc)
+         ("M-."     . xref-find-definitions)
+         ("M-,"     . xref-pop-marker-stack)
+         ("M-?"     . xref-find-references)))
 
-;;(use-package lsp-ui
-;;  :commands lsp-ui-mode)
-
-;;(use-package lsp-treemacs
-;;  :ensure t)
-
-;;(use-package flycheck
-;;  :ensure t)
-
-;; Enables eldoc in clojure-buffers
-;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;; CIDER: NREPL interaction for CLOJURE
+(use-package cider
+  :config
+  (setq nrepl-log-messages t)
+  (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
+  )
 
 ;; hide the *nrepl-connection* and *nrepl-server* buffers
 (setq nrepl-hide-special-buffers t)
 
-;; use smartparens
-(add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
-
-;; highlight parens, brackets, and braces according to depth
-(add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
