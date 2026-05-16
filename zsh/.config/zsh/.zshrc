@@ -48,6 +48,8 @@ source <(fzf --zsh)
 # 2026-01-18 jbgreer adding
 eval "$(starship init zsh)"
 
+# JAVA_HOME for Clojure / Sci cloj Noj v2 setup
+export JAVA_HOME=$(brew --prefix openjdk)/libexec/openjdk.jdk/Contents/Home
 
 # RUST 
 [ -d $HOME/.cargo ] && path+=$HOME/.cargo/bin
