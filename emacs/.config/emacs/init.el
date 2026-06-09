@@ -1,350 +1,162 @@
-;; 2023-07-03 jbgreer init.el  -*- lexical-binding: t; -*-
-
-(setq debug-on-error t)
-
-;; dump generated custom settings in a separate file
-(setq custom-file (locate-user-emacs-file "custom.el"))
-(load custom-file :no-error-if-file-is-missing)
-
-
-;; PACKAGE : builtin package manager
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
-
-
-;; USE-PACKAGE
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-and-compile
-  (setq use-package-verbose t
-        use-package-always-ensure t))
-
-
-;; EXEC-PATH-FROM-SHELL: when using emacs from a GUI or via a daemon, extend path with shell setting
-(use-package  exec-path-from-shell
-  :if (or (memq window-system '(mac ns x)) (daemonp))
-  :config (exec-path-from-shell-initialize))
-
-
-;; disable nativing compilation warnings
-(setq native-comp-async-report-warnings-errors nil)
-
-;; utf-8 encoding
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-
-;; No tabs, but set indent to normal tab width
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 8)
-
-;; YYYY-MM-DD Calendar
-(setq calendar-date-style 'iso)
-
+;;; init.el --- Prelude's configuration entry point.
 ;;
-(use-package elec-pair
-  :ensure nil
-  :config
-  (electric-pair-mode +1))
+;; Copyright (c) 2011-2026 Bozhidar Batsov
+;;
+;; Author: Bozhidar Batsov <bozhidar@batsov.com>
+;; URL: https://github.com/bbatsov/prelude
+;; Version: 1.1.0
+;; Keywords: convenience
 
-;; DELSEL : delete selection if you insert
-(use-package delsel
-  :ensure nil
-  :hook (after-init . delete-selection-mode))
+;; This file is not part of GNU Emacs.
 
+;;; Commentary:
 
-;; Do-What-I-Mean behaviour for a general `keyboard-quit'.  
-(defun jg/keyboard-quit-dwim ()
-" - When the region is active, disable it.
-  - When a minibuffer is open, but not focused, close the minibuffer.
-  - When the Completions buffer is selected, close it.
-  - In every other case use the regular `keyboard-quit'."
-  (interactive)
-  (cond
-   ((region-active-p) (keyboard-quit))
-   ((derived-mode-p 'completion-list-mode) (delete-completion-window))
-   ((> (minibuffer-depth) 0) (abort-recursive-edit))
-   (t (keyboard-quit))))
-(define-key global-map (kbd "C-g") #'jg/keyboard-quit-dwim)
+;; This file simply sets up the default load path and requires
+;; the various modules defined within Emacs Prelude.
 
+;;; License:
 
-;; quit emacslient vs emacs
-(defun jg/emacsclient-c-x-c-c (&optional arg)
-  (interactive "P")
-  (if (or arg (not (frame-parameter nil 'client)))
-      (save-buffers-kill-emacs)
-    (save-buffers-kill-terminal)))
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License
+;; as published by the Free Software Foundation; either version 3
+;; of the License, or (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
 
-(if (daemonp)
-    (global-set-key (kbd "C-x C-c") #'jg/emacsclient-c-x-c-c))
+;;; Code:
 
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+                                        ;(package-initialize)
 
-;;; UI STUFF
+(defvar prelude-user
+  (getenv
+   (if (equal system-type 'windows-nt) "USERNAME" "USER")))
 
-;;  CATPPUCCIN theme
-(use-package catppuccin-theme
-  :config (load-theme 'catppuccin :no-confirm))
+(message "[Prelude] Prelude is powering up... Be patient, Master %s!" prelude-user)
 
+(when (version< emacs-version "29.1")
+  (error "[Prelude] Prelude requires GNU Emacs 29.1 or newer, but you're running %s" emacs-version))
 
-;; ICONS and FONTS
+;; Always load newest byte code
+(setq load-prefer-newer t)
 
-;; ICONS : Remember to do M-x and run `nerd-icons-install-fonts' to get the
-;; font files.  Then restart Emacs to see the effect.
-(use-package nerd-icons)
+;; Define Prelude's directory structure
+(defvar prelude-dir (file-name-directory load-file-name)
+  "The root dir of the Emacs Prelude distribution.")
+(defvar prelude-core-dir (expand-file-name "core" prelude-dir)
+  "The home of Prelude's core functionality.")
+(defvar prelude-modules-dir (expand-file-name  "modules" prelude-dir)
+  "This directory houses all of the built-in Prelude modules.")
+(defvar prelude-personal-dir (expand-file-name "personal" prelude-dir)
+  "This directory is for your personal configuration.
 
-(use-package nerd-icons-completion
-  :after marginalia
-  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup))
+Users of Emacs Prelude are encouraged to keep their personal configuration
+changes in this directory.  All Emacs Lisp files there are loaded automatically
+by Prelude.")
+(defvar prelude-personal-preload-dir (expand-file-name "preload" prelude-personal-dir)
+  "This directory is for your personal configuration, that you want loaded before Prelude.")
+(defvar prelude-vendor-dir (expand-file-name "vendor" prelude-dir)
+  "This directory houses packages that are not yet available in ELPA (or MELPA).")
+(defvar prelude-savefile-dir (expand-file-name "savefile" user-emacs-directory)
+  "This folder stores all the automatically generated save/history-files.")
+(defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-personal-dir)
+  "This file contains a list of modules that will be loaded by Prelude.")
+(defvar prelude-override-package-user-dir t
+  "By default prelude installs downloaded packages in <prelude-dir>/elpa.
+   Set to nil to override this behaviour")
 
-(use-package nerd-icons-corfu
-  :after corfu
-  :config
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+(unless (file-exists-p prelude-savefile-dir)
+  (make-directory prelude-savefile-dir))
 
-(use-package nerd-icons-dired
-  :hook (dired-mode . nerd-icons-dired-mode))
+(defun prelude-add-subfolders-to-load-path (parent-dir)
+  "Add all level PARENT-DIR subdirs to the `load-path'."
+  (dolist (f (directory-files parent-dir))
+    (let ((name (expand-file-name f parent-dir)))
+      (when (and (file-directory-p name)
+                 (not (string-prefix-p "." f)))
+        (add-to-list 'load-path name)
+        (prelude-add-subfolders-to-load-path name)))))
 
-;; FONTS AND FRAME SIZE
-(set-face-attribute 'default nil
-                    :font "JetBrains Mono"
-                    :height 140
-                    :weight 'medium)
-(set-face-attribute 'variable-pitch nil
-                    :font "Ubuntu"
-                    :height 140
-                    :weight 'medium)
-(set-face-attribute 'fixed-pitch nil
-                    :font "JetBrains Mono"
-                    :height 140
-                    :weight 'medium)
-;; Makes commented text and keywords italics. Font must have italic face available.
-(set-face-attribute 'font-lock-comment-face nil
-                    :slant 'italic)
-(set-face-attribute 'font-lock-keyword-face nil
-		                :slant 'italic)
+;; add Prelude's directories to Emacs's `load-path'
+(add-to-list 'load-path prelude-core-dir)
+(add-to-list 'load-path prelude-modules-dir)
+(add-to-list 'load-path prelude-vendor-dir)
+(prelude-add-subfolders-to-load-path prelude-vendor-dir)
 
-;; Set Frame width/heighth and default font on graphical frames
-(setq default-frame-alist
-      '((font . "JetBrains Mono-14")
-      (top . 25) (left . 275) (width . 140) (height . 60)))
+;; reduce the frequency of garbage collection by making it happen on
+;; each 50MB of allocated data (the default is on every 0.76MB)
+(setq gc-cons-threshold 50000000)
 
-;; KEY BINDINGS AND MOUSE WHEEL for zooming in/out
-(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
 
-;; Turn off startup message, set visual bell
-(setq inhibit-startup-message t)
-(setq visible-bell t)
+;; preload the personal settings from `prelude-personal-preload-dir'
+(when (file-directory-p prelude-personal-preload-dir)
+  (message "[Prelude] Loading personal configuration files from files and directories in %s..." prelude-personal-preload-dir)
+  (mapc 'load (directory-files-recursively prelude-personal-preload-dir "^[^#\.].*el$")))
 
-;; Disable Menubar, Toolbars Tooltips, and Scrollbars, and set fringe
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(tooltip-mode -1)
-(scroll-bar-mode -1)
-(set-fringe-mode 10)
+(message "[Prelude] Loading Prelude's core modules...")
 
-;; Display Line Numbers and Truncated Lines
-(global-display-line-numbers-mode t)
-(global-visual-line-mode t)
+;; load the core stuff
+(require 'prelude-packages)
+(require 'prelude-custom)  ;; Needs to be loaded before core, editor and ui
+(require 'prelude-ui)
+(require 'prelude-core)
+(require 'prelude-mode)
+(require 'prelude-editor)
+(require 'prelude-global-keybindings)
 
-;; disable bidirectional text scanning
-(setq-default bidi-paragraph-direction 'left-to-right)
-(setq bidi-inhibit-bpa t)
+;; macOS specific settings
+(when (eq system-type 'darwin)
+  (require 'prelude-macos))
 
-;; skip fontification during input
-(setq redisplay-skip-fontification-on-input t)
+;; Linux specific settings
+(when (eq system-type 'gnu/linux)
+  (require 'prelude-linux))
 
-;; increase process output buffer for LSP
-(setq read-process-output-max (* 1 1024 1024))
+;; WSL specific setting
+(when (and (eq system-type 'gnu/linux) (getenv "WSLENV"))
+  (require 'prelude-wsl))
 
-;; don't render cursors in non-focused windows
-(setq-default cursor-in-non-selected-windows nil)
-(setq highlight-nonselected-windows nil)
+;; Windows specific settings
+(when (eq system-type 'windows-nt)
+  (require 'prelude-windows))
 
-;; save clipboard before killing
-(setq save-interprogram-paste-before-kill t)
+(message "[Prelude] Loading Prelude's additional modules...")
 
-;; don't duplicate entries in kill ring
-(setq kill-do-not-save-duplicates t)
+;; the modules
+(if (file-exists-p prelude-modules-file)
+    (load prelude-modules-file)
+  (message "[Prelude] Missing personal modules file %s" prelude-modules-file)
+  (message "[Prelude] Falling back to the bundled example file sample/prelude-modules.el")
+  (message "[Prelude] You should copy this file to your personal configuration folder and tweak it to your liking")
+  (load (expand-file-name "sample/prelude-modules.el" prelude-dir)))
 
-;; change all yes/no questions to y/n
-(setq use-short-answers t)
+;; config changes made through the customize UI will be stored here
+(setq custom-file (expand-file-name "custom.el" prelude-personal-dir))
 
+;; load the personal settings (this includes `custom-file')
+(when (file-exists-p prelude-personal-dir)
+  (message "[Prelude] Loading personal configuration files in %s..." prelude-personal-dir)
+  (mapc 'load (delete
+               prelude-modules-file
+               (directory-files prelude-personal-dir 't "^[^#\.].*\\.el$"))))
 
-;; DIMINISH : hide minor modes from the mode line
-(use-package diminish)
+(message "[Prelude] Prelude is ready to do thy bidding, Master %s!" prelude-user)
 
+(prelude-eval-after-init
+ ;; greet the use with some useful tip
+ (run-at-time 5 nil 'prelude-tip-of-the-day))
 
-;; WHICH-KEY : a minor mode that displays available keybindings
-(use-package which-key
-  :ensure nil
-  :init
-  (which-key-mode 1)
-  :config
-  (setq which-key-side-window-max-height 0.25
-	which-key-sort-order #'which-key-key-order-alpha
-	which-key-sort-uppercase-first nil
-	which-key-add-column-padding 1
-	which-key-max-display-columns nil
-	which-key-min-display-lines 6
-	which-key-side-window-slot -10
-	which-key-idle-delay 0.8
-	which-key-max-description-length 25
-	which-key-allow-imprecise-window-fit t
-	which-key-separator " → " ))
-
-
-;; VERTICO, MARGINALIA, ORDERLESS, SAVEHIST, CORFU
-
-;; VERTICO : VERTical Interactive COmpletion
-;; <TAB> : vertico-insert
-;; <RETURN> : vertico-exit
-;; M-<RETURN> : vertico-exit-input
-(use-package vertico
-  :hook (after-init . vertico-mode))
-
-;; MARGINALIA : Marginalia (marks or annotations) in the minibuffer
-(use-package marginalia
-  :hook (after-init . marginalia-mode))
-
-;; ORDERLESS : completion style dividing pattern into space-separated components
-(use-package orderless
-  :custom
-    (completion-styles '(orderless basic))
-    (completion-category-defaults nil)
-    (completion-category-overrides
-     '((file (styles partial-completion))
-       (eglot (styles orderless))
-       (eglot-capf (styles orderless)))))
-
-;; SAVEHIST: save minibuffer history
-(use-package savehist
-  :ensure nil ; it is built-in
-  :hook (after-init . savehist-mode)
-  :config
-  (add-to-list 'savehist-additional-variables 'corfu-history))
-
-;; CORFU : COmpletion in Region FUnction - enhances in-buffer completion with a popupo
-(use-package corfu
-  :hook (after-init . global-corfu-mode)
-  :bind (:map corfu-map ("<tab>" . corfu-complete))
-  :config
-  (setq tab-always-indent 'complete)
-  (setq corfu-preview-current nil)
-  (setq corfu-min-width 20)
-  (setq corfu-popupinfo-delay '(1.25 . 0.5))
-  (corfu-popupinfo-mode 1)
-  (corfu-history-mode 1))
-
-
-;;; DIRED, DIRED-SUBTREEE, TRASHEED
-
-;; DIRED : create a buffer containing a listing of a directory
-(use-package dired
-  :ensure nil
-  :commands (dired)
-  :hook
-  ((dired-mode . dired-hide-details-mode)
-   (dired-mode . hl-line-mode))
-  :config
-  (setq dired-recursive-copies 'always)
-  (setq dired-recursive-deletes 'always)
-  (setq delete-by-moving-to-trash t)
-  (setq dired-dwim-target t))
-
-;; DIRED-SUBTREE : insert subdirectories in a tree-like fashion
-(use-package dired-subtree
-  :after dired
-  :bind
-  (:map dired-mode-map
-     ("TAB" . dired-subtree-toggle)
-     ("S-TAB" . dired-subtree-remove))
-  :config
-  (setq dired-subtree-use-backgrounds nil))
-
-
-;; TRASHED : open, view, browse, restore, permanently delete files in the trash
-(use-package trashed
-  :commands (trashed)
-  :config
-  (setq trashed-action-confirmer 'y-or-n-p)
-  (setq trashed-use-header-line t)
-  (setq trashed-sort-key '("Date deleted" . t))
-  (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
-
-
-;; DEVELOPMENT PACKAGES
-
-
-;; MAGIT : a git porcelain inside emacs
-(use-package magit
-  :bind ("C-c g" . magit-status))
-
-
-;; RAINBOW-DELIMITERS : different colored parens based on nesting
-(use-package rainbow-delimiters)
-
-
-;; paredit - structural editing for s-expressions
-(use-package paredit
-  :config
-  ;; paredit steals RET for auto-newline-and-indent, which is annoying
-  (define-key paredit-mode-map (kbd "RET") nil)
-   (define-key paredit-mode-map (kbd "M-s") search-map)
-  (define-key paredit-mode-map (kbd "M-D") #'paredit-splice-sexp)
-  ;; preserve M-? for xref-find-references
-  (define-key paredit-mode-map (kbd "M-?") nil)
-  (add-hook 'paredit-mode-hook (lambda () (electric-pair-local-mode -1)))
-  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-  ;; enable in the *scratch* buffer
-  (add-hook 'lisp-interaction-mode-hook #'paredit-mode)
-  (add-hook 'ielm-mode-hook #'paredit-mode)
-  (add-hook 'lisp-mode-hook #'paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
-  (diminish 'paredit-mode "()"))
-
-;; CLOJURE MODE
-(use-package clojure-mode
-  :config
-  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'clojure-mode-hook #'paredit-mode)
-  (add-hook 'clojure-mode-hook #'subword-mode)
-  (add-hook 'clojure-mode-hook #'eglot-ensure))
-
-;; EGLOT : LSP integration
-(use-package eglot
-  :ensure nil   ; built-in
-  :config
-  (setq eglot-autoshutdown t)
-  ;; Clojure-lsp is usually auto-detected, but you can be explicit:
-  (add-to-list 'eglot-server-programs
-               '((clojure-mode clojurec-mode clojurescript-mode)
-                 . ("clojure-lsp")))
-  ;; Optional: performance tuning
-  (setq eglot-events-buffer-config '(:size 102400 :format full))
-  (setq eglot-send-changes-idle-time 0.5)
-  
-  ;; Tell corfu/capf to use eglot's completion
-  ;;(setq completion-category-overrides '((eglot (styles orderless))
-  ;;(eglot-capf (styles orderless))))
-  :bind (:map eglot-mode-map
-              ("C-c e r" . eglot-rename)
-              ("C-c e f" . eglot-format)
-              ("C-c e a" . eglot-code-actions)
-              ("C-c e d" . eldoc)
-              ("M-."     . xref-find-definitions)
-              ("M-,"     . xref-pop-marker-stack)
-              ("M-?"     . xref-find-references)))
-
-;; CIDER: NREPL interaction for CLOJURE
-(use-package cider
-  :config
-  (setq nrepl-log-messages t)
-  (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'cider-repl-mode-hook #'paredit-mode)
-  ;; hide the *nrepl-connection* and *nrepl-server* buffers
-  (setq nrepl-hide-special-buffers t))
-
+;;; init.el ends here
