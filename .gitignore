@@ -21,3 +21,4 @@ emacs/.config/emacs/transient
 emacs/.config/emacs/tree-sitter
 tmux/.config/tmux/plugins
 mozilla/.config/mozilla/**
+lazygit/.config/lazygit/state.yml
