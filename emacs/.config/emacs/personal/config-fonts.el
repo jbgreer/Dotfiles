@@ -23,5 +23,5 @@
 ;; Set Frame width/heighth and default font on graphical frames
 (setq default-frame-alist
       '((font . "JetBrains Mono-14")
-      (top . 25) (left . 275) (width . 140) (height . 60)))
+      (top . 25) (left . 275) (width . 140) (height . 80)))
 

@@ -1,3 +1,6 @@
+# Uncomment for zsh profiling
+# zmodload zsh/zprof 
+
 typeset -U path cdpath fpath manpath
 
 # ZSH autocomplete
@@ -13,7 +16,7 @@ export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 
 HISTFILE="$HOME/.zsh_history"
-mkdir -p "$(dirname "$HISTFILE")"
+[ ! -f $HISTFILE ] && mkdir -p "$(dirname "$HISTFILE")"
 
 setopt HIST_FCNTL_LOCK
 unsetopt APPEND_HISTORY
@@ -72,3 +75,7 @@ alias -- vim="nvim"
 alias -- e="emacsclient -c -a emacs"
 
 # Named Directory Hashes
+#
+
+# Uncomment for zsh profiling
+# zprof
