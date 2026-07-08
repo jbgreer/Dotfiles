@@ -1,0 +1,197 @@
+tap "1password/tap"
+tap "borkdude/brew"
+tap "clojure-lsp/brew"
+tap "clojure/tools"
+tap "d12frosted/emacs-plus"
+# Simple, modern, secure file encryption
+brew "age"
+# Spell checker with better logic than ispell
+brew "aspell"
+# Library for command-line editing
+brew "readline"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Implementation of the Chez Scheme language
+brew "chezscheme"
+# Formatting Clojure code
+brew "cljfmt"
+# Load/unload environment variables based on $PWD
+brew "direnv"
+# Convert text between DOS, UNIX, and Mac formats
+brew "dos2unix"
+# Embeddable SQL OLAP Database Management System
+brew "duckdb"
+# More intuitive version of du in rust
+brew "dust"
+# Command-line tool to interact with exercism.io
+brew "exercism"
+# Modern, maintained replacement for ls
+brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Lint your Python code for style and logical errors
+brew "flake8"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# GitHub command-line tool
+brew "gh"
+# Distributed revision control system
+brew "git"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+# Render markdown on the CLI
+brew "glow"
+# Passphrase entry dialog utilizing the Assuan protocol
+brew "pinentry"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# Improved top (interactive process viewer)
+brew "htop"
+# Configurable static site generator
+brew "hugo"
+# Command-line benchmarking tool
+brew "hyperfine"
+# Synchronize a maildir with an IMAP server
+brew "isync"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Handy way to save and run project-specific commands
+brew "just"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Development kit for the Java programming language
+brew "openjdk"
+# Build tool for Clojure
+brew "leiningen"
+# Find what models run on your hardware
+brew "llmfit"
+# Tool for linting and static analysis of Lua code
+brew "luacheck"
+# Apple Silicon Monitor Top written in Go Lang
+brew "mactop"
+# Java-based project management
+brew "maven"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
+# SMTP client that can be used as an SMTP plugin for Mutt
+brew "msmtp"
+# Tool for searching e-mail messages stored in the maildir-format
+brew "mu"
+# Incremental parsing library
+brew "tree-sitter"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Data loading tool for PostgreSQL
+brew "pgloader"
+# Pinentry for GPG on Mac
+brew "pinentry-mac"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
+# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
+brew "prettier"
+# Modern replacement for ps written in Rust
+brew "procs"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Intuitive find & replace CLI
+brew "sd"
+# Easily detect and prevent bugs and anti-patterns in your codebase
+brew "semgrep"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
+# Terminal multiplexer
+brew "tmux"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Parser generator tool
+brew "tree-sitter-cli"
+# Fork of Nethack
+brew "unnethack"
+# Collection of Linux utilities
+brew "util-linux"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Execute commands when watched files change
+brew "watchexec"
+# Internet file retriever
+brew "wget"
+# Friendly and fast tool for sending HTTP requests
+brew "xh"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
+brew "zellij"
+# Programming language designed for robustness, optimality, and clarity
+brew "zig"
+# Language Server for Zig
+brew "zls"
+# Real-time type-ahead completion for Zsh
+brew "zsh-autocomplete"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
+# Additional completion definitions for zsh
+brew "zsh-completions"
+# Command-line interface for 1Password
+cask "1password-cli"
+# Application launcher and productivity software
+cask "alfred"
+# Memory training application
+cask "anki"
+# Tool to flash OS images to SD cards & USB drives
+cask "balenaetcher"
+# Voice and text chat software
+cask "discord"
+# Client for the Dropbox cloud storage service
+cask "dropbox"
+# GNU Emacs text editor with patches for macOS
+cask "d12frosted/emacs-plus/emacs-plus-app"
+# Web browser
+cask "firefox"
+cask "font-fira-code-nerd-font"
+cask "font-fira-mono-nerd-font"
+cask "font-fontawesome"
+cask "font-jetbrains-mono"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-ubuntu"
+cask "font-ubuntu-mono-nerd-font"
+cask "font-ubuntu-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
+# Web browser
+cask "google-chrome"
+# Vector graphics editor
+cask "inkscape"
+# Electronics design automation suite
+cask "kicad"
+# Free cross-platform office suite, fresh version
+cask "libreoffice"
+# Host-based application firewall
+cask "little-snitch"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# WebKit based web browser
+cask "orion"
+# Administration and development platform for PostgreSQL
+cask "pgadmin4"
+# Scientific and technical publishing system built on Pandoc
+cask "quarto"
+# Modern programming language in the Lisp/Scheme family
+cask "racket"
+# Music streaming service
+cask "spotify"
+# JDK from the Eclipse Foundation (Adoptium)
+cask "temurin@25"
+# Virtual machines UI using QEMU
+cask "utm"
+# Open-source code editor
+cask "visual-studio-code"
+# Video communication and virtual meeting platform
+cask "zoom"
+# Desktop client for the Zulip team chat platform
+cask "zulip"
