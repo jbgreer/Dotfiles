@@ -1,0 +1,9 @@
+{
+  "trustedformulae": [
+    "clojure/tools/clojure"
+  ],
+  "trustedcasks": [
+    "d12frosted/emacs-plus/emacs-plus-app",
+    "d12frosted/emacs-plus/emacs-plus-app@master"
+  ]
+}
