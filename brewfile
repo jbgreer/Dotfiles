@@ -1,5 +1,6 @@
 tap "borkdude/brew"
 tap "clojure-lsp/brew"
+tap "clojure/tools", trusted: true
 tap "d12frosted/emacs-plus", trusted: { casks: ["emacs-plus-app@master"] }
 # Simple, modern, secure file encryption
 brew "age"
@@ -11,12 +12,6 @@ brew "bat"
 brew "fontconfig"
 # Formatting Clojure code
 brew "cljfmt"
-# Library for command-line editing
-brew "readline"
-# Readline wrapper: adds readline support to tools that lack it
-brew "rlwrap"
-# Dynamic, general-purpose programming language
-brew "clojure"
 # Modern, maintained replacement for ls
 brew "eza"
 # Simple, fast and user-friendly alternative to find
@@ -39,6 +34,8 @@ brew "just"
 brew "lazygit"
 # Build tool for Clojure
 brew "leiningen"
+# Find what models run on your hardware
+brew "llmfit"
 # Java-based project management
 brew "maven"
 # Polyglot runtime manager (asdf rust clone)
@@ -47,8 +44,14 @@ brew "mise"
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Pinentry for GPG on Mac
+brew "pinentry-mac"
+# Library for command-line editing
+brew "readline"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# Readline wrapper: adds readline support to tools that lack it
+brew "rlwrap"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -71,6 +74,8 @@ brew "zsh-autosuggestions"
 brew "borkdude/brew/babashka", trusted: true
 # Language Server (LSP) for Clojure
 brew "clojure-lsp/brew/clojure-lsp-native", trusted: true
+# The Clojure Programming Language
+brew "clojure/tools/clojure", trusted: true
 # Client for the Dropbox cloud storage service
 cask "dropbox"
 # GNU Emacs text editor with patches for macOS
@@ -86,3 +91,7 @@ cask "ghostty"
 cask "google-chrome"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
+# Scientific and technical publishing system built on Pandoc
+cask "quarto"
+# JDK from the Eclipse Foundation (Adoptium)
+cask "temurin@25"
