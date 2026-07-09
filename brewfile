@@ -1,221 +1,187 @@
-ada-url
-age
-aspell
-babashka
-bash
-bat
-bdw-gc
-berkeley-db@5
-brotli
-c-ares
-ca-certificates
-cairo
-certifi
-cffi
-chezscheme
-clj-kondo
-cljfmt
-clojure
-clojure-lsp-native
-cryptography
-direnv
-dos2unix
-duckdb
-dust
-dwarfutils
-exercism
-eza
-fd
-flake8
-fmt
-fontconfig
-freetds
-freetype
-fribidi
-fzf
-gcc
-gettext
-gh
-ghostscript
-giflib
-git
-git-delta
-glib
-glow
-gmime
-gmp
-gnupg
-gnutls
-go
-gpgme
-graphite2
-guile
-harfbuzz
-hdrhistogram_c
-htop
-hugo
-hyperfine
-icu4c@78
-isl
-isync
-jbig2dec
-jpeg-turbo
-jq
-json-c
-just
-lazygit
-leiningen
-leptonica
-libarchive
-libassuan
-libb2
-libdatrie
-libev
-libevent
-libffi
-libgccjit
-libgcrypt
-libgit2
-libgpg-error
-libidn
-libidn2
-libksba
-libmpc
-libnghttp2
-libnghttp3
-libngtcp2
-libpng
-libptytty
-libssh2
-libtasn1
-libthai
-libtiff
-libtool
-libunistring
-libusb
-libuv
-libx11
-libxau
-libxcb
-libxdmcp
-libxext
-libxrender
-lilypond
-little-cms2
-lld@21
-llhttp
-llmfit
-llvm@21
-lpeg
-lua@5.4
-luacheck
-luajit
-luv
-lz4
-lzo
-m4
-mactop
-maven
-merve
-mise
-mpdecimal
-mpfr
-msmtp
-mu
-nbytes
-ncurses
-neovim
-nettle
-node
-npth
-oniguruma
-openjdk
-openjpeg
-openssl@3
-p11-kit
-pango
-pcre2
-pgloader
-pinentry
-pinentry-mac
-pipx
-pixman
-pkgconf
-prettier
-procs
-pycparser
-pydantic
-python@3.14
-readline
-ripgrep
-rlwrap
-rpds-py
-sd
-semgrep
-simdjson
-simdutf
-sqlite
-starship
-stow
-tesseract
-tmux
-tree
-tree-sitter
-tree-sitter-cli
-unbound
-unibilium
-unixodbc
-unnethack
-usage
-utf8proc
-util-linux
-uv
-uvwasi
-watchexec
-webp
-wget
-xapian
-xh
-xorgproto
-xz
-yazi
-zellij
-zig
-zls
-zsh-autocomplete
-zsh-autosuggestions
-zsh-completions
-zstd
-1password-cli
-alfred
-anki
-balenaetcher
-discord
-dropbox
-emacs-plus-app
-firefox
-font-fira-code-nerd-font
-font-fira-mono-nerd-font
-font-fontawesome
-font-jetbrains-mono
-font-jetbrains-mono-nerd-font
-font-ubuntu
-font-ubuntu-mono-nerd-font
-font-ubuntu-nerd-font
-ghostty
-google-chrome
-inkscape
-kicad
-libreoffice
-little-snitch
-obsidian
-orion
-pgadmin4
-quarto
-racket
-spotify
-temurin@25
-utm
-visual-studio-code
-zoom
-zulip
+tap "1password/tap"
+tap "borkdude/brew"
+tap "clojure-lsp/brew"
+tap "clojure/tools"
+tap "d12frosted/emacs-plus", trusted: { casks: ["emacs-plus-app@master"] }
+# Simple, modern, secure file encryption
+brew "age"
+# Spell checker with better logic than ispell
+brew "aspell"
+# Library for command-line editing
+brew "readline"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Implementation of the Chez Scheme language
+brew "chezscheme"
+# Formatting Clojure code
+brew "cljfmt"
+# Load/unload environment variables based on $PWD
+brew "direnv"
+# Convert text between DOS, UNIX, and Mac formats
+brew "dos2unix"
+# More intuitive version of du in rust
+brew "dust"
+# Command-line tool to interact with exercism.io
+brew "exercism"
+# Modern, maintained replacement for ls
+brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Lint your Python code for style and logical errors
+brew "flake8"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# GitHub command-line tool
+brew "gh"
+# Distributed revision control system
+brew "git"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+# Render markdown on the CLI
+brew "glow"
+# Passphrase entry dialog utilizing the Assuan protocol
+brew "pinentry"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
+# Improved top (interactive process viewer)
+brew "htop"
+# Configurable static site generator
+brew "hugo"
+# Command-line benchmarking tool
+brew "hyperfine"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Handy way to save and run project-specific commands
+brew "just"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Development kit for the Java programming language
+brew "openjdk"
+# Build tool for Clojure
+brew "leiningen"
+# Music engraving system
+brew "lilypond"
+# Find what models run on your hardware
+brew "llmfit"
+# Tool for linting and static analysis of Lua code
+brew "luacheck"
+# Apple Silicon Monitor Top written in Go Lang
+brew "mactop"
+# Java-based project management
+brew "maven"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
+# Tool for searching e-mail messages stored in the maildir-format
+brew "mu"
+# Incremental parsing library
+brew "tree-sitter"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Data loading tool for PostgreSQL
+brew "pgloader"
+# Pinentry for GPG on Mac
+brew "pinentry-mac"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
+# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
+brew "prettier"
+# Modern replacement for ps written in Rust
+brew "procs"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Readline wrapper: adds readline support to tools that lack it
+brew "rlwrap"
+# Intuitive find & replace CLI
+brew "sd"
+# Easily detect and prevent bugs and anti-patterns in your codebase
+brew "semgrep"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Organize software neatly under a single directory tree (e.g. /usr/local)
+brew "stow"
+# Terminal multiplexer
+brew "tmux"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Parser generator tool
+brew "tree-sitter-cli"
+# Fork of Nethack
+brew "unnethack"
+# Collection of Linux utilities
+brew "util-linux"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Execute commands when watched files change
+brew "watchexec"
+# Internet file retriever
+brew "wget"
+# Friendly and fast tool for sending HTTP requests
+brew "xh"
+# Pluggable terminal workspace, with terminal multiplexer as the base feature
+brew "zellij"
+# Programming language designed for robustness, optimality, and clarity
+brew "zig"
+# Language Server for Zig
+brew "zls"
+# Real-time type-ahead completion for Zsh
+brew "zsh-autocomplete"
+# Fish-like fast/unobtrusive autosuggestions for zsh
+brew "zsh-autosuggestions"
+# Additional completion definitions for zsh
+brew "zsh-completions"
+# The Clojure Programming Language
+brew "clojure/tools/clojure", trusted: true
+# Command-line interface for 1Password
+cask "1password-cli"
+# Memory training application
+cask "anki"
+# Tool to flash OS images to SD cards & USB drives
+cask "balenaetcher"
+# Voice and text chat software
+cask "discord"
+# Client for the Dropbox cloud storage service
+cask "dropbox"
+# GNU Emacs text editor with patches for macOS
+cask "d12frosted/emacs-plus/emacs-plus-app", trusted: true
+# Web browser
+cask "firefox"
+cask "font-fira-code-nerd-font"
+cask "font-fira-mono-nerd-font"
+cask "font-fontawesome"
+cask "font-jetbrains-mono"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-ubuntu"
+cask "font-ubuntu-mono-nerd-font"
+cask "font-ubuntu-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
+# Web browser
+cask "google-chrome"
+# Electronics design automation suite
+cask "kicad"
+# Free cross-platform office suite, fresh version
+cask "libreoffice"
+# Host-based application firewall
+cask "little-snitch"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# Administration and development platform for PostgreSQL
+cask "pgadmin4"
+# Scientific and technical publishing system built on Pandoc
+cask "quarto"
+# Modern programming language in the Lisp/Scheme family
+cask "racket"
+# Music streaming service
+cask "spotify"
+# JDK from the Eclipse Foundation (Adoptium)
+cask "temurin@25"
+# Virtual machines UI using QEMU
+cask "utm"
+# Open-source code editor
+cask "visual-studio-code"
+# Video communication and virtual meeting platform
+cask "zoom"
+# Desktop client for the Zulip team chat platform
+cask "zulip"
