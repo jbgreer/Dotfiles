@@ -1,2 +1,2 @@
 # Dotfiles
-Dotfiles for MacOS
+Dotfiles for MacOS Laptop.
