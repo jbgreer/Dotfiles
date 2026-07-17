@@ -1,0 +1,47 @@
+{
+  "$schema":"https://opencode.ai/config.json",
+  "shell": "zsh",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "gemma4:26b-mlx": {
+          "name": "Gemma 26b MLX (local)",
+          "tools": true,
+        },
+        "qwen3.5:b-mlx": {
+          "name": "Qwen 3.5 9b MLX (local)",
+          "tools": true,
+        },
+        "qwen3.6:27b-mlx": {
+          "name": "Qwen 3.6 27b MLX (local)",
+          "tools": true,
+        },
+        "qwen3.6:35b-mlx": {
+          "name": "Qwen 3.6 35b MLX (local)",
+          "tools": true,
+        }
+      }
+    }
+  },
+  "permission": {
+    "bash": "ask",
+    "edit": "allow",
+    "external_directory": "deny",
+    "doom_loop": "ask",
+    "grep": "allow",
+    "glob": "allow",
+    "lsp": "allow",
+    "question": "allow",
+    "read": "allow",
+    "skill": "allow",
+    "todowrite": "allow",
+    "webfetch": "deny",
+    "websearch": "deny",
+    "write": "ask",
+  }
+}

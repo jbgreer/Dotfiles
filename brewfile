@@ -1,3 +1,4 @@
+tap "anomalyco/tap"
 tap "borkdude/brew"
 tap "clojure-lsp/brew"
 tap "clojure/tools", trusted: true
@@ -34,20 +35,26 @@ brew "just"
 brew "lazygit"
 # Build tool for Clojure
 brew "leiningen"
+# LLM inference in C/C++
+brew "llama.cpp"
 # Find what models run on your hardware
 brew "llmfit"
 # Java-based project management
 brew "maven"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
+# Library for command-line editing
+brew "readline"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.14"
 # Incremental parsing library
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Create, run, and share large language models (LLMs)
+brew "ollama"
 # Pinentry for GPG on Mac
 brew "pinentry-mac"
-# Library for command-line editing
-brew "readline"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Readline wrapper: adds readline support to tools that lack it
@@ -70,6 +77,8 @@ brew "wget"
 brew "zsh-autocomplete"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
+# The AI coding agent built for the terminal.
+brew "anomalyco/tap/opencode", trusted: true
 # Native, fast starting Clojure interpreter for scripting.
 brew "borkdude/brew/babashka", trusted: true
 # Language Server (LSP) for Clojure
@@ -93,5 +102,7 @@ cask "google-chrome"
 cask "obsidian"
 # Scientific and technical publishing system built on Pandoc
 cask "quarto"
+# Modern programming language in the Lisp/Scheme family
+cask "racket"
 # JDK from the Eclipse Foundation (Adoptium)
 cask "temurin@25"
