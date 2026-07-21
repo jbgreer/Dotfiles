@@ -1,10 +1,14 @@
-tap "1password/tap"
-tap "borkdude/brew"
-tap "clojure-lsp/brew"
+tap "1password/tap", trusted: true
+tap "borkdude/brew", trusted: true
+tap "clojure-lsp/brew", trusted: true
 tap "clojure/tools"
 tap "d12frosted/emacs-plus", trusted: { casks: ["emacs-plus-app@master"] }
 # Simple, modern, secure file encryption
 brew "age"
+# Powerful, clean, object-oriented scripting language
+brew "ruby"
+# Text processor and publishing toolchain for AsciiDoc
+brew "asciidoctor"
 # Spell checker with better logic than ispell
 brew "aspell"
 # Library for command-line editing
@@ -131,6 +135,12 @@ brew "zsh-autocomplete"
 brew "zsh-autosuggestions"
 # Additional completion definitions for zsh
 brew "zsh-completions"
+# Native, fast starting Clojure interpreter for scripting.
+brew "borkdude/brew/babashka"
+# A minimal and opinionated linter for Clojure code that sparks joy.
+brew "borkdude/brew/clj-kondo"
+# Language Server (LSP) for Clojure
+brew "clojure-lsp/brew/clojure-lsp-native"
 # The Clojure Programming Language
 brew "clojure/tools/clojure", trusted: true
 # Command-line interface for 1Password
