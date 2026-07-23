@@ -43,5 +43,17 @@
     "webfetch": "deny",
     "websearch": "deny",
     "write": "ask",
+  },
+  "mcp": {
+    "clojure-mcp": {
+      "type": "local",
+      "command": ["clojure", "-Tmcp", "start"],
+      "enabled": false
+    },
+    "clojure-mcp-cli": {
+      "type": "local",
+      "command": ["clojure", "-Tmcp", "start", ":config-profile", ":cli-asist"],
+      "enabled": false
+    }
   }
 }
