@@ -1,5 +1,5 @@
 {
- ;;
+ ;; nREPL command-line interface
  :aliases {:nREPL
            {:extra-deps
             {nrepl/nrepl {:mvn/version "1.7.0"}}}}
