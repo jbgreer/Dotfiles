@@ -1,0 +1,11 @@
+{
+  "providers": {
+    "ollama": { 
+      "api": "openai-chat",
+      "url": "http://localhost:11434",
+      "models": {
+        "qwen3.6:27b-mlx": {}
+      }
+    }
+  }
+}
