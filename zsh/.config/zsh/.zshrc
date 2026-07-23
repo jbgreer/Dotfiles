@@ -79,3 +79,5 @@ alias -- e="emacsclient -c -a emacs"
 
 # Uncomment for zsh profiling
 # zprof
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

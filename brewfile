@@ -1,4 +1,5 @@
 tap "anomalyco/tap"
+tap "babashka/brew"
 tap "borkdude/brew"
 tap "clojure-lsp/brew"
 tap "clojure/tools", trusted: true
@@ -39,26 +40,30 @@ brew "leiningen"
 brew "llama.cpp"
 # Find what models run on your hardware
 brew "llmfit"
-# Java-based project management
-brew "maven"
-# Polyglot runtime manager (asdf rust clone)
-brew "mise"
 # Library for command-line editing
 brew "readline"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.14"
+# Java-based project management
+brew "maven"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
 # Incremental parsing library
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Create, run, and share large language models (LLMs)
 brew "ollama"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 # Pinentry for GPG on Mac
 brew "pinentry-mac"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Readline wrapper: adds readline support to tools that lack it
 brew "rlwrap"
+# Safe, concurrent, practical language
+brew "rust"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -67,12 +72,18 @@ brew "stow"
 brew "tmux"
 # Parser generator tool
 brew "tree-sitter-cli"
+# Source code spell checker
+brew "typos-cli"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Execute commands when watched files change
 brew "watchexec"
 # Internet file retriever
 brew "wget"
+# CLI for Git worktree management, designed for parallel AI agent workflows
+brew "worktrunk"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
 # Real-time type-ahead completion for Zsh
 brew "zsh-autocomplete"
 # Fish-like fast/unobtrusive autosuggestions for zsh
@@ -81,6 +92,7 @@ brew "zsh-autosuggestions"
 brew "anomalyco/tap/opencode", trusted: true
 # Native, fast starting Clojure interpreter for scripting.
 brew "borkdude/brew/babashka", trusted: true
+brew "babashka/brew/bbin", trusted: true
 # Language Server (LSP) for Clojure
 brew "clojure-lsp/brew/clojure-lsp-native", trusted: true
 # The Clojure Programming Language
@@ -106,3 +118,4 @@ cask "quarto"
 cask "racket"
 # JDK from the Eclipse Foundation (Adoptium)
 cask "temurin@25"
+cargo "parinfer_rust"
