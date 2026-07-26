@@ -29,6 +29,7 @@ emacs/.config/emacs/transient
 emacs/.config/emacs/tree-sitter
 lazygit/.config/lazygit/state.yml
 mozilla/.config/mozilla/**
+pi/.pi/agent/sessions/*
 tmux/.config/tmux/plugins
 zsh/.config/zsh/.zcompcache
 zsh/.config/zsh/.zcompdump
