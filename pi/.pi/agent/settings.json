@@ -6,6 +6,40 @@
   "defaultThinkingLevel": "high",
   "enabledModels": [],
   "packages": [
-    "npm:pi-clojure"
-  ]
+    "npm:@ryan_nookpi/pi-extension-claude-hooks-bridge"
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "clj-paren-repair-claude-hook"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "clj-paren-repair-claude-hook"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "clj-paren-repair-claude-hook"
+          }
+        ]
+      }
+    ]
+  }
 }
