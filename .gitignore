@@ -32,6 +32,7 @@ mozilla/.config/mozilla/**
 pi/.pi/agent/sessions/**
 pi/.pi/agent/bin/**
 pi/.pi/agent/npm/
+pi/.pi/agent/sessions/
 tmux/.config/tmux/plugins
 zsh/.config/zsh/.zcompcache
 zsh/.config/zsh/.zcompdump

@@ -5,42 +5,5 @@
   "defaultModel": "mlx-community/Qwen3.6-35B-A3B-8bit",
   "defaultThinkingLevel": "high",
   "enabledModels": [],
-  "packages": [
-    "npm:@ryan_nookpi/pi-extension-claude-hooks-bridge"
-  ],
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "clj-paren-repair-claude-hook"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "clj-paren-repair-claude-hook"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "clj-paren-repair-claude-hook"
-          }
-        ]
-      }
-    ]
-  },
   "quietStartup": false
 }
