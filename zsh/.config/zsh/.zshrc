@@ -3,14 +3,9 @@
 
 typeset -U path cdpath fpath manpath
 
-# ZSH autocomplete
-#source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# 2026-09-07 jbgreer Use emacs keybindings
+bindkey -e
 
-# Use viins keymap as the default.
-bindkey -v
-
-# History options should be set in .zshrc and after oh-my-zsh sourcing.
-# See https://github.com/nix-community/home-manager/issues/177.
 # 2026-01-18 jbgreer exporting HISTSIZE and SAVEHIST
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
@@ -25,11 +20,8 @@ unsetopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 unsetopt HIST_EXPIRE_DUPS_FIRST
 setopt SHARE_HISTORY
-# 2026-01-18 jbgreer now setting EXTENDED_HISTORY; adds timestampes 
+# 2026-01-18 jbgreer now setting EXTENDED_HISTORY; adds timestamps 
 setopt EXTENDED_HISTORY
-
-# ZSH autosuggestions
-#source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # ZSH completions
 if type brew &>/dev/null; then
@@ -42,10 +34,6 @@ autoload -Uz compinit && compinit
 # https://github.com/junegunn/fzf#setting-up-shell-integration
 # set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
-
-# OH-MY-POSH
-# 2026-01-18 jbgreer commenting out oh-my-posh eval
-# eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/catppuccin.omp.json)"
 
 # starship
 # 2026-01-18 jbgreer adding
@@ -80,4 +68,5 @@ alias -- e="emacsclient -c -a emacs"
 # Uncomment for zsh profiling
 # zprof
 
+# Worktrunk setup
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
