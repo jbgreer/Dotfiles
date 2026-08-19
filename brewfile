@@ -45,8 +45,6 @@ brew "just"
 brew "lazygit"
 # Build tool for Clojure
 brew "leiningen"
-# LLM inference in C/C++
-brew "llama.cpp"
 # Find what models run on your hardware
 brew "llmfit"
 # Java-based project management
