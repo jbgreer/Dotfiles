@@ -4,6 +4,7 @@ tap "borkdude/brew"
 tap "clojure-lsp/brew"
 tap "clojure/tools", trusted: true
 tap "d12frosted/emacs-plus", trusted: { casks: ["emacs-plus-app@master"] }
+tap "jundot/omlx", "https://github.com/jundot/omlx"
 # Simple, modern, secure file encryption
 brew "age"
 # Spell checker with better logic than ispell
@@ -28,6 +29,12 @@ brew "gh"
 brew "git"
 # Render markdown on the CLI
 brew "glow"
+# Library for command-line editing
+brew "readline"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.14"
+# Client library for huggingface.co hub
+brew "hf"
 # Improved top (interactive process viewer)
 brew "htop"
 # Lightweight and flexible command-line JSON processor
@@ -42,10 +49,6 @@ brew "leiningen"
 brew "llama.cpp"
 # Find what models run on your hardware
 brew "llmfit"
-# Library for command-line editing
-brew "readline"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.14"
 # Java-based project management
 brew "maven"
 # Polyglot runtime manager (asdf rust clone)
@@ -54,12 +57,8 @@ brew "mise"
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Create, run, and share large language models (LLMs)
-brew "ollama"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
-# AI agent toolkit
-brew "pi-coding-agent"
 # Pinentry for GPG on Mac
 brew "pinentry-mac"
 # Search tool like grep and The Silver Searcher
@@ -94,15 +93,17 @@ brew "yq"
 brew "zsh-autocomplete"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
-# The AI coding agent built for the terminal.
-brew "anomalyco/tap/opencode", trusted: true
 # Native, fast starting Clojure interpreter for scripting.
 brew "borkdude/brew/babashka", trusted: true
 brew "babashka/brew/bbin", trusted: true
+# A minimal and opinionated linter for Clojure code that sparks joy.
+brew "borkdude/brew/clj-kondo", trusted: true
 # Language Server (LSP) for Clojure
 brew "clojure-lsp/brew/clojure-lsp-native", trusted: true
 # The Clojure Programming Language
 brew "clojure/tools/clojure", trusted: true
+# LLM inference server optimized for Apple Silicon
+brew "jundot/omlx/omlx"
 # Client for the Dropbox cloud storage service
 cask "dropbox"
 # GNU Emacs text editor with patches for macOS
