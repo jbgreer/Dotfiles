@@ -1,9 +1,8 @@
-tap "anomalyco/tap"
 tap "babashka/brew"
 tap "borkdude/brew"
 tap "clojure-lsp/brew"
 tap "clojure/tools", trusted: true
-tap "d12frosted/emacs-plus", trusted: { casks: ["emacs-plus-app@master"] }
+tap "d12frosted/emacs-plus"
 tap "jundot/omlx", "https://github.com/jundot/omlx"
 # Simple, modern, secure file encryption
 brew "age"
