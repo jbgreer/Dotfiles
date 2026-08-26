@@ -1,9 +1,9 @@
-;;; prelude-eca.el --- Emacs Prelude: Editor Code Assistant (ECA) configuration.
+;;; prelude-eca.el --- Emacs Prelude: Editor Code Assistant (ECA) configuration.  -*- lexical-binding: t; -*-
 ;;
 ;; Copyright © 2026 James B. Greer
 ;;
 ;; Author: James B. Greer <jbgreer@gmail.com>
-;; URL: 
+;; URL:
 
 ;; This file is not part of GNU Emacs.
 
@@ -35,7 +35,7 @@
 
 ;;; Code:
 
-;; eca: an LLM-backed AI assistant pair-programmers for Emacs. 
+;; eca: an LLM-backed AI assistant pair-programmers for Emacs.
 (use-package eca
   :ensure t
   :vc (:url "https://github.com/editor-code-assistant/eca-emacs"

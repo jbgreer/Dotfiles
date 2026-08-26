@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; FONTS AND FRAME SIZE
 
 ;; these fonts must be installed separately
@@ -24,4 +25,3 @@
 (setq default-frame-alist
       '((font . "JetBrains Mono-14")
       (top . 25) (left . 275) (width . 140) (height . 80)))
-
