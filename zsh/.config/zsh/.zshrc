@@ -6,8 +6,8 @@ typeset -U path cdpath fpath manpath
 # ZSH autocomplete
 #source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
-# Use viins keymap as the default.
-bindkey -v
+# Use emacs bindings
+bindkey -e
 
 # History options should be set in .zshrc and after oh-my-zsh sourcing.
 # See https://github.com/nix-community/home-manager/issues/177.
