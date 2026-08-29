@@ -11,6 +11,10 @@ emacs/.config/emacs/*~
 emacs/.config/emacs/auto-save-list
 emacs/.config/emacs/bookmarks
 emacs/.config/emacs/config.el
+emacs/.config/emacs/core/prelude-core.elc
+emacs/.config/emacs/core/prelude-custom.elc
+emacs/.config/emacs/core/prelude-editor.elc
+emacs/.config/emacs/core/*.elc
 emacs/.config/emacs/eln-cache
 emacs/.config/emacs/elpa/**
 emacs/.config/emacs/elpaca/**
@@ -22,6 +26,12 @@ emacs/.config/emacs/savefile/**
 emacs/.config/emacs/tramp
 emacs/.config/emacs/transient
 emacs/.config/emacs/tree-sitter
+emacs/.config/emacs/init.elc
+emacs/.config/emacs/modules/*.elc
+emacs/.config/emacs/personal/*.elc
+emacs/.config/emacs/personal/flycheck-clojure.el
+emacs/.config/emacs/sample/**
+emacs/.config/emacs/test/**
 tmux/.config/tmux/plugins
 lazygit/.config/lazygit/state.yml
 mozilla/.config/mozilla/**

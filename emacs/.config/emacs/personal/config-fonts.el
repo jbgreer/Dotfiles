@@ -1,4 +1,4 @@
-;; FONTS AND FRAME SIZE
+;; FONTS AND FRAME SIZE  -*- lexical-binding: t; -*-
 
 ;; these fonts must be installed separately
 (set-face-attribute 'default nil
@@ -24,4 +24,3 @@
 (setq default-frame-alist
       '((font . "JetBrains Mono-14")
       (top . 25) (left . 275) (width . 140) (height . 80)))
-
