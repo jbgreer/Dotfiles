@@ -36,6 +36,8 @@ brew "python@3.14"
 brew "hf"
 # Improved top (interactive process viewer)
 brew "htop"
+# Configurable static site generator
+brew "hugo"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -103,7 +105,7 @@ brew "clojure/tools/clojure", trusted: true
 brew "jundot/omlx/omlx"
 # Client for the Dropbox cloud storage service
 cask "dropbox"
-# GNU Emacs text editor with patches for macOS
+# GNU Emacs text editor with patches
 cask "d12frosted/emacs-plus/emacs-plus-app", trusted: true
 cask "font-fira-code-nerd-font"
 cask "font-fira-mono-nerd-font"
