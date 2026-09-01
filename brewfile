@@ -66,8 +66,8 @@ brew "openjdk"
 brew "leiningen"
 # Music engraving system
 brew "lilypond"
-# Tool for linting and static analysis of Lua code
-brew "luacheck"
+# Powerful, lightweight programming language
+brew "lua"
 # Apple Silicon Monitor Top written in Go Lang
 brew "mactop"
 # Java-based project management
@@ -146,7 +146,7 @@ cask "balenaetcher"
 cask "discord"
 # Client for the Dropbox cloud storage service
 cask "dropbox"
-# GNU Emacs text editor with patches for macOS
+# GNU Emacs text editor with patches
 cask "d12frosted/emacs-plus/emacs-plus-app", trusted: true
 cask "font-fira-code-nerd-font"
 cask "font-fira-mono-nerd-font"
