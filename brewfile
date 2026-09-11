@@ -78,6 +78,8 @@ brew "tmux"
 brew "tree-sitter-cli"
 # Source code spell checker
 brew "typos-cli"
+# Tool for working with usage-spec CLIs
+brew "usage"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Execute commands when watched files change
