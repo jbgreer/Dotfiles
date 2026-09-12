@@ -50,8 +50,6 @@ brew "pinentry"
 brew "gnupg"
 # Improved top (interactive process viewer)
 brew "htop"
-# Configurable static site generator
-brew "hugo"
 # Command-line benchmarking tool
 brew "hyperfine"
 # Lightweight and flexible command-line JSON processor
@@ -108,6 +106,8 @@ brew "tmux"
 brew "tree"
 # Parser generator tool
 brew "tree-sitter-cli"
+# Tool for working with usage-spec CLIs
+brew "usage"
 # Collection of Linux utilities
 brew "util-linux"
 # Extremely fast Python package installer and resolver, written in Rust
