@@ -120,10 +120,6 @@ brew "wget"
 brew "xh"
 # Pluggable terminal workspace, with terminal multiplexer as the base feature
 brew "zellij"
-# Programming language designed for robustness, optimality, and clarity
-brew "zig"
-# Language Server for Zig
-brew "zls"
 # Real-time type-ahead completion for Zsh
 brew "zsh-autocomplete"
 # Fish-like fast/unobtrusive autosuggestions for zsh
