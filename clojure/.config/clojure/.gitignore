@@ -1,0 +1,54 @@
+# ------------------------
+# Clojure Project Git Ignore file patterns
+#
+# Ignore all except patterns starting with !
+# Add comments on separate lines, not same line as pattern
+# ------------------------
+
+# ------------------------
+# Exclude all files from root directory
+/*
+
+# ------------------------
+# Common project files
+!CHANGELOG.org
+!README.md
+!LICENSE
+
+# ------------------------
+# Include Zensical files
+!docs/
+!docs-theme/
+!includes/
+!overrides/
+!mkdocs.yml
+!zensical.toml
+
+# ------------------------
+# Include Clojure project & config
+!build.clj
+!deps.edn
+!pom.xml
+!dev/
+!resources/
+!src/
+!test/
+
+# ------------------------
+# Include Clojure tools
+!.cljstyle
+!.dir-locals.el
+!compose.yaml
+!Dockerfile
+!.dockerignore
+!tests.edn
+
+# ------------------------
+# Project automation
+!Makefile
+
+# ------------------------
+# Version Control
+!.gitignore
+!.gitattributes
+!.github/
