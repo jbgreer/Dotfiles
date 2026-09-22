@@ -4,6 +4,7 @@ tap "clojure-lsp/brew"
 tap "clojure/tools", trusted: true
 tap "d12frosted/emacs-plus"
 tap "jundot/omlx", "https://github.com/jundot/omlx"
+tap "youssofal/mtplx"
 # Simple, modern, secure file encryption
 brew "age"
 # Spell checker with better logic than ispell
@@ -28,16 +29,12 @@ brew "gh"
 brew "git"
 # Render markdown on the CLI
 brew "glow"
-# Library for command-line editing
-brew "readline"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.14"
 # Client library for huggingface.co hub
 brew "hf"
 # Improved top (interactive process viewer)
 brew "htop"
-# Configurable static site generator
-brew "hugo"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -105,6 +102,10 @@ brew "clojure-lsp/brew/clojure-lsp-native", trusted: true
 brew "clojure/tools/clojure", trusted: true
 # LLM inference server optimized for Apple Silicon
 brew "jundot/omlx/omlx"
+# Native MTP speculative decoding for Qwen3-Next on Apple Silicon
+brew "youssofal/mtplx/mtplx", trusted: true
+# Voice and text chat software
+cask "discord"
 # Client for the Dropbox cloud storage service
 cask "dropbox"
 # GNU Emacs text editor with patches
@@ -124,6 +125,10 @@ cask "obsidian"
 cask "quarto"
 # Modern programming language in the Lisp/Scheme family
 cask "racket"
+# Team communication and collaboration software
+cask "slack"
 # JDK from the Eclipse Foundation (Adoptium)
 cask "temurin@25"
+# Desktop client for the Zulip team chat platform
+cask "zulip"
 cargo "parinfer_rust"
