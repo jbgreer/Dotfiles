@@ -5,7 +5,7 @@ tap "d12frosted/emacs-plus", trusted: { casks: ["emacs-plus-app@master"] }
 # Simple, modern, secure file encryption
 brew "age"
 # Powerful, clean, object-oriented scripting language
-brew "ruby"
+brew "ruby", link: false
 # Text processor and publishing toolchain for AsciiDoc
 brew "asciidoctor"
 # Spell checker with better logic than ispell
