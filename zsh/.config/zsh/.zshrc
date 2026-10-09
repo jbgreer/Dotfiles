@@ -12,7 +12,7 @@ bindkey -e
 # History options should be set in .zshrc and after oh-my-zsh sourcing.
 # See https://github.com/nix-community/home-manager/issues/177.
 # 2026-01-18 jbgreer exporting HISTSIZE and SAVEHIST
-export HISTSIZE=10000
+export HISTSIZE=20000
 export SAVEHIST=$HISTSIZE
 
 HISTFILE="$HOME/.zsh_history"
