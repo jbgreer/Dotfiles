@@ -10,7 +10,7 @@
   ui = auto 
 
 [commit]
-	gpgSign = false
+	gpgsign = true
   verbose = true
 
 [diff]
@@ -46,8 +46,15 @@
   autoupdate = true
 
 [tag]
-	gpgSign = false
+	gpgsign = true
 
 [user]
 	email = "jbgreer@gmail.com"
 	name = "Jim Greer"
+	signingkey = /Users/jbgreer/.ssh/id_ed25519.pub
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = /Users/jbgreer/.ssh/allowed_signers
+[format]
+	signoff = true
