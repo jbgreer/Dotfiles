@@ -461,6 +461,7 @@ local setup_treesitter = function()
 	local ensure_installed = {
 		"vim",
 		"vimdoc",
+		"elixir",
 		"rust",
 		"c",
 		"clojure",
