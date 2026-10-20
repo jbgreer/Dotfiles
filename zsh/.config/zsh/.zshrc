@@ -51,6 +51,22 @@ export JAVA_HOME=$(brew --prefix openjdk)/libexec/openjdk.jdk/Contents/Home
 # Mise-en-place
 eval "$(/opt/homebrew/bin/mise activate zsh)"
 
+# agent safehouse
+SAFEHOUSE_APPEND_PROFILE="$HOME/.config/agent-safehouse/local-overrides.sb"
+
+# safe() { safehouse --add-dirs-ro=~/mywork --append-profile="$SAFEHOUSE_APPEND_PROFILE" "$@"; }
+safe() { safehouse --append-profile="$SAFEHOUSE_APPEND_PROFILE" "$@"; }
+safeenv() { safe --env "$@"; }
+safekeys() { safe --env-pass=OPENAI_API_KEY,ANTHROPIC_API_KEY,GEMINI_API_KEY "$@"; }
+claude()   { safe claude --dangerously-skip-permissions "$@"; }
+codex()    { safe codex --no-daemon --dangerously-bypass-approvals-and-sandbox "$@"; }
+amp()      { safe amp --dangerously-allow-all "$@"; }
+opencode() { OPENCODE_PERMISSION='{"*":"allow"}' safekeys opencode "$@"; }
+gemini()   { NO_BROWSER=true safekeys gemini --yolo "$@"; }
+goose()    { safe goose "$@"; }
+kilo()     { safe kilo "$@"; }
+pi()       { safe pi "$@"; }
+
 # Aliases
 alias -- eza='eza --git'
 alias -- l='ls -al'

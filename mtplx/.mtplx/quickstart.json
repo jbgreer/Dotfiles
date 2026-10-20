@@ -1,0 +1,8 @@
+{
+  "model": "Youssofal/Qwen3.8-27B-MTPLX-Optimized-Quality",
+  "profile": "auto",
+  "max": false,
+  "target": "openwebui",
+  "open_dashboard": false,
+  "saved_at": "2026-09-16T14:34:45+00:00"
+}
