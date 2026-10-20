@@ -1,4 +1,3 @@
-# Environment variables
 
 # Only source this once
 if [[ -z "$__ZSH_SESS_VARS_SOURCED" ]]; then
@@ -9,6 +8,8 @@ if [[ -z "$__ZSH_SESS_VARS_SOURCED" ]]; then
   export XDG_DATA_HOME="$HOME/.local/share"
   export XDG_RUNTIME_DIR="$HOME/.xdg"
   export XDG_STATE_HOME="$HOME/.local/state"
+
+  export SSH_SK_PROVIDER=/usr/lib/ssh-keychain.dylib
 
   export ZDOTDIR=$HOME/.config/zsh
 fi

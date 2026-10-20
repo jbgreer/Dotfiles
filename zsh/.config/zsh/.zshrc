@@ -1,17 +1,15 @@
 # Uncomment for zsh profiling
 # zmodload zsh/zprof 
 
-typeset -U path cdpath fpath manpath
-
 # 2026-09-07 jbgreer Use emacs keybindings
 bindkey -e
 
-# 2026-01-18 jbgreer exporting HISTSIZE and SAVEHIST
+# history
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 
 HISTFILE="$HOME/.zsh_history"
-[ ! -f $HISTFILE ] && mkdir -p "$(dirname "$HISTFILE")"
+[[ ! -f $HISTFILE ]] && mkdir -p "$(dirname "$HISTFILE")"
 
 setopt HIST_FCNTL_LOCK
 unsetopt APPEND_HISTORY
@@ -24,11 +22,11 @@ setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY
 
 # ZSH completions
-if type brew &>/dev/null; then
-  fpath+=/opt/homebrew/share/zsh-completions
-  fpath+=/opt/homebrew/share/zsh/site-functions
+if [[ -f $HOMEBREW_PREFIX/bin/brew ]]; then
+  fpath+=$HOMEBREW_PREFIX/share/zsh-completions
+  fpath+=$HOMEBREW_PREFIX/share/zsh/site-functions
+  autoload -Uz compinit && compinit
 fi
-autoload -Uz compinit && compinit
 
 # FZF
 # https://github.com/junegunn/fzf#setting-up-shell-integration
@@ -37,21 +35,28 @@ source <(fzf --zsh)
 
 # starship
 # 2026-01-18 jbgreer adding
-eval "$(starship init zsh)"
+eval "$($HOMEBREW_PREFIX/bin/starship init zsh)"
+
+# Mise-en-place
+eval "$($HOMEBREW_PREFIX/bin/mise activate zsh)"
+
+# Worktrunk setup
+#if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+[[ -f $HOMEBREW_PREFIX/bin/wt ]] && eval "$($HOMEBREW_PREFIX/bin/wt config shell init zsh)"
 
 # JAVA_HOME for Clojure / Sci cloj Noj v2 setup
 export JAVA_HOME=$(brew --prefix openjdk)/libexec/openjdk.jdk/Contents/Home
 
 # RUST 
-[ -d $HOME/.cargo ] && path+=$HOME/.cargo/bin
+[[ -d $HOME/.cargo ]] && path+=$HOME/.cargo/bin
 
 # uv environments
-[ -d $HOME/.local/bin ] && path=("$HOME/.local/bin" $path)
+[[ -d $HOME/.local/bin ]] && path=("$HOME/.local/bin" $path)
 
-# Mise-en-place
-eval "$(/opt/homebrew/bin/mise activate zsh)"
+# MacOS security enclave ssh key usage
+[[ -z "$(/usr/bin/ssh-add -L | grep -v agent)" ]] && /usr/bin/ssh-add -K -S /usr/lib/ssh-keychain.dylib
 
-# agent safehouse
+# agent safehouse functions
 SAFEHOUSE_APPEND_PROFILE="$HOME/.config/agent-safehouse/local-overrides.sb"
 
 # safe() { safehouse --add-dirs-ro=~/mywork --append-profile="$SAFEHOUSE_APPEND_PROFILE" "$@"; }
@@ -67,6 +72,9 @@ goose()    { safe goose "$@"; }
 kilo()     { safe kilo "$@"; }
 pi()       { safe pi "$@"; }
 
+# De-duplicate path, cdpath, fpath, functiond
+typeset -U path cdpath fpath manpath
+
 # Aliases
 alias -- eza='eza --git'
 alias -- l='ls -al'
@@ -78,11 +86,5 @@ alias -- lt='eza --tree'
 alias -- vim="nvim"
 alias -- e="emacsclient -c -a emacs"
 
-# Named Directory Hashes
-#
-
 # Uncomment for zsh profiling
 # zprof
-
-# Worktrunk setup
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
