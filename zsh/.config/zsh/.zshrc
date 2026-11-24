@@ -56,6 +56,9 @@ export JAVA_HOME=$(brew --prefix openjdk)/libexec/openjdk.jdk/Contents/Home
 # MacOS security enclave ssh key usage
 [[ -z "$(/usr/bin/ssh-add -L | grep -v agent)" ]] && /usr/bin/ssh-add -K -S /usr/lib/ssh-keychain.dylib
 
+# oLMX available on command line
+[[ -d $HOME/.omlx/bin ]] && path=("$HOME/.omlx/bin" $path)
+
 # agent safehouse functions
 SAFEHOUSE_APPEND_PROFILE="$HOME/.config/agent-safehouse/local-overrides.sb"
 
