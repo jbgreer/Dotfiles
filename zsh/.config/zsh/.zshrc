@@ -25,20 +25,19 @@ setopt EXTENDED_HISTORY
 if [[ -f $HOMEBREW_PREFIX/bin/brew ]]; then
   fpath+=$HOMEBREW_PREFIX/share/zsh-completions
   fpath+=$HOMEBREW_PREFIX/share/zsh/site-functions
-  autoload -Uz compinit && compinit
+  autoload -Uz compinit && compinit -C
 fi
 
 # FZF
 # https://github.com/junegunn/fzf#setting-up-shell-integration
 # set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
+[[ -f $HOMEBREW_PREFIX/bin/fzf/ ]] && source <(fzf --zsh)
 
 # starship
-# 2026-01-18 jbgreer adding
-eval "$($HOMEBREW_PREFIX/bin/starship init zsh)"
+[[ -f $HOMEBREW_PREFIX/bin/starship ]] && eval "$($HOMEBREW_PREFIX/bin/starship init zsh)"
 
 # Mise-en-place
-eval "$($HOMEBREW_PREFIX/bin/mise activate zsh)"
+[[ -f $HOMEBREW_PREFIX/bin/mise ]] && eval "$($HOMEBREW_PREFIX/bin/mise activate zsh)"
 
 # Worktrunk setup
 #if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
