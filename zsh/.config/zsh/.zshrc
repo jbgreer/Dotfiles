@@ -1,17 +1,14 @@
 # Uncomment for zsh profiling
 # zmodload zsh/zprof 
 
-
 # Use emacs bindings
 bindkey -e
 
 # history settings
 export HISTSIZE=20000
 export SAVEHIST=$HISTSIZE
-
 HISTFILE="$HOME/.zsh_history"
 [ ! -f $HISTFILE ] && mkdir -p "$(dirname "$HISTFILE")"
-
 setopt HIST_FCNTL_LOCK
 unsetopt APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
@@ -22,20 +19,17 @@ setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY
 
 # ZSH completions
-if type brew &>/dev/null; then
+if [[ -f $HOMEBREW_PREFIX/bin/brew ]]; then
   fpath+=/opt/homebrew/share/zsh-completions
   fpath+=/opt/homebrew/share/zsh/site-functions
+  autoload -Uz compinit && compinit -C
 fi
-autoload -Uz compinit && compinit
 
 # FZF
-# https://github.com/junegunn/fzf#setting-up-shell-integration
-# set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
+[[ -f $HOMEBREW_PREFIX/bin/fzf ]] && source <(fzf --zsh)
 
 # starship
-# 2026-01-18 jbgreer adding
-eval "$(starship init zsh)"
+[[ -f $HOMEBREW_PREFIX/bin/starship ]] && eval "$(starship init zsh)"
 
 # JAVA_HOME for Clojure / Sci cloj Noj v2 setup
 export JAVA_HOME=$(brew --prefix openjdk)/libexec/openjdk.jdk/Contents/Home
@@ -44,7 +38,7 @@ export JAVA_HOME=$(brew --prefix openjdk)/libexec/openjdk.jdk/Contents/Home
 [ -d $HOME/.cargo ] && path+=$HOME/.cargo/bin
 
 # Mise-en-place
-eval "$(/opt/homebrew/bin/mise activate zsh)"
+[[ -f $HOMEBREW_PREFIX/bin/mise ]] && eval "$(/opt/homebrew/bin/mise activate zsh)"
 
 # prefer local bins
 [ -d $HOME/.local/bin ] && path=("$HOME/.local/bin" $path)
