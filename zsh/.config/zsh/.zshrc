@@ -31,7 +31,7 @@ fi
 # FZF
 # https://github.com/junegunn/fzf#setting-up-shell-integration
 # set up fzf key bindings and fuzzy completion
-[[ -f $HOMEBREW_PREFIX/bin/fzf/ ]] && source <(fzf --zsh)
+[[ -f $HOMEBREW_PREFIX/bin/fzf ]] && source <(fzf --zsh)
 
 # starship
 [[ -f $HOMEBREW_PREFIX/bin/starship ]] && eval "$($HOMEBREW_PREFIX/bin/starship init zsh)"
