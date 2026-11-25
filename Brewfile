@@ -5,7 +5,7 @@ tap "d12frosted/emacs-plus", trusted: { casks: ["emacs-plus-app@master"] }
 # Simple, modern, secure file encryption
 brew "age"
 # Powerful, clean, object-oriented scripting language
-brew "ruby", link: false
+brew "ruby"
 # Text processor and publishing toolchain for AsciiDoc
 brew "asciidoctor"
 # Spell checker with better logic than ispell
@@ -52,6 +52,8 @@ brew "gnupg"
 brew "htop"
 # Command-line benchmarking tool
 brew "hyperfine"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -66,24 +68,32 @@ brew "leiningen"
 brew "lilypond"
 # Powerful, lightweight programming language
 brew "lua"
+# Package manager for the Lua programming language
+brew "luarocks"
 # Apple Silicon Monitor Top written in Go Lang
 brew "mactop"
 # Java-based project management
 brew "maven"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# CLI for Mermaid library
+brew "mermaid-cli"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # Incremental parsing library
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Open-source, cross-platform JavaScript runtime environment
-brew "node"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 # Data loading tool for PostgreSQL
 brew "pgloader"
 # Pinentry for GPG on Mac
 brew "pinentry-mac"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
+# Object-relational database system
+brew "postgresql@18", restart_service: :changed, link: true
 # Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
 brew "prettier"
 # Modern replacement for ps written in Rust
@@ -118,8 +128,6 @@ brew "watchexec"
 brew "wget"
 # Friendly and fast tool for sending HTTP requests
 brew "xh"
-# Pluggable terminal workspace, with terminal multiplexer as the base feature
-brew "zellij"
 # Real-time type-ahead completion for Zsh
 brew "zsh-autocomplete"
 # Fish-like fast/unobtrusive autosuggestions for zsh
@@ -134,8 +142,6 @@ brew "borkdude/brew/clj-kondo"
 brew "clojure-lsp/brew/clojure-lsp-native"
 # The Clojure Programming Language
 brew "clojure/tools/clojure", trusted: true
-# Memory training application
-cask "anki"
 # Tool to flash OS images to SD cards & USB drives
 cask "balenaetcher"
 # Voice and text chat software
@@ -156,12 +162,12 @@ cask "font-ubuntu-nerd-font"
 cask "ghostty"
 # Web browser
 cask "google-chrome"
-# Electronics design automation suite
-cask "kicad"
 # Free cross-platform office suite, fresh version
 cask "libreoffice"
 # Host-based application firewall
 cask "little-snitch"
+# Full TeX Live distribution with GUI applications
+cask "mactex"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
 # Administration and development platform for PostgreSQL
@@ -170,6 +176,8 @@ cask "pgadmin4"
 cask "quarto"
 # Modern programming language in the Lisp/Scheme family
 cask "racket"
+# Team communication and collaboration software
+cask "slack"
 # Music streaming service
 cask "spotify"
 # JDK from the Eclipse Foundation (Adoptium)
