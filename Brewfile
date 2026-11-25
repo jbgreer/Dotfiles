@@ -128,10 +128,6 @@ brew "watchexec"
 brew "wget"
 # Friendly and fast tool for sending HTTP requests
 brew "xh"
-# Real-time type-ahead completion for Zsh
-brew "zsh-autocomplete"
-# Fish-like fast/unobtrusive autosuggestions for zsh
-brew "zsh-autosuggestions"
 # Additional completion definitions for zsh
 brew "zsh-completions"
 # Native, fast starting Clojure interpreter for scripting.
