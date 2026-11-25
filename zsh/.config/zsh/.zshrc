@@ -20,9 +20,10 @@ setopt EXTENDED_HISTORY
 
 # ZSH completions
 if [[ -f $HOMEBREW_PREFIX/bin/brew ]]; then
-  fpath+=/opt/homebrew/share/zsh-completions
-  fpath+=/opt/homebrew/share/zsh/site-functions
-  autoload -Uz compinit && compinit -C
+  fpath+=$HOMEBREW_PREFIX/share/zsh-completions
+  fpath+=$HOMEBREW_PREFIX/share/zsh/site-functions
+  autoload -Uz compinit
+  compinit -C
 fi
 
 # FZF
