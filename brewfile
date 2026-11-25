@@ -3,8 +3,8 @@ tap "borkdude/brew"
 tap "clojure-lsp/brew"
 tap "clojure/tools", trusted: true
 tap "d12frosted/emacs-plus"
+tap "eugene1g/safehouse"
 tap "jundot/omlx", "https://github.com/jundot/omlx"
-tap "youssofal/mtplx"
 # Simple, modern, secure file encryption
 brew "age"
 # Spell checker with better logic than ispell
@@ -25,16 +25,18 @@ brew "fd"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
 # Distributed revision control system
 brew "git"
 # Render markdown on the CLI
 brew "glow"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.14"
 # Client library for huggingface.co hub
 brew "hf"
 # Improved top (interactive process viewer)
 brew "htop"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Handy way to save and run project-specific commands
@@ -45,8 +47,12 @@ brew "lazygit"
 brew "leiningen"
 # Find what models run on your hardware
 brew "llmfit"
+# Package manager for the Lua programming language
+brew "luarocks"
 # Java-based project management
 brew "maven"
+# CLI for Mermaid library
+brew "mermaid-cli"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # Incremental parsing library
@@ -57,6 +63,8 @@ brew "neovim"
 brew "pandoc"
 # Pinentry for GPG on Mac
 brew "pinentry-mac"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.14"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Readline wrapper: adds readline support to tools that lack it
@@ -71,10 +79,14 @@ brew "stow"
 brew "the_silver_searcher"
 # Terminal multiplexer
 brew "tmux"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
 # Parser generator tool
 brew "tree-sitter-cli"
 # Source code spell checker
 brew "typos-cli"
+# Markup-based typesetting system
+brew "typst"
 # Tool for working with usage-spec CLIs
 brew "usage"
 # Extremely fast Python package installer and resolver, written in Rust
@@ -100,10 +112,10 @@ brew "borkdude/brew/clj-kondo", trusted: true
 brew "clojure-lsp/brew/clojure-lsp-native", trusted: true
 # The Clojure Programming Language
 brew "clojure/tools/clojure", trusted: true
+# macOS sandbox wrapper for coding agents
+brew "eugene1g/safehouse/agent-safehouse", trusted: true
 # LLM inference server optimized for Apple Silicon
 brew "jundot/omlx/omlx"
-# Native MTP speculative decoding for Qwen3-Next on Apple Silicon
-brew "youssofal/mtplx/mtplx", trusted: true
 # Voice and text chat software
 cask "discord"
 # Client for the Dropbox cloud storage service
@@ -117,8 +129,6 @@ cask "font-jetbrains-mono-nerd-font"
 cask "font-ubuntu"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
-# Web browser
-cask "google-chrome"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
 # Scientific and technical publishing system built on Pandoc
@@ -132,3 +142,4 @@ cask "temurin@25"
 # Desktop client for the Zulip team chat platform
 cask "zulip"
 cargo "parinfer_rust"
+npm "@earendil-works/pi-coding-agent"
