@@ -79,13 +79,6 @@ pi()       { safe pi "$@"; }
 typeset -U path cdpath fpath manpath
 
 # Aliases
-alias -- eza='eza --git'
-alias -- l='ls -al'
-alias -- la='eza -a'
-alias -- ll='eza -l'
-alias -- lla='eza -la'
-alias -- ls=eza
-alias -- lt='eza --tree'
 alias -- vim="nvim"
 alias -- e="emacsclient -c -a emacs"
 

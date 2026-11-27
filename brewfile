@@ -9,18 +9,12 @@ tap "jundot/omlx", "https://github.com/jundot/omlx"
 brew "age"
 # Spell checker with better logic than ispell
 brew "aspell"
-# Clone of cat(1) with syntax highlighting and Git integration
-brew "bat"
 # XML-based font configuration API for X Windows
 brew "fontconfig"
 # Formatting Clojure code
 brew "cljfmt"
 # Create and run Linux containers using lightweight virtual machines
 brew "container"
-# Modern, maintained replacement for ls
-brew "eza"
-# Simple, fast and user-friendly alternative to find
-brew "fd"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GitHub command-line tool
@@ -99,10 +93,6 @@ brew "wget"
 brew "worktrunk"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
 brew "yq"
-# Real-time type-ahead completion for Zsh
-brew "zsh-autocomplete"
-# Fish-like fast/unobtrusive autosuggestions for zsh
-brew "zsh-autosuggestions"
 # Native, fast starting Clojure interpreter for scripting.
 brew "borkdude/brew/babashka", trusted: true
 brew "babashka/brew/bbin", trusted: true
